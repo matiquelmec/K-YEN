@@ -56,7 +56,7 @@ export default function KuyenLogo({
   const TextComponent = () => (
     <div className='flex flex-col items-center'>
       <h1
-        className={`font-display font-bold ${textSizeClasses[size]} text-gradient-lunar leading-none`}
+        className={`font-display font-bold ${textSizeClasses[size]} text-gradient-lunar leading-tight`}
       >
         KÜYEN
       </h1>
@@ -113,7 +113,7 @@ export default function KuyenLogo({
         <IconComponent />
         <div className='flex flex-col'>
           <h1
-            className={`font-display font-bold ${textSizeClasses[size]} text-gradient-lunar leading-none`}
+            className={`font-display font-bold ${textSizeClasses[size]} text-gradient-lunar leading-tight`}
           >
             KÜYEN
           </h1>

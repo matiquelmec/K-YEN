@@ -6,7 +6,7 @@ import KuyenLogo from '@/components/ui/KuyenLogo';
 
 export default function Hero() {
   return (
-    <section className='relative min-h-screen flex items-center justify-center px-4 py-20'>
+    <section className='relative min-h-screen flex items-center justify-center px-2 sm:px-4 py-20'>
       {/* Background decorative elements */}
       <div className='absolute inset-0 alchemical-texture opacity-20'></div>
 
@@ -18,10 +18,10 @@ export default function Hero() {
           transition={{ duration: 1.5, ease: 'easeOut' }}
           className='mb-12 md:mb-20'
         >
-          <div className='relative'>
+          <div className='relative px-4'>
             {/* Logo móvil */}
             <div className='block md:hidden'>
-              <KuyenLogo size='2xl' variant='full' animated={true} className='drop-shadow-2xl' />
+              <KuyenLogo size='xl' variant='full' animated={true} className='drop-shadow-2xl' />
             </div>
             {/* Logo desktop */}
             <div className='hidden md:block'>
@@ -30,7 +30,7 @@ export default function Hero() {
 
             {/* Efectos dramáticos alrededor del logo */}
             <motion.div
-              className='absolute -inset-12 bg-gradient-to-r from-lunar-500/15 via-mystic-500/15 to-terra-500/15 rounded-full blur-3xl'
+              className='absolute -inset-6 sm:-inset-12 bg-gradient-to-r from-lunar-500/15 via-mystic-500/15 to-terra-500/15 rounded-full blur-3xl'
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.4, 0.7, 0.4],
@@ -163,9 +163,9 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Efectos sutiles de fondo */}
+      {/* Efectos sutiles de fondo - solo desktop */}
       <motion.div
-        className='absolute top-1/3 left-8 opacity-10 z-0'
+        className='absolute top-1/3 left-8 opacity-10 z-0 hidden lg:block'
         animate={{
           y: [0, -20, 0],
           rotate: [0, 8, 0],
