@@ -61,12 +61,12 @@ export default function Hero() {
           </span>
         </motion.p>
 
-        {/* Decorative Icons */}
+        {/* Decorative Icons - Solo desktop */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className='flex justify-center items-center gap-8 mb-12'
+          className='hidden md:flex justify-center items-center gap-8 mb-12'
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0] }}
