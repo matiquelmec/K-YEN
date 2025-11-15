@@ -11,15 +11,22 @@ export default function Hero() {
       <div className='absolute inset-0 alchemical-texture opacity-20'></div>
 
       <div className='relative z-10 text-center max-w-6xl mx-auto'>
-        {/* Logo Principal - MÁXIMO PROTAGONISMO */}
+        {/* Logo Principal - RESPONSIVE */}
         <motion.div
           initial={{ opacity: 0, scale: 0.5, y: 50 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.5, ease: 'easeOut' }}
-          className='mb-20'
+          className='mb-12 md:mb-20'
         >
           <div className='relative'>
-            <KuyenLogo size='4xl' variant='full' animated={true} className='drop-shadow-2xl' />
+            {/* Logo móvil */}
+            <div className='block md:hidden'>
+              <KuyenLogo size='2xl' variant='full' animated={true} className='drop-shadow-2xl' />
+            </div>
+            {/* Logo desktop */}
+            <div className='hidden md:block'>
+              <KuyenLogo size='4xl' variant='full' animated={true} className='drop-shadow-2xl' />
+            </div>
 
             {/* Efectos dramáticos alrededor del logo */}
             <motion.div
@@ -43,7 +50,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className='text-bone-200 text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto leading-relaxed'
+          className='text-bone-200 text-lg sm:text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto leading-relaxed px-4 md:px-0'
         >
           Vestidos que abrazan cada curva. Incluimos tallas extragrandes.
           <br />
@@ -103,7 +110,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.9 }}
-          className='flex flex-col md:flex-row gap-6 justify-center items-center'
+          className='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 md:px-0'
         >
           <button className='btn-ink group'>
             <span className='flex items-center gap-2'>

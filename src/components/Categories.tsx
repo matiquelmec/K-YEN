@@ -59,7 +59,7 @@ export default function Categories() {
         </motion.div>
 
         {/* Collections Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto px-4 md:px-0'>
           {collections.map((collection, index) => (
             <motion.div
               key={collection.id}
@@ -108,7 +108,7 @@ export default function Categories() {
                   {/* CTA */}
                   <motion.button
                     whileHover={{ x: 3 }}
-                    className={`inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r ${collection.textGradient} bg-clip-text text-transparent`}
+                    className={`inline-flex items-center gap-2 text-sm md:text-sm font-semibold bg-gradient-to-r ${collection.textGradient} bg-clip-text text-transparent py-3 px-4 rounded-full border border-transparent hover:border-current/20 min-h-[44px]`}
                   >
                     Ver Catálogo
                     <motion.span

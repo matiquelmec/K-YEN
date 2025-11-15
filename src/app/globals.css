@@ -23,22 +23,22 @@
 @layer components {
   /* ELEGANTE/RÚSTICO - Botones Estructurados */
   .btn-ink {
-    @apply bg-gradient-to-r from-ink-800 to-ink-700 hover:from-ink-900 hover:to-ink-800 
-           text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 
-           shadow-lg hover:shadow-xl transform hover:scale-105;
+    @apply bg-gradient-to-r from-ink-800 to-ink-700 hover:from-ink-900 hover:to-ink-800
+           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
+           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   .btn-terra {
-    @apply bg-gradient-to-r from-terra-600 to-terra-500 hover:from-terra-700 hover:to-terra-600 
-           text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 
-           shadow-lg hover:shadow-xl transform hover:scale-105;
+    @apply bg-gradient-to-r from-terra-600 to-terra-500 hover:from-terra-700 hover:to-terra-600
+           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
+           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   /* EXPRESIVO/LUNAR - Botones Místicos */
   .btn-mystic {
-    @apply bg-gradient-to-r from-mystic-600 to-mystic-500 hover:from-mystic-700 hover:to-mystic-600 
-           text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 
-           shadow-lg hover:shadow-xl transform hover:scale-105;
+    @apply bg-gradient-to-r from-mystic-600 to-mystic-500 hover:from-mystic-700 hover:to-mystic-600
+           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
+           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   .btn-blood {

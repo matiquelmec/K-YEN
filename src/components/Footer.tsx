@@ -17,21 +17,21 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='relative py-20 px-4 mt-20'>
+    <footer className='relative py-12 md:py-20 px-4 mt-12 md:mt-20'>
       {/* Background - coherente con el resto */}
       <div className='absolute inset-0 alchemical-texture opacity-30' />
       <div className='absolute inset-0 bg-gradient-to-t from-ink-950/90 to-terra-950/80' />
 
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Main Footer Content */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-12 md:mb-16'>
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className='lg:col-span-2'
+            className='md:col-span-2 lg:col-span-1'
           >
             <div className='mb-8'>
               <KuyenLogo size='lg' variant='full' animated={true} />
