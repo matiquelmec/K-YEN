@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Leaf, Heart, Moon, Sparkles } from 'lucide-react';
+import { Leaf, Heart, Moon, Sun, Sparkles } from 'lucide-react';
 import KuyenLogo from '@/components/ui/KuyenLogo';
 
 export default function Hero() {
@@ -120,7 +120,7 @@ export default function Hero() {
 
           <button className='btn-terra group'>
             <span className='flex items-center gap-2'>
-              <Sparkles className='w-5 h-5' />
+              <Sun className='w-5 h-5' />
               Solsticio
             </span>
           </button>
