@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, TrendingUp, Scissors, Crown, Sparkles } from 'lucide-react';
+import { Heart, TrendingUp, Scissors, Crown } from 'lucide-react';
 
 const features = [
   {

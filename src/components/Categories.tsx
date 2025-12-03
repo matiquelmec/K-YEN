@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Moon, Sun, Heart, Sparkles } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 
 const collections = [
   {

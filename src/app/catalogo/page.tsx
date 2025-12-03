@@ -1,123 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   Search,
-  Filter,
-  Heart,
-  Star,
-  ShoppingBag,
   Grid,
   List,
   SlidersHorizontal,
 } from 'lucide-react';
+import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
 import FilterSidebar from '@/components/FilterSidebar';
-
-// Mock product data
-const allProducts = [
-  {
-    id: 1,
-    name: 'Vestido Luna Nocturna',
-    category: 'gotico',
-    price: 89990,
-    originalPrice: 109990,
-    image: '/api/placeholder/400/600',
-    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
-    colors: ['Negro', 'Borgoña', 'Azul Medianoche'],
-    description:
-      'Elegancia misteriosa con detalles de encaje y corte que abraza cada curva',
-    rating: 4.8,
-    reviews: 127,
-    isNew: false,
-    isSale: true,
-    tags: ['elegante', 'nocturno', 'encaje'],
-  },
-  {
-    id: 2,
-    name: 'Vestido Flor de Cerezo',
-    category: 'primaveral',
-    price: 74990,
-    image: '/api/placeholder/400/600',
-    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'],
-    colors: ['Rosa Suave', 'Verde Menta', 'Lavanda'],
-    description:
-      'Frescura natural con estampado floral y silueta que fluye con tu movimiento',
-    rating: 4.9,
-    reviews: 89,
-    isNew: true,
-    isSale: false,
-    tags: ['floral', 'fresco', 'natural'],
-  },
-  {
-    id: 3,
-    name: 'Vestido Sol Radiante',
-    category: 'veraniego',
-    price: 69990,
-    image: '/api/placeholder/400/600',
-    sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
-    colors: ['Dorado', 'Coral', 'Turquesa'],
-    description:
-      'Libertad solar con tela ligera y corte que celebra tu feminidad',
-    rating: 4.7,
-    reviews: 156,
-    isNew: false,
-    isSale: false,
-    tags: ['verano', 'ligero', 'luminoso'],
-  },
-  {
-    id: 4,
-    name: 'Vestido Tierra Ancestral',
-    category: 'gotico',
-    price: 94990,
-    image: '/api/placeholder/400/600',
-    sizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'],
-    colors: ['Tierra', 'Cobre', 'Óxido'],
-    description:
-      'Conexión profunda con detalles bordados y silueta que honra tus raíces',
-    rating: 4.9,
-    reviews: 203,
-    isNew: false,
-    isSale: false,
-    tags: ['artesanal', 'bordado', 'ancestral'],
-  },
-  {
-    id: 5,
-    name: 'Vestido Brisa Marina',
-    category: 'veraniego',
-    price: 79990,
-    image: '/api/placeholder/400/600',
-    sizes: ['M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'],
-    colors: ['Azul Océano', 'Verde Agua', 'Blanco Espuma'],
-    description:
-      'Inspirado en las olas del mar, perfecto para tallas grandes con máxima comodidad',
-    rating: 4.8,
-    reviews: 142,
-    isNew: true,
-    isSale: false,
-    tags: ['marino', 'amplio', 'cómodo'],
-    plusSize: true,
-  },
-  {
-    id: 6,
-    name: 'Vestido Jardín Secreto',
-    category: 'primaveral',
-    price: 84990,
-    image: '/api/placeholder/400/600',
-    sizes: ['L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'],
-    colors: ['Verde Bosque', 'Rosa Salvaje', 'Violeta'],
-    description:
-      'Diseño exclusivo para tallas grandes que realza la belleza natural',
-    rating: 4.9,
-    reviews: 98,
-    isNew: false,
-    isSale: true,
-    originalPrice: 99990,
-    tags: ['natural', 'exclusivo', 'realzador'],
-    plusSize: true,
-  },
-];
+import { useProducts } from '@/hooks/useProducts';
 
 export default function CatalogoPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -125,78 +19,33 @@ export default function CatalogoPage() {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, 150000]);
   const [showPlusSize, setShowPlusSize] = useState(false);
-  const [sortBy, setSortBy] = useState('featured');
+  const [sortBy, setSortBy] = useState<'price_asc' | 'price_desc' | 'newest' | 'rating'>('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
 
-  const filteredProducts = useMemo(() => {
-    const filtered = allProducts.filter(product => {
-      // Búsqueda por texto
-      const matchesSearch =
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.tags.some(tag =>
-          tag.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+  const { products, loading, error } = useProducts({
+    category: selectedCategory,
+    search: searchTerm,
+    sortBy: sortBy,
+  });
 
-      // Filtro por categoría
-      const matchesCategory =
-        selectedCategory === 'all' || product.category === selectedCategory;
+  // Filter products locally by size and price
+  const filteredProducts = products.filter(product => {
+    const matchesSizes = selectedSizes.length === 0 ||
+      selectedSizes.some(size => product.sizes.includes(size));
 
-      // Filtro por tallas
-      const matchesSizes =
-        selectedSizes.length === 0 ||
-        selectedSizes.some(size => product.sizes.includes(size));
+    const matchesPrice = product.price >= (priceRange[0] ?? 0) && product.price <= (priceRange[1] ?? 150000);
 
-      // Filtro por precio
-      const matchesPrice =
-        product.price >= (priceRange[0] ?? 0) &&
-        product.price <= (priceRange[1] ?? 150000);
+    const matchesPlusSize = !showPlusSize ||
+      product.sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
 
-      // Filtro por tallas grandes
-      const matchesPlusSize = !showPlusSize || product.plusSize;
-
-      return (
-        matchesSearch &&
-        matchesCategory &&
-        matchesSizes &&
-        matchesPrice &&
-        matchesPlusSize
-      );
-    });
-
-    // Ordenamiento
-    switch (sortBy) {
-      case 'price-low':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'newest':
-        filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-        break;
-      default:
-        // Featured - mantener orden original
-        break;
-    }
-
-    return filtered;
-  }, [
-    searchTerm,
-    selectedCategory,
-    selectedSizes,
-    priceRange,
-    showPlusSize,
-    sortBy,
-  ]);
+    return matchesSizes && matchesPrice && matchesPlusSize;
+  });
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-earth-900 via-earth-800 to-gothic-900 pt-20'>
-      <div className='max-w-7xl mx-auto px-4 py-8'>
+    <div className='min-h-screen bg-gradient-to-br from-earth-900 via-earth-800 to-gothic-900'>
+      <Header />
+      <div className='max-w-7xl mx-auto px-4 py-8 pt-24'>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -208,8 +57,7 @@ export default function CatalogoPage() {
             <span className='text-gradient-sensual'>Colección</span>
           </h1>
           <p className='text-earth-200 text-lg max-w-2xl mx-auto'>
-            Descubre vestidos únicos que celebran la feminidad en todas sus
-            formas
+            Descubre vestidos únicos que celebran la feminidad en todas sus formas
           </p>
         </motion.div>
 
@@ -262,13 +110,12 @@ export default function CatalogoPage() {
                   {/* Sort */}
                   <select
                     value={sortBy}
-                    onChange={e => setSortBy(e.target.value)}
+                    onChange={e => setSortBy(e.target.value as any)}
                     className='px-4 py-2 rounded-full border border-earth-300 bg-white text-earth-700 focus:outline-none focus:ring-2 focus:ring-sensual-400'
                   >
-                    <option value='featured'>Destacados</option>
                     <option value='newest'>Más Nuevos</option>
-                    <option value='price-low'>Menor Precio</option>
-                    <option value='price-high'>Mayor Precio</option>
+                    <option value='price_asc'>Menor Precio</option>
+                    <option value='price_desc'>Mayor Precio</option>
                     <option value='rating'>Mejor Valorados</option>
                   </select>
 
@@ -292,9 +139,11 @@ export default function CatalogoPage() {
 
               {/* Results count */}
               <div className='mt-4 text-earth-600'>
-                {filteredProducts.length} vestido
-                {filteredProducts.length !== 1 ? 's' : ''} encontrado
-                {filteredProducts.length !== 1 ? 's' : ''}
+                {loading ? 'Cargando...' : (
+                  <>
+                    {filteredProducts.length} vestido{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
+                  </>
+                )}
               </div>
             </motion.div>
 
@@ -319,31 +168,49 @@ export default function CatalogoPage() {
               </motion.div>
             )}
 
+            {/* Error State */}
+            {error && (
+              <div className='text-center py-8 text-red-400'>
+                Error al cargar productos. Por favor, intenta nuevamente.
+              </div>
+            )}
+
+            {/* Loading State */}
+            {loading && (
+              <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className='bg-white/10 rounded-xl h-96 animate-pulse' />
+                ))}
+              </div>
+            )}
+
             {/* Products Grid */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className={`grid gap-6 ${
-                viewMode === 'grid'
-                  ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
-                  : 'grid-cols-1'
-              }`}
-            >
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <ProductCard product={product} viewMode={viewMode} />
-                </motion.div>
-              ))}
-            </motion.div>
+            {!loading && !error && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                className={`grid gap-6 ${
+                  viewMode === 'grid'
+                    ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
+                    : 'grid-cols-1'
+                }`}
+              >
+                {filteredProducts.map((product, index) => (
+                  <motion.div
+                    key={product.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                  >
+                    <ProductCard product={product} viewMode={viewMode} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
 
             {/* No results */}
-            {filteredProducts.length === 0 && (
+            {!loading && !error && filteredProducts.length === 0 && (
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Leaf, Moon, Sun, Star } from 'lucide-react';
+import { Leaf, Moon, Star } from 'lucide-react';
+import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import ProductCarousel from '@/components/ProductCarousel';
 import SizeInclusive from '@/components/SizeInclusive';
@@ -11,6 +12,7 @@ import Footer from '@/components/Footer';
 export default function Home() {
   return (
     <main className='min-h-screen relative overflow-x-hidden'>
+      <Header />
       {/* Efectos de partículas de fondo - reducidos */}
       <div className='fixed inset-0 pointer-events-none z-0'>
         {[...Array(6)].map((_, i) => (

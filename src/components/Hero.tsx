@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Leaf, Heart, Moon, Sun, Sparkles } from 'lucide-react';
+import { Heart, Moon, Sun, Sparkles } from 'lucide-react';
 import KuyenLogo from '@/components/ui/KuyenLogo';
 
 export default function Hero() {
