@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Playfair_Display, Inter, Dancing_Script } from 'next/font/google';
 import './globals.css';
-import ErrorBoundary from '@/components/error/ErrorBoundary';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -39,7 +38,8 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/favicon.ico',
+    icon: '/favicon.svg',
+    apple: '/favicon.svg',
   },
 };
 
@@ -87,9 +87,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ErrorBoundary>
-          {children}
-        </ErrorBoundary>
+        {children}
       </body>
     </html>
   );

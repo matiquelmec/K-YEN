@@ -1,25 +1,27 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Star, ShoppingBag, Eye, Plus } from 'lucide-react';
+import { Heart, Star, ShoppingBag, Eye } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
+import { useCart } from '@/hooks/useCart';
+import Image from 'next/image';
 
 interface Product {
   id: number;
   name: string;
   category: string;
   price: number;
-  originalPrice?: number;
-  image: string;
+  original_price?: number | null;
+  images: string[];
   sizes: string[];
   colors: string[];
   description: string;
-  rating: number;
-  reviews: number;
-  isNew?: boolean;
-  isSale?: boolean;
+  rating: number | null;
+  reviews_count: number;
+  is_new?: boolean;
+  is_sale?: boolean;
   tags: string[];
-  plusSize?: boolean;
+  stock?: number;
 }
 
 interface ProductCardProps {
@@ -30,10 +32,15 @@ interface ProductCardProps {
 function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const { addItem } = useCart();
 
-  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
-  const toggleFavorite = useCallback(() => setIsFavorite(prev => !prev), []);
+  const handleAddToCart = useCallback(() => {
+    if (product.id && selectedSize && selectedColor) {
+      addItem(product.id, 1, selectedSize, selectedColor);
+    }
+  }, [product.id, selectedSize, selectedColor, addItem]);
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -85,6 +92,8 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     return colorMap[color] || 'bg-gray-400';
   };
 
+  const hasLargeSizes = product.sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
+
   if (viewMode === 'list') {
     return (
       <motion.div
@@ -96,28 +105,32 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         <div className='flex flex-col md:flex-row'>
           {/* Image */}
           <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden'>
-            <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
-              <div className='text-center text-earth-600'>
-                <div className='w-16 h-16 rounded-full bg-gradient-to-br from-earth-400 to-sensual-400 flex items-center justify-center mx-auto mb-3'>
-                  <ShoppingBag className='w-8 h-8 text-white' />
-                </div>
-                <p className='font-cursive text-lg'>{product.name}</p>
+            {product.images && product.images[0] ? (
+              <Image
+                src={product.images[0]}
+                alt={product.name}
+                fill
+                className='object-cover'
+              />
+            ) : (
+              <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
+                <ShoppingBag className='w-16 h-16 text-white/50' />
               </div>
-            </div>
+            )}
 
             {/* Badges */}
             <div className='absolute top-4 left-4 flex flex-col gap-2'>
-              {product.isNew && (
+              {product.is_new && (
                 <span className='px-3 py-1 bg-spring-500 text-white text-xs font-semibold rounded-full'>
                   Nuevo
                 </span>
               )}
-              {product.isSale && (
+              {product.is_sale && (
                 <span className='px-3 py-1 bg-sensual-500 text-white text-xs font-semibold rounded-full'>
                   Oferta
                 </span>
               )}
-              {product.plusSize && (
+              {hasLargeSizes && (
                 <span className='px-3 py-1 bg-earth-600 text-white text-xs font-semibold rounded-full'>
                   Tallas Grandes
                 </span>
@@ -158,31 +171,33 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 </p>
 
                 {/* Rating */}
-                <div className='flex items-center gap-2 mb-4'>
-                  <div className='flex items-center'>
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < Math.floor(product.rating)
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
-                        }`}
-                      />
-                    ))}
+                {product.rating && (
+                  <div className='flex items-center gap-2 mb-4'>
+                    <div className='flex items-center'>
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-4 h-4 ${
+                            i < Math.floor(product.rating!)
+                              ? 'text-yellow-400 fill-current'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className='text-sm text-gray-600'>
+                      {product.rating} ({product.reviews_count} reseñas)
+                    </span>
                   </div>
-                  <span className='text-sm text-gray-600'>
-                    {product.rating} ({product.reviews} reseñas)
-                  </span>
-                </div>
+                )}
               </div>
 
               {/* Price */}
               <div className='text-right'>
                 <div className='flex flex-col items-end'>
-                  {product.originalPrice && (
+                  {product.original_price && (
                     <span className='text-sm text-gray-500 line-through'>
-                      ${product.originalPrice.toLocaleString('es-CL')}
+                      ${product.original_price.toLocaleString('es-CL')}
                     </span>
                   )}
                   <span className='font-display text-3xl font-bold text-gradient-sensual'>
@@ -200,12 +215,17 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 </span>
                 <div className='flex flex-wrap gap-1'>
                   {product.sizes.slice(0, 8).map(size => (
-                    <span
+                    <button
                       key={size}
-                      className='px-2 py-1 text-xs border border-earth-300 rounded text-earth-600 bg-earth-50'
+                      onClick={() => setSelectedSize(size)}
+                      className={`px-2 py-1 text-xs border rounded transition-colors ${
+                        selectedSize === size
+                          ? 'bg-sensual-500 text-white border-sensual-500'
+                          : 'border-earth-300 text-earth-600 bg-earth-50 hover:border-sensual-400'
+                      }`}
                     >
                       {size}
-                    </span>
+                    </button>
                   ))}
                   {product.sizes.length > 8 && (
                     <span className='px-2 py-1 text-xs text-earth-500'>
@@ -221,9 +241,12 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 </span>
                 <div className='flex gap-2'>
                   {product.colors.map((color, colorIndex) => (
-                    <div
+                    <button
                       key={colorIndex}
-                      className={`w-6 h-6 rounded-full border-2 border-white shadow-sm ${getColorClass(color)}`}
+                      onClick={() => setSelectedColor(color)}
+                      className={`w-6 h-6 rounded-full border-2 ${
+                        selectedColor === color ? 'ring-2 ring-sensual-500 ring-offset-2' : 'border-white'
+                      } shadow-sm ${getColorClass(color)}`}
                       title={color}
                     />
                   ))}
@@ -236,6 +259,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={handleAddToCart}
                 className='flex-1 btn-sensual'
               >
                 <ShoppingBag className='w-4 h-4 mr-2' />
@@ -265,14 +289,18 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500'>
         {/* Product Image */}
         <div className='relative h-80 overflow-hidden'>
-          <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
-            <div className='text-center text-earth-600'>
-              <div className='w-20 h-20 rounded-full bg-gradient-to-br from-earth-400 to-sensual-400 flex items-center justify-center mx-auto mb-4'>
-                <ShoppingBag className='w-10 h-10 text-white' />
-              </div>
-              <p className='font-cursive text-2xl'>{product.name}</p>
+          {product.images && product.images[0] ? (
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              className='object-cover group-hover:scale-110 transition-transform duration-500'
+            />
+          ) : (
+            <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
+              <ShoppingBag className='w-20 h-20 text-white/50' />
             </div>
-          </div>
+          )}
 
           {/* Overlay */}
           <motion.div
@@ -298,6 +326,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                   opacity: isHovered ? 1 : 0,
                 }}
                 transition={{ delay: 0.1 }}
+                onClick={handleAddToCart}
                 className='bg-sensual-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-sensual-600 transition-colors'
               >
                 Agregar
@@ -307,17 +336,17 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
           {/* Badges */}
           <div className='absolute top-4 left-4 flex flex-col gap-2'>
-            {product.isNew && (
+            {product.is_new && (
               <span className='px-3 py-1 bg-spring-500 text-white text-xs font-semibold rounded-full'>
                 Nuevo
               </span>
             )}
-            {product.isSale && (
+            {product.is_sale && (
               <span className='px-3 py-1 bg-sensual-500 text-white text-xs font-semibold rounded-full'>
                 Oferta
               </span>
             )}
-            {product.plusSize && (
+            {hasLargeSizes && (
               <span className='px-3 py-1 bg-earth-600 text-white text-xs font-semibold rounded-full'>
                 Tallas Grandes
               </span>
@@ -357,23 +386,25 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </p>
 
           {/* Rating */}
-          <div className='flex items-center gap-2 mb-4'>
-            <div className='flex items-center'>
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={`w-4 h-4 ${
-                    i < Math.floor(product.rating)
-                      ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
-                  }`}
-                />
-              ))}
+          {product.rating && (
+            <div className='flex items-center gap-2 mb-4'>
+              <div className='flex items-center'>
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className={`w-4 h-4 ${
+                      i < Math.floor(product.rating!)
+                        ? 'text-yellow-400 fill-current'
+                        : 'text-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className='text-xs text-gray-500'>
+                {product.rating} ({product.reviews_count})
+              </span>
             </div>
-            <span className='text-xs text-gray-500'>
-              {product.rating} ({product.reviews})
-            </span>
-          </div>
+          )}
 
           {/* Size Options */}
           <div className='flex flex-wrap gap-1 mb-4'>
@@ -406,9 +437,9 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           {/* Price and Add to Cart */}
           <div className='flex items-center justify-between'>
             <div>
-              {product.originalPrice && (
+              {product.original_price && (
                 <span className='text-sm text-gray-500 line-through block'>
-                  ${product.originalPrice.toLocaleString('es-CL')}
+                  ${product.original_price.toLocaleString('es-CL')}
                 </span>
               )}
               <span className='font-display text-2xl font-bold text-gradient-sensual'>

@@ -8,12 +8,15 @@ const nextConfig = {
   },
   
   images: {
-    domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
       },
     ],
   },
