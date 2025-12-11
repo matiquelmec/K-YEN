@@ -47,6 +47,12 @@
            shadow-lg hover:shadow-xl transform hover:scale-105;
   }
 
+  .btn-spring {
+    @apply bg-gradient-to-r from-spring-600 to-earth-500 hover:from-spring-700 hover:to-earth-600
+           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
+           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+  }
+
   /* Cards con Elegancia Cruda */
   .card-raw {
     @apply bg-gradient-to-br from-bone-50 to-bone-100 backdrop-blur-sm 

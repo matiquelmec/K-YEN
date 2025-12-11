@@ -1,24 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/lib/supabase/client';
+import { User } from '@/types';
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-  role?: 'customer' | 'admin';
-  createdAt?: Date;
-}
-
-interface AuthState {
+interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   error: string | null;
-}
-
-interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
@@ -29,199 +19,146 @@ interface AuthContextType extends AuthState {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    isLoading: true,
-    isAuthenticated: false,
-    error: null,
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Verificar sesión al cargar
+  // Verificar sesión al cargar y escuchar cambios
   useEffect(() => {
-    checkSession();
+    // 1. Check active session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser(mapSupabaseUser(session.user));
+        setIsAuthenticated(true);
+      }
+      setIsLoading(false);
+    });
+
+    // 2. Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        setUser(mapSupabaseUser(session.user));
+        setIsAuthenticated(true);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
+      }
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const checkSession = async () => {
-    try {
-      setState(prev => ({ ...prev, isLoading: true }));
-
-      // Verificar token en localStorage
-      const token = localStorage.getItem('kuyen_auth_token');
-      const userData = localStorage.getItem('kuyen_user');
-
-      if (token && userData) {
-        const user = JSON.parse(userData);
-        setState({
-          user,
-          isLoading: false,
-          isAuthenticated: true,
-          error: null,
-        });
-      } else {
-        setState({
-          user: null,
-          isLoading: false,
-          isAuthenticated: false,
-          error: null,
-        });
-      }
-    } catch (error) {
-      console.error('Error checking session:', error);
-      setState({
-        user: null,
-        isLoading: false,
-        isAuthenticated: false,
-        error: 'Error al verificar la sesión',
-      });
-    }
+  const mapSupabaseUser = (supabaseUser: any): User => {
+    return {
+      id: supabaseUser.id,
+      email: supabaseUser.email || '',
+      name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split('@')[0] || 'Usuario',
+      avatar: supabaseUser.user_metadata?.avatar_url,
+    };
   };
 
   const login = async (email: string, password: string) => {
     try {
-      setState(prev => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Implementar llamada real a la API
-      // Por ahora simular login exitoso
-      const mockUser: User = {
-        id: '1',
+      setIsLoading(true);
+      setError(null);
+      const { error } = await supabase.auth.signInWithPassword({
         email,
-        name: email.split('@')[0] || 'Usuario',
-        role: 'customer',
-        createdAt: new Date(),
-      };
-
-      // Guardar en localStorage
-      localStorage.setItem('kuyen_auth_token', 'mock_token_' + Date.now());
-      localStorage.setItem('kuyen_user', JSON.stringify(mockUser));
-
-      setState({
-        user: mockUser,
-        isLoading: false,
-        isAuthenticated: true,
-        error: null,
+        password,
       });
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Error al iniciar sesión',
-      }));
-      throw error;
+      if (error) throw error;
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err instanceof Error ? err.message : 'Error al iniciar sesión');
+      throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = async () => {
     try {
-      setState(prev => ({ ...prev, isLoading: true }));
-
-      // Limpiar localStorage
-      localStorage.removeItem('kuyen_auth_token');
-      localStorage.removeItem('kuyen_user');
-      localStorage.removeItem('kuyen_cart');
-
-      setState({
-        user: null,
-        isLoading: false,
-        isAuthenticated: false,
-        error: null,
-      });
-    } catch (error) {
-      console.error('Error during logout:', error);
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Error al cerrar sesión',
-      }));
+      setIsLoading(true);
+      await supabase.auth.signOut();
+      localStorage.removeItem('kuyen_cart'); // Opcional: limpiar carrito local al salir
+    } catch (err) {
+      console.error('Logout error:', err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const register = async (email: string, password: string, name: string) => {
     try {
-      setState(prev => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Implementar llamada real a la API
-      // Por ahora simular registro exitoso
-      const mockUser: User = {
-        id: Date.now().toString(),
+      setIsLoading(true);
+      setError(null);
+      const { error } = await supabase.auth.signUp({
         email,
-        name,
-        role: 'customer',
-        createdAt: new Date(),
-      };
-
-      // Guardar en localStorage
-      localStorage.setItem('kuyen_auth_token', 'mock_token_' + Date.now());
-      localStorage.setItem('kuyen_user', JSON.stringify(mockUser));
-
-      setState({
-        user: mockUser,
-        isLoading: false,
-        isAuthenticated: true,
-        error: null,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+        },
       });
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Error al registrar usuario',
-      }));
-      throw error;
+      if (error) throw error;
+    } catch (err) {
+      console.error('Register error:', err);
+      setError(err instanceof Error ? err.message : 'Error al registrarse');
+      throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const resetPassword = async (email: string) => {
     try {
-      setState(prev => ({ ...prev, isLoading: true, error: null }));
-
-      // TODO: Implementar llamada real a la API
-      console.log('Password reset requested for:', email);
-
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: null,
-      }));
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Error al restablecer contraseña',
-      }));
-      throw error;
+      setIsLoading(true);
+      setError(null);
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      if (error) throw error;
+    } catch (err) {
+      console.error('Reset password error:', err);
+      setError(err instanceof Error ? err.message : 'Error al solicitar cambio de contraseña');
+      throw err;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const updateProfile = async (updates: Partial<User>) => {
     try {
-      if (!state.user) throw new Error('Usuario no autenticado');
+      if (!user) throw new Error('No user logged in');
 
-      setState(prev => ({ ...prev, isLoading: true, error: null }));
+      // Update metadata in Supabase Auth
+      const { error } = await supabase.auth.updateUser({
+        data: {
+          full_name: updates.name,
+          avatar_url: updates.avatar
+        }
+      });
 
-      const updatedUser = { ...state.user, ...updates };
+      if (error) throw error;
 
-      // TODO: Implementar llamada real a la API
-      localStorage.setItem('kuyen_user', JSON.stringify(updatedUser));
+      // Update local state is handled by onAuthStateChange, but we can optimistically update
+      setUser(prev => prev ? { ...prev, ...updates } : null);
 
-      setState(prev => ({
-        ...prev,
-        user: updatedUser,
-        isLoading: false,
-        error: null,
-      }));
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        isLoading: false,
-        error: 'Error al actualizar perfil',
-      }));
-      throw error;
+    } catch (err) {
+      console.error('Update profile error:', err);
+      throw err;
     }
   };
 
   return (
     <AuthContext.Provider
       value={{
-        ...state,
+        user,
+        isLoading,
+        isAuthenticated,
+        error,
         login,
         logout,
         register,

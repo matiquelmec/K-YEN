@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, Leaf } from 'lucide-react';
 
 const collections = [
   {
@@ -14,6 +14,17 @@ const collections = [
     gradient: 'from-ink-700 to-blood-600',
     bgGradient: 'from-ink-50/10 to-blood-50/10',
     textGradient: 'from-ink-700 to-blood-600',
+  },
+  {
+    id: 'eclipse-floral',
+    title: 'Eclipse Floral',
+    subtitle: 'Primaveral Fresco • Tallas Inclusivas XS-5XL',
+    description:
+      'El renacer de la naturaleza bajo la luz de la luna. Estampados florales oscuros, telas fluidas y cortes románticos. La belleza de la primavera con un toque de misterio.',
+    icon: Leaf,
+    gradient: 'from-spring-500 to-earth-500',
+    bgGradient: 'from-spring-50/10 to-earth-50/10',
+    textGradient: 'from-spring-600 to-earth-500',
   },
   {
     id: 'solsticio',
@@ -30,7 +41,7 @@ const collections = [
 
 export default function Categories() {
   return (
-    <section className='py-20 px-4 relative'>
+    <section id='categories' className='py-20 px-4 relative'>
       <div className='max-w-7xl mx-auto'>
         {/* Section Header */}
         <motion.div
@@ -46,11 +57,11 @@ export default function Categories() {
             </span>
             <br />
             <span className='bg-gradient-to-r from-ink-700 to-lunar-400 bg-clip-text text-transparent'>
-              Lunares
+              y Estaciones
             </span>
           </h2>
           <p className='text-bone-200 text-lg md:text-xl max-w-3xl mx-auto font-cursive'>
-            Dos fases. Dos almas. Una misma alquimia.
+            Tres fases. Tres almas. Una misma alquimia.
             <br />
             <span className='text-terra-300'>
               Elegancia cruda para toda mujer. Incluimos tallas extragrandes.
@@ -59,7 +70,7 @@ export default function Categories() {
         </motion.div>
 
         {/* Collections Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto px-4 md:px-0'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto px-4 md:px-0'>
           {collections.map((collection, index) => (
             <motion.div
               key={collection.id}

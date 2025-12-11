@@ -1,8 +1,9 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Moon, Sun, Sparkles } from 'lucide-react';
+import { Heart, Moon, Sun, Sparkles, Leaf, ChevronDown } from 'lucide-react';
 import KuyenLogo from '@/components/ui/KuyenLogo';
+import Link from 'next/link';
 
 export default function Hero() {
   return (
@@ -52,6 +53,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.3 }}
           className='text-bone-200 text-lg sm:text-xl md:text-2xl font-light mb-8 max-w-3xl mx-auto leading-relaxed px-4 md:px-0'
         >
+
           Vestidos que abrazan cada curva. Incluimos tallas extragrandes.
           <br />
           Góticos sensuales y primaverales frescos.
@@ -112,25 +114,32 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.9 }}
           className='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 md:px-0'
         >
-          <button className='btn-ink group'>
-            <span className='flex items-center gap-2'>
-              <Moon className='w-5 h-5' />
-              Luna Nueva
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                →
-              </motion.div>
-            </span>
-          </button>
+          <Link href='/catalogo?category=gotico' className='group'>
+            <button className='btn-ink w-full sm:w-auto'>
+              <span className='flex items-center gap-2 justify-center'>
+                <Moon className='w-5 h-5' />
+                Luna Nueva
+              </span>
+            </button>
+          </Link>
 
-          <button className='btn-terra group'>
-            <span className='flex items-center gap-2'>
-              <Sun className='w-5 h-5' />
-              Solsticio
-            </span>
-          </button>
+          <Link href='/catalogo?category=primaveral' className='group'>
+            <button className='btn-spring w-full sm:w-auto'>
+              <span className='flex items-center gap-2 justify-center'>
+                <Leaf className='w-5 h-5' />
+                Eclipse Floral
+              </span>
+            </button>
+          </Link>
+
+          <Link href='/catalogo?category=veraniego' className='group'>
+            <button className='btn-terra w-full sm:w-auto'>
+              <span className='flex items-center gap-2 justify-center'>
+                <Sun className='w-5 h-5' />
+                Solsticio
+              </span>
+            </button>
+          </Link>
         </motion.div>
       </div>
 
@@ -139,24 +148,20 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 2 }}
-        className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30'
+        className='absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex flex-col items-center cursor-pointer'
+        onClick={() => {
+          const categoriesSection = document.getElementById('categories');
+          if (categoriesSection) {
+            categoriesSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        }}
       >
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
-          className='text-bone-200/60 text-xs font-light text-center cursor-pointer hover:text-bone-200/90 transition-all duration-300'
+          className='text-bone-200/60 text-xs font-light text-center hover:text-bone-200/90 transition-all duration-300'
         >
-          <div className='w-6 h-10 border-2 border-bone-200/40 rounded-full mb-3 mx-auto relative bg-transparent hover:border-bone-200/60 transition-all duration-300'>
-            <motion.div
-              animate={{ y: [0, 16, 0] }}
-              transition={{
-                duration: 2.5,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className='w-1 h-3 bg-bone-200/60 rounded-full absolute top-2 left-1/2 transform -translate-x-1/2'
-            />
-          </div>
+          <ChevronDown className='w-8 h-8 text-bone-200/60 mb-1 mx-auto' strokeWidth={1} />
           <span className='text-xs font-cursive opacity-70 hover:opacity-100 transition-opacity duration-300'>
             Descubre la magia
           </span>

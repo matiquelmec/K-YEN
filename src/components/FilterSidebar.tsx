@@ -23,19 +23,19 @@ const categories = [
   },
   {
     id: 'gotico',
-    name: 'Gótico Sensual',
+    name: 'Luna Nueva',
     icon: Moon,
     color: 'from-gothic-600 to-sensual-600',
   },
   {
     id: 'primaveral',
-    name: 'Primaveral',
+    name: 'Eclipse Floral',
     icon: Leaf,
     color: 'from-spring-500 to-earth-500',
   },
   {
     id: 'veraniego',
-    name: 'Veraniego',
+    name: 'Solsticio',
     icon: Sun,
     color: 'from-earth-500 to-sensual-500',
   },
@@ -87,13 +87,12 @@ export default function FilterSidebar({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => onCategoryChange(category.id)}
-              className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                selectedCategory === category.id
+              className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${selectedCategory === category.id
                   ? 'bg-gradient-to-r ' +
-                    category.color +
-                    ' text-white shadow-lg'
+                  category.color +
+                  ' text-white shadow-lg'
                   : 'bg-white/50 text-gray-700 hover:bg-white/80'
-              }`}
+                }`}
             >
               <category.icon className='w-5 h-5' />
               <span className='font-medium'>{category.name}</span>
@@ -134,11 +133,10 @@ export default function FilterSidebar({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handleSizeToggle(size)}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${
-                selectedSizes.includes(size)
+              className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-300 ${selectedSizes.includes(size)
                   ? 'bg-gradient-to-r from-sensual-500 to-earth-500 text-white shadow-md'
                   : 'bg-white/50 text-gray-700 hover:bg-white/80 border border-earth-200'
-              }`}
+                }`}
             >
               {size}
             </motion.button>
@@ -235,12 +233,11 @@ export default function FilterSidebar({
               key={option.label}
               whileHover={{ scale: 1.02 }}
               onClick={() => onPriceRangeChange(option.range)}
-              className={`w-full p-2 text-sm text-left rounded-lg transition-colors ${
-                priceRange[0] === option.range[0] &&
-                priceRange[1] === option.range[1]
+              className={`w-full p-2 text-sm text-left rounded-lg transition-colors ${priceRange[0] === option.range[0] &&
+                  priceRange[1] === option.range[1]
                   ? 'bg-gradient-to-r from-sensual-500 to-earth-500 text-white'
                   : 'bg-white/50 text-gray-700 hover:bg-white/80'
-              }`}
+                }`}
             >
               {option.label}
             </motion.button>

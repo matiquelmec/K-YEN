@@ -1,23 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase/client';
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  original_price: number | null;
-  category: string;
-  sizes: string[];
-  colors: string[];
-  images: string[];
-  stock: number;
-  rating: number | null;
-  reviews_count: number;
-  is_new: boolean;
-  is_sale: boolean;
-  tags: string[];
-}
+import { Product } from '@/types';
 
 interface UseProductsOptions {
   category?: string;

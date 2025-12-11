@@ -1,7 +1,8 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import {
   Search,
   Grid,
@@ -13,15 +14,23 @@ import ProductCard from '@/components/ProductCard';
 import FilterSidebar from '@/components/FilterSidebar';
 import { useProducts } from '@/hooks/useProducts';
 
-export default function CatalogoPage() {
+function CatalogoContent() {
+  const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, 150000]);
   const [showPlusSize, setShowPlusSize] = useState(false);
   const [sortBy, setSortBy] = useState<'price_asc' | 'price_desc' | 'newest' | 'rating'>('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    const category = searchParams.get('category');
+    if (category) {
+      setSelectedCategory(category);
+    }
+  }, [searchParams]);
 
   const { products, loading, error } = useProducts({
     category: selectedCategory,
@@ -190,11 +199,10 @@ export default function CatalogoPage() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className={`grid gap-6 ${
-                  viewMode === 'grid'
-                    ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
-                    : 'grid-cols-1'
-                }`}
+                className={`grid gap-6 ${viewMode === 'grid'
+                  ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
+                  : 'grid-cols-1'
+                  }`}
               >
                 {filteredProducts.map((product, index) => (
                   <motion.div
@@ -242,5 +250,13 @@ export default function CatalogoPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CatalogoPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-earth-900 flex items-center justify-center text-white">Cargando catálogo...</div>}>
+      <CatalogoContent />
+    </Suspense>
   );
 }

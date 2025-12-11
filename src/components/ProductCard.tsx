@@ -11,23 +11,7 @@ import ProductBadges from './product-card/ProductBadges';
 import ProductPrice from './product-card/ProductPrice';
 import ProductRating from './product-card/ProductRating';
 
-interface Product {
-  id: number;
-  name: string;
-  category: string;
-  price: number;
-  original_price?: number | null;
-  images: string[];
-  sizes: string[];
-  colors: string[];
-  description: string;
-  rating: number | null;
-  reviews_count: number;
-  is_new?: boolean | undefined;
-  is_sale?: boolean | undefined;
-  tags: string[];
-  stock?: number;
-}
+import { Product } from '@/types';
 
 interface ProductCardProps {
   product: Product;

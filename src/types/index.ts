@@ -1,51 +1,12 @@
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  description: string;
-  images: string[];
-  category: ProductCategory;
-  sizes: ProductSize[];
-  colors: ProductColor[];
-  inStock: boolean;
-  featured: boolean;
-  rating?: number;
-  reviews?: number;
-  tags?: string[];
-}
+import { Database } from '@/lib/supabase/database.types';
 
-export interface ProductCategory {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  image?: string;
-}
-
-export interface ProductSize {
-  id: string;
-  name: string;
-  measurements?: {
-    bust?: number;
-    waist?: number;
-    hips?: number;
-  };
-  available: boolean;
-}
-
-export interface ProductColor {
-  id: string;
-  name: string;
-  hex: string;
-  available: boolean;
-}
+export type Product = Database['public']['Tables']['products']['Row'];
 
 export interface CartItem {
   product: Product;
   quantity: number;
-  selectedSize: ProductSize;
-  selectedColor: ProductColor;
+  selectedSize: string;
+  selectedColor: string;
 }
 
 export interface User {
@@ -65,8 +26,7 @@ export interface UserPreferences {
 export type Theme = 'light' | 'dark' | 'auto';
 export type SortBy =
   | 'newest'
-  | 'price-low'
-  | 'price-high'
-  | 'popular'
+  | 'price_asc'
+  | 'price_desc'
   | 'rating';
 export type FilterBy = 'category' | 'size' | 'color' | 'price' | 'availability';

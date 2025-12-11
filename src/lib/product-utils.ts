@@ -14,11 +14,11 @@ export const getCategoryColor = (category: string) => {
 export const getCategoryName = (category: string) => {
     switch (category) {
         case 'gotico':
-            return 'Gótico Sensual';
+            return 'Luna Nueva';
         case 'primaveral':
-            return 'Primaveral';
+            return 'Eclipse Floral';
         case 'veraniego':
-            return 'Veraniego';
+            return 'Solsticio';
         default:
             return category;
     }

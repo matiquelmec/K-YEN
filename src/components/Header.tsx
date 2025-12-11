@@ -17,8 +17,8 @@ export default function Header() {
     { name: 'Inicio', href: '/' },
     { name: 'Catálogo', href: '/catalogo' },
     { name: 'Luna Nueva', href: '/catalogo?category=gotico' },
+    { name: 'Eclipse Floral', href: '/catalogo?category=primaveral' },
     { name: 'Solsticio', href: '/catalogo?category=veraniego' },
-    { name: 'Tallas Grandes', href: '/catalogo?category=tallas-grandes' },
   ];
 
   return (
