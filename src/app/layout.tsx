@@ -54,6 +54,7 @@ export default function RootLayout({
     <html
       lang='es'
       className={`${playfair.variable} ${inter.variable} ${dancing.variable}`}
+      suppressHydrationWarning
     >
       <head>
         <style

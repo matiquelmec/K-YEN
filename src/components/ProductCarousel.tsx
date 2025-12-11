@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import { useProducts } from '@/hooks/useProducts';
 import ProductCard from './ProductCard';
 
@@ -10,18 +11,7 @@ export default function ProductCarousel() {
   return (
     <section className='py-20 px-4 relative overflow-hidden'>
       {/* Background Elements */}
-      <div className='absolute inset-0'>
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          className='absolute top-20 left-20 w-32 h-32 border border-earth-400/30 rounded-full'
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-          className='absolute bottom-20 right-20 w-48 h-48 border border-sensual-400/20 rounded-full'
-        />
-      </div>
+
 
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Section Header */}
@@ -74,7 +64,7 @@ export default function ProductCarousel() {
           viewport={{ once: true }}
           className='text-center mt-16'
         >
-          <button className='btn-earth'>
+          <Link href='/catalogo' className='btn-earth inline-block'>
             <span className='flex items-center gap-2'>
               Ver Toda la Colección
               <motion.div
@@ -84,7 +74,7 @@ export default function ProductCarousel() {
                 →
               </motion.div>
             </span>
-          </button>
+          </Link>
         </motion.div>
       </div>
     </section>

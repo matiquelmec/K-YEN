@@ -163,17 +163,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Efectos sutiles de fondo - solo desktop */}
-      <motion.div
-        className='absolute top-1/3 left-8 opacity-10 z-0 hidden lg:block'
-        animate={{
-          y: [0, -20, 0],
-          rotate: [0, 8, 0],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
-      >
-        <div className='w-20 h-20 rounded-full bg-gradient-to-br from-lunar-400/40 to-mystic-400/40 blur-xl' />
-      </motion.div>
+
     </section>
   );
 }

@@ -1,10 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Star, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, ShoppingBag, Eye, Star } from 'lucide-react'; // Added Star back for the list view if needed, or remove if unused in list view logic
 import { useState, memo, useCallback } from 'react';
 import { useCart } from '@/hooks/useCart';
+import Link from 'next/link';
 import Image from 'next/image';
+import { getCategoryColor, getCategoryName, getColorClass } from '@/lib/product-utils';
+import ProductBadges from './product-card/ProductBadges';
+import ProductPrice from './product-card/ProductPrice';
+import ProductRating from './product-card/ProductRating';
 
 interface Product {
   id: number;
@@ -42,57 +47,12 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     }
   }, [product.id, selectedSize, selectedColor, addItem]);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'gotico':
-        return 'from-gothic-600 to-sensual-600';
-      case 'primaveral':
-        return 'from-spring-500 to-earth-500';
-      case 'veraniego':
-        return 'from-earth-500 to-sensual-500';
-      default:
-        return 'from-earth-600 to-sensual-600';
-    }
-  };
-
-  const getCategoryName = (category: string) => {
-    switch (category) {
-      case 'gotico':
-        return 'Gótico Sensual';
-      case 'primaveral':
-        return 'Primaveral';
-      case 'veraniego':
-        return 'Veraniego';
-      default:
-        return category;
-    }
-  };
-
-  const getColorClass = (color: string) => {
-    const colorMap: { [key: string]: string } = {
-      Negro: 'bg-black',
-      Borgoña: 'bg-red-900',
-      'Azul Medianoche': 'bg-blue-900',
-      'Rosa Suave': 'bg-pink-300',
-      'Verde Menta': 'bg-green-300',
-      Lavanda: 'bg-purple-300',
-      Dorado: 'bg-yellow-500',
-      Coral: 'bg-orange-400',
-      Turquesa: 'bg-teal-400',
-      Tierra: 'bg-amber-700',
-      Cobre: 'bg-orange-800',
-      Óxido: 'bg-red-800',
-      'Azul Océano': 'bg-blue-600',
-      'Verde Agua': 'bg-cyan-400',
-      'Blanco Espuma': 'bg-white border-gray-300',
-      'Verde Bosque': 'bg-green-800',
-      'Rosa Salvaje': 'bg-pink-600',
-      Violeta: 'bg-purple-600',
-    };
-    return colorMap[color] || 'bg-gray-400';
-  };
-
   const hasLargeSizes = product.sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
+
+  // Helper to ensure boolean | undefined is treated as boolean | undefined explicitly for the component props
+  const isNew = product.is_new ? true : undefined;
+  const isSale = product.is_sale ? true : undefined;
+  const originalPrice = product.original_price ?? undefined;
 
   if (viewMode === 'list') {
     return (
@@ -110,6 +70,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 src={product.images[0]}
                 alt={product.name}
                 fill
+                sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 className='object-cover'
               />
             ) : (
@@ -118,24 +79,11 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               </div>
             )}
 
-            {/* Badges */}
-            <div className='absolute top-4 left-4 flex flex-col gap-2'>
-              {product.is_new && (
-                <span className='px-3 py-1 bg-spring-500 text-white text-xs font-semibold rounded-full'>
-                  Nuevo
-                </span>
-              )}
-              {product.is_sale && (
-                <span className='px-3 py-1 bg-sensual-500 text-white text-xs font-semibold rounded-full'>
-                  Oferta
-                </span>
-              )}
-              {hasLargeSizes && (
-                <span className='px-3 py-1 bg-earth-600 text-white text-xs font-semibold rounded-full'>
-                  Tallas Grandes
-                </span>
-              )}
-            </div>
+            <ProductBadges
+              isNew={isNew}
+              isSale={isSale}
+              hasLargeSizes={hasLargeSizes}
+            />
 
             {/* Heart Button */}
             <motion.button
@@ -170,41 +118,10 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                   {product.description}
                 </p>
 
-                {/* Rating */}
-                {product.rating && (
-                  <div className='flex items-center gap-2 mb-4'>
-                    <div className='flex items-center'>
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`w-4 h-4 ${
-                            i < Math.floor(product.rating!)
-                              ? 'text-yellow-400 fill-current'
-                              : 'text-gray-300'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                    <span className='text-sm text-gray-600'>
-                      {product.rating} ({product.reviews_count} reseñas)
-                    </span>
-                  </div>
-                )}
+                <ProductRating rating={product.rating} reviewsCount={product.reviews_count} />
               </div>
 
-              {/* Price */}
-              <div className='text-right'>
-                <div className='flex flex-col items-end'>
-                  {product.original_price && (
-                    <span className='text-sm text-gray-500 line-through'>
-                      ${product.original_price.toLocaleString('es-CL')}
-                    </span>
-                  )}
-                  <span className='font-display text-3xl font-bold text-gradient-sensual'>
-                    ${product.price.toLocaleString('es-CL')}
-                  </span>
-                </div>
-              </div>
+              <ProductPrice price={product.price} originalPrice={originalPrice} />
             </div>
 
             {/* Sizes and Colors */}
@@ -218,11 +135,10 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-2 py-1 text-xs border rounded transition-colors ${
-                        selectedSize === size
-                          ? 'bg-sensual-500 text-white border-sensual-500'
-                          : 'border-earth-300 text-earth-600 bg-earth-50 hover:border-sensual-400'
-                      }`}
+                      className={`px-2 py-1 text-xs border rounded transition-colors ${selectedSize === size
+                        ? 'bg-sensual-500 text-white border-sensual-500'
+                        : 'border-earth-300 text-earth-600 bg-earth-50 hover:border-sensual-400'
+                        }`}
                     >
                       {size}
                     </button>
@@ -244,9 +160,8 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                     <button
                       key={colorIndex}
                       onClick={() => setSelectedColor(color)}
-                      className={`w-6 h-6 rounded-full border-2 ${
-                        selectedColor === color ? 'ring-2 ring-sensual-500 ring-offset-2' : 'border-white'
-                      } shadow-sm ${getColorClass(color)}`}
+                      className={`w-6 h-6 rounded-full border-2 ${selectedColor === color ? 'ring-2 ring-sensual-500 ring-offset-2' : 'border-white'
+                        } shadow-sm ${getColorClass(color)}`}
                       title={color}
                     />
                   ))}
@@ -289,18 +204,20 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500'>
         {/* Product Image */}
         <div className='relative h-80 overflow-hidden'>
-          {product.images && product.images[0] ? (
-            <Image
-              src={product.images[0]}
-              alt={product.name}
-              fill
-              className='object-cover group-hover:scale-110 transition-transform duration-500'
-            />
-          ) : (
-            <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
-              <ShoppingBag className='w-20 h-20 text-white/50' />
-            </div>
-          )}
+          <Link href={`/catalogo/${product.id}`}>
+            {product.images && product.images[0] ? (
+              <Image
+                src={product.images[0]}
+                alt={product.name}
+                fill
+                className='object-cover group-hover:scale-110 transition-transform duration-500'
+              />
+            ) : (
+              <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
+                <ShoppingBag className='w-20 h-20 text-white/50' />
+              </div>
+            )}
+          </Link>
 
           {/* Overlay */}
           <motion.div
@@ -334,24 +251,11 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             </div>
           </motion.div>
 
-          {/* Badges */}
-          <div className='absolute top-4 left-4 flex flex-col gap-2'>
-            {product.is_new && (
-              <span className='px-3 py-1 bg-spring-500 text-white text-xs font-semibold rounded-full'>
-                Nuevo
-              </span>
-            )}
-            {product.is_sale && (
-              <span className='px-3 py-1 bg-sensual-500 text-white text-xs font-semibold rounded-full'>
-                Oferta
-              </span>
-            )}
-            {hasLargeSizes && (
-              <span className='px-3 py-1 bg-earth-600 text-white text-xs font-semibold rounded-full'>
-                Tallas Grandes
-              </span>
-            )}
-          </div>
+          <ProductBadges
+            isNew={isNew}
+            isSale={isSale}
+            hasLargeSizes={hasLargeSizes}
+          />
 
           {/* Category Badge */}
           <div className='absolute top-4 right-14'>
@@ -377,34 +281,17 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
         {/* Product Info */}
         <div className='p-6'>
-          <h3 className='font-display text-xl font-bold text-gradient-earth mb-2'>
-            {product.name}
-          </h3>
+          <Link href={`/catalogo/${product.id}`}>
+            <h3 className='font-display text-xl font-bold text-gradient-earth mb-2'>
+              {product.name}
+            </h3>
+          </Link>
 
           <p className='text-gray-600 text-sm mb-3 line-clamp-2'>
             {product.description}
           </p>
 
-          {/* Rating */}
-          {product.rating && (
-            <div className='flex items-center gap-2 mb-4'>
-              <div className='flex items-center'>
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 ${
-                      i < Math.floor(product.rating!)
-                        ? 'text-yellow-400 fill-current'
-                        : 'text-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className='text-xs text-gray-500'>
-                {product.rating} ({product.reviews_count})
-              </span>
-            </div>
-          )}
+          <ProductRating rating={product.rating} reviewsCount={product.reviews_count} />
 
           {/* Size Options */}
           <div className='flex flex-wrap gap-1 mb-4'>
@@ -436,16 +323,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
           {/* Price and Add to Cart */}
           <div className='flex items-center justify-between'>
-            <div>
-              {product.original_price && (
-                <span className='text-sm text-gray-500 line-through block'>
-                  ${product.original_price.toLocaleString('es-CL')}
-                </span>
-              )}
-              <span className='font-display text-2xl font-bold text-gradient-sensual'>
-                ${product.price.toLocaleString('es-CL')}
-              </span>
-            </div>
+            <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left" />
           </div>
         </div>
       </div>
