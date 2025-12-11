@@ -23,8 +23,8 @@ interface Product {
   description: string;
   rating: number | null;
   reviews_count: number;
-  is_new?: boolean;
-  is_sale?: boolean;
+  is_new?: boolean | undefined;
+  is_sale?: boolean | undefined;
   tags: string[];
   stock?: number;
 }

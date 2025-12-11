@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 interface ProductPriceProps {
     price: number;
-    originalPrice?: number | null;
+    originalPrice?: number | null | undefined;
     className?: string;
 }
 

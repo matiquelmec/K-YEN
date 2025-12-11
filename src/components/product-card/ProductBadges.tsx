@@ -1,9 +1,9 @@
 import { memo } from 'react';
 
 interface ProductBadgesProps {
-    isNew?: boolean;
-    isSale?: boolean;
-    hasLargeSizes?: boolean;
+    isNew?: boolean | undefined;
+    isSale?: boolean | undefined;
+    hasLargeSizes?: boolean | undefined;
 }
 
 function ProductBadges({ isNew, isSale, hasLargeSizes }: ProductBadgesProps) {
