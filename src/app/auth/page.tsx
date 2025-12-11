@@ -1,6 +1,5 @@
 'use client';
-
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Moon, Star } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import KuyenLogo from '@/components/ui/KuyenLogo';
 
-export default function AuthPage() {
+function AuthContent() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -125,21 +124,19 @@ export default function AuthPage() {
           <div className='flex rounded-full bg-black/20 p-1 mb-6'>
             <button
               onClick={() => setIsLogin(true)}
-              className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                isLogin
+              className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${isLogin
                   ? 'bg-gradient-to-r from-sensual-500 to-sensual-600 text-white shadow-lg'
                   : 'text-earth-200 hover:text-white'
-              }`}
+                }`}
             >
               Iniciar Sesión
             </button>
             <button
               onClick={() => setIsLogin(false)}
-              className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${
-                !isLogin
+              className={`flex-1 py-2 px-4 rounded-full text-sm font-medium transition-all ${!isLogin
                   ? 'bg-gradient-to-r from-sensual-500 to-sensual-600 text-white shadow-lg'
                   : 'text-earth-200 hover:text-white'
-              }`}
+                }`}
             >
               Registrarse
             </button>
@@ -287,5 +284,13 @@ export default function AuthPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-earth-900 text-white">Cargando...</div>}>
+      <AuthContent />
+    </Suspense>
   );
 }

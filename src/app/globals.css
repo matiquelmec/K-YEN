@@ -1,8 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap');
 
 @layer base {
   * {
@@ -21,43 +21,32 @@
 }
 
 @layer components {
+
   /* ELEGANTE/RÚSTICO - Botones Estructurados */
   .btn-ink {
-    @apply bg-gradient-to-r from-ink-800 to-ink-700 hover:from-ink-900 hover:to-ink-800
-           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
-           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply bg-gradient-to-r from-ink-800 to-ink-700 hover:from-ink-900 hover:to-ink-800 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   .btn-terra {
-    @apply bg-gradient-to-r from-terra-600 to-terra-500 hover:from-terra-700 hover:to-terra-600
-           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
-           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply bg-gradient-to-r from-terra-600 to-terra-500 hover:from-terra-700 hover:to-terra-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   /* EXPRESIVO/LUNAR - Botones Místicos */
   .btn-mystic {
-    @apply bg-gradient-to-r from-mystic-600 to-mystic-500 hover:from-mystic-700 hover:to-mystic-600
-           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
-           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply bg-gradient-to-r from-mystic-600 to-mystic-500 hover:from-mystic-700 hover:to-mystic-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   .btn-blood {
-    @apply bg-gradient-to-r from-blood-600 to-blood-500 hover:from-blood-700 hover:to-blood-600 
-           text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 
-           shadow-lg hover:shadow-xl transform hover:scale-105;
+    @apply bg-gradient-to-r from-blood-600 to-blood-500 hover:from-blood-700 hover:to-blood-600 text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105;
   }
 
   .btn-spring {
-    @apply bg-gradient-to-r from-spring-600 to-earth-500 hover:from-spring-700 hover:to-earth-600
-           text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300
-           shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply bg-gradient-to-r from-spring-600 to-earth-500 hover:from-spring-700 hover:to-earth-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
   }
 
   /* Cards con Elegancia Cruda */
   .card-raw {
-    @apply bg-gradient-to-br from-bone-50 to-bone-100 backdrop-blur-sm 
-           border border-terra-200 rounded-xl shadow-xl hover:shadow-2xl 
-           transition-all duration-300 transform hover:scale-105;
+    @apply bg-gradient-to-br from-bone-50 to-bone-100 backdrop-blur-sm border border-terra-200 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105;
   }
 
   /* Gradientes de Texto - Alquímicos */
@@ -77,21 +66,27 @@
   .btn-lunar {
     @apply btn-ink;
   }
+
   .btn-moonrose {
     @apply btn-mystic;
   }
+
   .btn-stardust {
     @apply btn-terra;
   }
+
   .card-lunar {
     @apply card-raw;
   }
+
   .text-gradient-lunar {
     @apply text-gradient-earth-lunar;
   }
+
   .text-gradient-moonrose {
     @apply text-gradient-mystic-blood;
   }
+
   .text-gradient-stardust {
     @apply text-gradient-ink-terra;
   }
@@ -112,10 +107,12 @@
 }
 
 @keyframes gradientShift {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -156,21 +153,15 @@
 /* Efectos de tierra y alquimia */
 .alchemical-texture {
   background-image:
-    radial-gradient(
-      circle at 20% 50%,
+    radial-gradient(circle at 20% 50%,
       rgba(198, 128, 71, 0.2) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
+      transparent 50%),
+    radial-gradient(circle at 80% 20%,
       rgba(168, 85, 247, 0.15) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 40% 80%,
+      transparent 50%),
+    radial-gradient(circle at 40% 80%,
       rgba(10, 10, 10, 0.3) 0%,
-      transparent 50%
-    );
+      transparent 50%);
 }
 
 /* Backward compatibility */
