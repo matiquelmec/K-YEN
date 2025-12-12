@@ -27,9 +27,14 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   const handleAddToCart = useCallback(() => {
     if (product.id && selectedSize && selectedColor) {
-      addItem(product.id, 1, selectedSize, selectedColor);
+      addItem({
+        product,
+        quantity: 1,
+        selectedSize,
+        selectedColor
+      });
     }
-  }, [product.id, selectedSize, selectedColor, addItem]);
+  }, [product, selectedSize, selectedColor, addItem]);
 
   const hasLargeSizes = product.sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
 

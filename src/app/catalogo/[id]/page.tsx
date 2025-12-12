@@ -20,7 +20,12 @@ export default function ProductDetailPage() {
 
     const handleAddToCart = () => {
         if (product && selectedSize && selectedColor) {
-            addItem(product.id, 1, selectedSize, selectedColor);
+            addItem({
+                product,
+                quantity: 1,
+                selectedSize,
+                selectedColor
+            });
         }
     };
 
@@ -144,8 +149,8 @@ export default function ProductDetailPage() {
                                                 key={size}
                                                 onClick={() => setSelectedSize(size)}
                                                 className={`w-12 h-12 rounded-lg border flex items-center justify-center transition-all ${selectedSize === size
-                                                        ? 'bg-sensual-600 border-sensual-400 text-white shadow-[0_0_15px_rgba(236,72,153,0.5)]'
-                                                        : 'border-earth-600 text-earth-300 hover:border-earth-400 hover:bg-white/5'
+                                                    ? 'bg-sensual-600 border-sensual-400 text-white shadow-[0_0_15px_rgba(236,72,153,0.5)]'
+                                                    : 'border-earth-600 text-earth-300 hover:border-earth-400 hover:bg-white/5'
                                                     }`}
                                             >
                                                 {size}
@@ -163,8 +168,8 @@ export default function ProductDetailPage() {
                                                 key={color}
                                                 onClick={() => setSelectedColor(color)}
                                                 className={`w-10 h-10 rounded-full border-2 transition-all ${selectedColor === color
-                                                        ? 'ring-2 ring-sensual-500 ring-offset-2 ring-offset-earth-900 border-transparent'
-                                                        : 'border-earth-600 hover:border-earth-300'
+                                                    ? 'ring-2 ring-sensual-500 ring-offset-2 ring-offset-earth-900 border-transparent'
+                                                    : 'border-earth-600 hover:border-earth-300'
                                                     } ${getColorClass(color)} shadow-sm`}
                                                 title={color}
                                             />
@@ -179,8 +184,8 @@ export default function ProductDetailPage() {
                                     onClick={handleAddToCart}
                                     disabled={!selectedSize || !selectedColor}
                                     className={`flex-1 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 transition-all ${selectedSize && selectedColor
-                                            ? 'btn-sensual cursor-pointer'
-                                            : 'bg-earth-800 text-earth-600 cursor-not-allowed border border-earth-700'
+                                        ? 'btn-sensual cursor-pointer'
+                                        : 'bg-earth-800 text-earth-600 cursor-not-allowed border border-earth-700'
                                         }`}
                                 >
                                     <ShoppingBag className='w-5 h-5' />

@@ -56,7 +56,7 @@ export default function Hero() {
 
           Vestidos que abrazan cada curva. Incluimos tallas extragrandes.
           <br />
-          Góticos sensuales y primaverales frescos.
+          Desde la sensualidad de Luna Nueva hasta la frescura de Eclipse Floral.
           <br />
           <span className='font-cursive text-terra-300'>
             Para que todas puedan disfrutar de nuestros diseños únicos.
@@ -78,7 +78,7 @@ export default function Hero() {
           </motion.div>
 
           <motion.div
-            className='w-16 h-0.5 bg-gradient-to-r from-terra-400 to-mystic-400'
+            className='w-16 h-0.5 bg-gradient-to-r from-lunar-400 to-spring-400'
             animate={{ scaleX: [0, 1, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
           />
@@ -87,11 +87,11 @@ export default function Hero() {
             animate={{ scale: [1, 1.2, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Heart className='text-blood-400 w-8 h-8 fill-current' />
+            <Leaf className='text-spring-400 w-8 h-8' />
           </motion.div>
 
           <motion.div
-            className='w-16 h-0.5 bg-gradient-to-r from-mystic-400 to-ink-400'
+            className='w-16 h-0.5 bg-gradient-to-r from-spring-400 to-terra-400'
             animate={{ scaleX: [0, 1, 0] }}
             transition={{ duration: 3, repeat: Infinity, delay: 1.5 }}
           />
@@ -101,9 +101,9 @@ export default function Hero() {
               rotate: [0, 360, 0],
               scale: [1, 1.1, 1],
             }}
-            transition={{ duration: 4, repeat: Infinity, delay: 2 }}
+            transition={{ duration: 12, repeat: Infinity, delay: 2, ease: "linear" }}
           >
-            <Sparkles className='text-terra-400 w-8 h-8' />
+            <Sun className='text-terra-400 w-8 h-8' />
           </motion.div>
         </motion.div>
 
@@ -117,7 +117,6 @@ export default function Hero() {
           <Link href='/catalogo?category=gotico' className='group'>
             <button className='btn-ink w-full sm:w-auto'>
               <span className='flex items-center gap-2 justify-center'>
-                <Moon className='w-5 h-5' />
                 Luna Nueva
               </span>
             </button>
@@ -126,7 +125,6 @@ export default function Hero() {
           <Link href='/catalogo?category=primaveral' className='group'>
             <button className='btn-spring w-full sm:w-auto'>
               <span className='flex items-center gap-2 justify-center'>
-                <Leaf className='w-5 h-5' />
                 Eclipse Floral
               </span>
             </button>
@@ -135,7 +133,6 @@ export default function Hero() {
           <Link href='/catalogo?category=veraniego' className='group'>
             <button className='btn-terra w-full sm:w-auto'>
               <span className='flex items-center gap-2 justify-center'>
-                <Sun className='w-5 h-5' />
                 Solsticio
               </span>
             </button>

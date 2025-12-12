@@ -1,20 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Menu, X, User, Search } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 import Cart from './Cart';
 import KuyenLogo from './ui/KuyenLogo';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { user, logout } = useAuth();
+  const router = useRouter();
 
   const navigation = [
-    { name: 'Inicio', href: '/' },
     { name: 'Catálogo', href: '/catalogo' },
     { name: 'Luna Nueva', href: '/catalogo?category=gotico' },
     { name: 'Eclipse Floral', href: '/catalogo?category=primaveral' },
@@ -56,29 +55,7 @@ export default function Header() {
               <Search className='w-5 h-5 text-white' />
             </button>
 
-            {/* User Menu */}
-            <div className='relative'>
-              {user ? (
-                <div className='flex items-center space-x-2'>
-                  <span className='text-white/90 text-sm hidden lg:block'>
-                    Hola, {user.name}
-                  </span>
-                  <button
-                    onClick={logout}
-                    className='p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors'
-                  >
-                    <User className='w-5 h-5 text-white' />
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  href='/auth'
-                  className='p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors flex items-center justify-center'
-                >
-                  <User className='w-5 h-5 text-white' />
-                </Link>
-              )}
-            </div>
+
 
             {/* Cart */}
             <Cart />
@@ -121,32 +98,7 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
-          <div className='border-t border-white/10 pt-3 mt-3'>
-            {user ? (
-              <div className='space-y-2'>
-                <div className='px-3 py-2 text-white/70 text-sm'>
-                  Hola, {user.name}
-                </div>
-                <button
-                  onClick={() => {
-                    logout();
-                    setIsMenuOpen(false);
-                  }}
-                  className='block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors'
-                >
-                  Cerrar Sesión
-                </button>
-              </div>
-            ) : (
-              <Link
-                href='/auth'
-                className='block px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors'
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Iniciar Sesión
-              </Link>
-            )}
-          </div>
+
         </div>
       </motion.div>
 
@@ -166,6 +118,13 @@ export default function Header() {
               onKeyDown={(e) => {
                 if (e.key === 'Escape') {
                   setIsSearchOpen(false);
+                } else if (e.key === 'Enter') {
+                  const query = (e.target as HTMLInputElement).value;
+                  if (query.trim()) {
+                    setIsMenuOpen(false); // Close mobile menu if open
+                    setIsSearchOpen(false);
+                    router.push(`/catalogo?search=${encodeURIComponent(query)}`);
+                  }
                 }
               }}
             />
