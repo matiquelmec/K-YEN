@@ -3,12 +3,6 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-    const formData = await request.json();
-    const email = formData.email;
-    const password = formData.password;
-
-    // Use standard Supabase auth helper
-    // Note: In Next.js 15+, cookies() is async
     const cookieStore = await cookies();
     const supabase = createServerClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -28,16 +22,12 @@ export async function POST(request: Request) {
         }
     );
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
+    // Sign out from Supabase (this invalidates the session in the DB if persisted)
+    await supabase.auth.signOut();
 
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 401 });
-    }
+    // The sign out method should also clear the cookies.
+    // However, createRouteHandlerClient handles cookie clearing automatically
+    // when using the standard methods.
 
-    // Return success. The cookies are automatically set by supabase.auth.signInWithPassword
-    // on the cookieStore, which propagates to the response in Next.js App Router.
     return NextResponse.json({ success: true });
 }

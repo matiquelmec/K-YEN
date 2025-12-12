@@ -30,8 +30,16 @@ export default function AdminLayout({
     }
 
     const handleLogout = async () => {
-        await supabase.auth.signOut();
-        router.push('/admin/login');
+        try {
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+            });
+        } catch (error) {
+            console.error('Error logging out:', error);
+        } finally {
+            router.push('/admin/login');
+            router.refresh();
+        }
     };
 
     const navItems = [
