@@ -8,9 +8,9 @@ const collections = [
   {
     id: 'gotico', // Internal key for "Luna Nueva"
     title: 'Luna Nueva',
-    subtitle: 'Gótico Sensual • Tallas Grandes y Extragrandes',
+    subtitle: 'Gótico Sensual',
     description:
-      'Donde el misterio abraza la sensualidad. Vestidos oscuros con terciopelos, encajes y transparencias. Elegancia cruda para mujeres que celebran su poder nocturno. Especialistas en tallas grandes.',
+      'Donde el misterio abraza la sensualidad. Vestidos oscuros con terciopelos, encajes y transparencias. Elegancia cruda para mujeres que celebran su poder nocturno.',
     icon: Moon,
     gradient: 'from-ink-700 to-blood-600',
     bgGradient: 'from-ink-50/10 to-blood-50/10',
@@ -19,7 +19,7 @@ const collections = [
   {
     id: 'primaveral', // Internal key for "Eclipse Floral"
     title: 'Eclipse Floral',
-    subtitle: 'Primaveral Fresco • Tallas Inclusivas XS-5XL',
+    subtitle: 'Primaveral Fresco',
     description:
       'El renacer de la naturaleza bajo la luz de la luna. Estampados florales oscuros, telas fluidas y cortes románticos. La belleza de la primavera con un toque de misterio.',
     icon: Leaf,
@@ -30,9 +30,9 @@ const collections = [
   {
     id: 'veraniego', // Internal key for "Solsticio"
     title: 'Solsticio',
-    subtitle: 'Veraniego Sensual • Tallas Inclusivas XS-5XL',
+    subtitle: 'Veraniego Sensual',
     description:
-      'El punto donde el sol toca la tierra. Vestidos ligeros con linos, sedas y texturas orgánicas. Sensualidad natural que florece bajo el sol. Tallas inclusivas para todas las mujeres.',
+      'El punto donde el sol toca la tierra. Vestidos ligeros con linos, sedas y texturas orgánicas. Sensualidad natural que florece bajo el sol.',
     icon: Sun,
     gradient: 'from-terra-500 to-lunar-400',
     bgGradient: 'from-terra-50/10 to-lunar-50/10',

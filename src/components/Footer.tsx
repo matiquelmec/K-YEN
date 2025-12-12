@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -50,15 +51,18 @@ export default function Footer() {
             </h4>
             <ul className='space-y-3'>
               {[
-                'Luna Nueva',
-                'Solsticio',
-              ].map((link, index) => (
+                { label: 'Luna Nueva', href: '/catalogo?category=gotico' },
+                { label: 'Eclipse Floral', href: '/catalogo?category=primaveral' },
+                { label: 'Solsticio', href: '/catalogo?category=veraniego' },
+              ].map((item, index) => (
                 <motion.li
                   key={index}
                   whileHover={{ x: 5 }}
                   className='text-bone-200 hover:text-terra-300 transition-colors cursor-pointer'
                 >
-                  {link}
+                  <Link href={item.href}>
+                    {item.label}
+                  </Link>
                 </motion.li>
               ))}
             </ul>
