@@ -8,6 +8,9 @@ import {
   Grid,
   List,
   SlidersHorizontal,
+  Moon,
+  Sun,
+  Leaf,
 } from 'lucide-react';
 import Header from '@/components/Header';
 import ProductCard from '@/components/ProductCard';
@@ -59,16 +62,44 @@ function CatalogoContent() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className='text-center mb-12'
+          className='text-center mb-8 md:mb-12'
         >
-          <h1 className='font-display text-4xl md:text-6xl font-bold mb-4'>
-            <span className='text-gradient-earth'>Nuestra</span>{' '}
-            <span className='text-gradient-sensual'>Colección</span>
-          </h1>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <Moon className="w-6 h-6 text-lunar-400 hidden md:block" />
+            <h1 className='font-display text-4xl md:text-6xl font-bold'>
+              <span className='text-gradient-earth'>Nuestra</span>{' '}
+              <span className='text-gradient-sensual'>Colección</span>
+            </h1>
+            <Leaf className="w-6 h-6 text-spring-400 hidden md:block" />
+          </div>
           <p className='text-earth-200 text-lg max-w-2xl mx-auto'>
             Descubre vestidos únicos que celebran la feminidad en todas sus formas
           </p>
         </motion.div>
+
+        {/* Mobile Category Pills (Horizontal Scroll) */}
+        <div className="lg:hidden mb-8 overflow-x-auto pb-4 scrollbar-hide">
+          <div className="flex gap-3 px-1 min-w-max">
+            {[
+              { id: 'all', label: 'Todo', icon: Grid },
+              { id: 'gotico', label: 'Luna Nueva', icon: Moon },
+              { id: 'primaveral', label: 'Eclipse', icon: Leaf },
+              { id: 'veraniego', label: 'Solsticio', icon: Sun },
+            ].map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all whitespace-nowrap ${selectedCategory === cat.id
+                  ? 'bg-gradient-to-r from-sensual-500 to-earth-500 text-white border-transparent shadow-md'
+                  : 'bg-white/10 text-earth-200 border-earth-700 hover:bg-white/20'
+                  }`}
+              >
+                <cat.icon className="w-4 h-4" />
+                <span className="text-sm font-medium">{cat.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
 
         <div className='flex gap-8'>
           {/* Sidebar Filters - Desktop */}
@@ -91,11 +122,11 @@ function CatalogoContent() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl p-6 mb-8'
+              className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl p-4 md:p-6 mb-8'
             >
               <div className='flex flex-col md:flex-row gap-4 items-center justify-between'>
                 {/* Search */}
-                <div className='relative flex-1 max-w-md'>
+                <div className='relative flex-1 max-w-md w-full'>
                   <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-earth-500 w-5 h-5' />
                   <input
                     type='text'
@@ -106,11 +137,11 @@ function CatalogoContent() {
                   />
                 </div>
 
-                <div className='flex items-center gap-4'>
+                <div className='flex items-center gap-3 w-full md:w-auto justify-between md:justify-end'>
                   {/* Mobile Filter Toggle */}
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className='lg:hidden flex items-center gap-2 px-4 py-2 bg-earth-600 text-white rounded-full hover:bg-earth-700 transition-colors'
+                    className='lg:hidden flex items-center gap-2 px-4 py-2 bg-earth-600/90 text-white rounded-full hover:bg-earth-700 transition-colors text-sm'
                   >
                     <SlidersHorizontal className='w-4 h-4' />
                     Filtros
@@ -120,16 +151,16 @@ function CatalogoContent() {
                   <select
                     value={sortBy}
                     onChange={e => setSortBy(e.target.value as any)}
-                    className='px-4 py-2 rounded-full border border-earth-300 bg-white text-earth-700 focus:outline-none focus:ring-2 focus:ring-sensual-400'
+                    className='flex-1 md:flex-none px-4 py-2 rounded-full border border-earth-300 bg-white text-earth-700 focus:outline-none focus:ring-2 focus:ring-sensual-400 text-sm'
                   >
-                    <option value='newest'>Más Nuevos</option>
-                    <option value='price_asc'>Menor Precio</option>
-                    <option value='price_desc'>Mayor Precio</option>
-                    <option value='rating'>Mejor Valorados</option>
+                    <option value='newest'>Nuevos</option>
+                    <option value='price_asc'>$-$$$</option>
+                    <option value='price_desc'>$$$-$</option>
+                    <option value='rating'>Populares</option>
                   </select>
 
                   {/* View Mode */}
-                  <div className='flex rounded-full border border-earth-300 bg-white overflow-hidden'>
+                  <div className='hidden md:flex rounded-full border border-earth-300 bg-white overflow-hidden'>
                     <button
                       onClick={() => setViewMode('grid')}
                       className={`p-2 ${viewMode === 'grid' ? 'bg-sensual-500 text-white' : 'text-earth-600'}`}
@@ -147,7 +178,7 @@ function CatalogoContent() {
               </div>
 
               {/* Results count */}
-              <div className='mt-4 text-earth-600'>
+              <div className='mt-4 text-earth-600 text-sm text-center md:text-left'>
                 {loading ? 'Cargando...' : (
                   <>
                     {filteredProducts.length} vestido{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
@@ -186,9 +217,9 @@ function CatalogoContent() {
 
             {/* Loading State */}
             {loading && (
-              <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'>
+              <div className='grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6'>
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className='bg-white/10 rounded-xl h-96 animate-pulse' />
+                  <div key={i} className='bg-white/10 rounded-xl h-64 md:h-96 animate-pulse' />
                 ))}
               </div>
             )}
@@ -199,8 +230,8 @@ function CatalogoContent() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className={`grid gap-6 ${viewMode === 'grid'
-                  ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'
+                className={`grid gap-3 md:gap-6 ${viewMode === 'grid'
+                  ? 'grid-cols-2 md:grid-cols-2 xl:grid-cols-3'
                   : 'grid-cols-1'
                   }`}
               >
