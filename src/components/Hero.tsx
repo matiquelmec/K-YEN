@@ -114,7 +114,7 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.9 }}
           className='flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 md:px-0'
         >
-          <Link href='/catalogo?category=gotico' className='group'>
+          <Link href='/catalogo?category=gotico' className='group w-full sm:w-auto'>
             <button className='btn-ink w-full sm:w-64'>
               <span className='flex items-center gap-2 justify-center'>
                 Luna Nueva
@@ -122,7 +122,7 @@ export default function Hero() {
             </button>
           </Link>
 
-          <Link href='/catalogo?category=primaveral' className='group'>
+          <Link href='/catalogo?category=primaveral' className='group w-full sm:w-auto'>
             <button className='btn-spring w-full sm:w-64'>
               <span className='flex items-center gap-2 justify-center'>
                 Eclipse Floral
@@ -130,7 +130,7 @@ export default function Hero() {
             </button>
           </Link>
 
-          <Link href='/catalogo?category=veraniego' className='group'>
+          <Link href='/catalogo?category=veraniego' className='group w-full sm:w-auto'>
             <button className='btn-terra w-full sm:w-64'>
               <span className='flex items-center gap-2 justify-center'>
                 Solsticio
