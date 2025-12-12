@@ -60,7 +60,7 @@ export default function AdminLayout({
                     {/* Logo */}
                     <div className="mb-8 flex items-center justify-between">
                         <div className="scale-75 origin-left">
-                            <KuyenLogo variant="simple" />
+                            <KuyenLogo variant="full" />
                         </div>
                         <button
                             className="lg:hidden text-gray-400 hover:text-white"
