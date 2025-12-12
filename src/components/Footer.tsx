@@ -129,21 +129,63 @@ export default function Footer() {
               Recibe nuestras nuevas colecciones y ofertas especiales
             </p>
             <div className='flex flex-col md:flex-row gap-4 max-w-md mx-auto'>
-              <input
-                type='email'
-                placeholder='Tu correo electrónico'
-                className='flex-1 px-4 py-3 rounded-full bg-bone-50/90 backdrop-blur-sm text-ink-800 placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-mystic-400'
-              />
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className='btn-terra whitespace-nowrap'
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget;
+                  const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+                  const email = emailInput.value;
+                  const btn = form.querySelector('button');
+
+                  if (!email) return;
+
+                  try {
+                    if (btn) btn.disabled = true;
+                    // Dynamic import to avoid dependency issues if any
+                    const { supabase } = await import('@/lib/supabase/client');
+
+                    const { error } = await supabase
+                      .from('subscribers')
+                      .insert({ email });
+
+                    if (error) {
+                      if (error.code === '23505') { // Unique violation
+                        alert('¡Ya estás suscrita! Gracias por tu interés.');
+                      } else {
+                        throw error;
+                      }
+                    } else {
+                      alert('¡Gracias por suscribirte! Te avisaremos de nuestras novedades.');
+                      emailInput.value = '';
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    alert('Hubo un error al suscribirte. Intenta nuevamente.');
+                  } finally {
+                    if (btn) btn.disabled = false;
+                  }
+                }}
+                className='contents'
               >
-                <span className='flex items-center gap-2'>
-                  <Heart className='w-4 h-4' />
-                  Suscribirse
-                </span>
-              </motion.button>
+                <input
+                  name='email'
+                  type='email'
+                  required
+                  placeholder='Tu correo electrónico'
+                  className='flex-1 px-4 py-3 rounded-full bg-bone-50/90 backdrop-blur-sm text-ink-800 placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-mystic-400'
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  type='submit'
+                  className='btn-terra whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed'
+                >
+                  <span className='flex items-center gap-2'>
+                    <Heart className='w-4 h-4' />
+                    Suscribirse
+                  </span>
+                </motion.button>
+              </form>
             </div>
           </div>
         </motion.div>
