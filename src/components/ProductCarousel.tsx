@@ -49,6 +49,7 @@ export default function ProductCarousel() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                className='h-full'
               >
                 <ProductCard product={product} />
               </motion.div>

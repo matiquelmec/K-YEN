@@ -188,18 +188,18 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       whileHover={{ scale: 1.05 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
-      className='group cursor-pointer'
+      className='group cursor-pointer h-full'
     >
-      <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500'>
+      <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 h-full flex flex-col'>
         {/* Product Image */}
-        <div className='relative h-80 overflow-hidden'>
+        <div className='relative aspect-[3/4] overflow-hidden'>
           <Link href={`/catalogo/${product.id}`}>
             {product.images && product.images[0] ? (
               <Image
                 src={product.images[0]}
                 alt={product.name}
                 fill
-                className='object-cover group-hover:scale-110 transition-transform duration-500'
+                className='object-cover object-top group-hover:scale-110 transition-transform duration-500'
               />
             ) : (
               <div className='w-full h-full bg-gradient-to-br from-earth-200 to-sensual-200 flex items-center justify-center'>
@@ -269,9 +269,9 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className='p-6'>
+        <div className='p-6 flex-1 flex flex-col'>
           <Link href={`/catalogo/${product.id}`}>
-            <h3 className='font-display text-xl font-bold text-gradient-earth mb-2'>
+            <h3 className='font-display text-xl font-bold text-gradient-earth mb-2 line-clamp-1' title={product.name}>
               {product.name}
             </h3>
           </Link>
@@ -283,7 +283,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           <ProductRating rating={product.rating} reviewsCount={product.reviews_count} />
 
           {/* Size Options */}
-          <div className='flex flex-wrap gap-1 mb-4'>
+          <div className='flex flex-wrap gap-1 mb-4 mt-auto'>
             {product.sizes.slice(0, 5).map(size => (
               <span
                 key={size}
@@ -301,17 +301,22 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
           {/* Colors */}
           <div className='flex gap-2 mb-4'>
-            {product.colors.map((color, colorIndex) => (
+            {product.colors.slice(0, 5).map((color, colorIndex) => (
               <div
                 key={colorIndex}
                 className={`w-4 h-4 rounded-full border-2 border-white shadow-sm ${getColorClass(color)}`}
                 title={color}
               />
             ))}
+            {product.colors.length > 5 && (
+              <span className='text-xs text-gray-400 flex items-center'>
+                +{product.colors.length - 5}
+              </span>
+            )}
           </div>
 
           {/* Price and Add to Cart */}
-          <div className='flex items-center justify-between'>
+          <div className='flex items-center justify-between mt-auto pt-4 border-t border-gray-100'>
             <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left" />
           </div>
         </div>

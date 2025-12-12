@@ -21,10 +21,10 @@ export default function CheckoutPage() {
 
         try {
             // 1. Prepare Order Data
+            // We omit 'status' to let the DB use its default (avoiding potential Enum mismatch)
             const orderData = {
-                user_id: null, // Guest checkout for now (or auth.user.id if we add auth later)
+                // user_id: undefined, // Let DB handle null functionality ensuring Guest works
                 is_guest: true,
-                status: 'pending',
                 total: total,
                 shipping_address: formData,
                 items: items.map(item => ({
@@ -38,6 +38,8 @@ export default function CheckoutPage() {
                 }))
             };
 
+            console.log('Enviando orden:', orderData);
+
             // 2. Insert into Supabase
             const { data, error } = await supabase
                 .from('orders')
@@ -45,18 +47,22 @@ export default function CheckoutPage() {
                 .select()
                 .single();
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase Error:', error);
+                throw error;
+            }
 
             // 3. Success
-            clearCart(); // Empty local cart
+            clearCart();
 
-            // Redirect to success page (or simple alert for now)
+            // Redirect
             alert(`¡Orden #${data.order_number || data.id} creada con éxito!\nTe contactaremos al correo ${formData.email}.`);
             router.push('/');
 
         } catch (error: any) {
             console.error('Error creating order:', error);
-            alert('Hubo un error al procesar tu pedido. Por favor intenta nuevamente.');
+            // Show the actual error message to the user for debugging
+            alert(`Error al procesar tu pedido: ${error.message || error.details || 'Intenta nuevamente.'}`);
         } finally {
             setIsSubmitting(false);
         }

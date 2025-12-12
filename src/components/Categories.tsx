@@ -80,7 +80,7 @@ export default function Categories() {
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}
               whileHover={{ scale: 1.03 }}
-              className='group'
+              className='group h-full'
             >
               {/* Wrapped in Link for navigation */}
               <Link href={`/catalogo?category=${collection.id}`} className="block h-full">
