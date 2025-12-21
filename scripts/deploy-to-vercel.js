@@ -40,8 +40,8 @@ function createVercelConfig() {
       }
     ],
     "env": {
-      "NEXT_PUBLIC_SUPABASE_URL": "https://kilkdvsuvaulqoyoxcsi.supabase.co",
-      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_R7jHTGhDjoGfawl2NRSyGA_Z7JprZhL",
+      "NEXT_PUBLIC_SUPABASE_URL": process.env.NEXT_PUBLIC_SUPABASE_URL || "",
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY": process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
       "NEXT_PUBLIC_APP_NAME": "KÜYEN"
     },
     "build": {
@@ -80,10 +80,10 @@ function createEnvSetup() {
   const envContent = `# KÜYEN - Vercel Environment Variables
 # Copy these to your Vercel Dashboard -> Project Settings -> Environment Variables
 
-NEXT_PUBLIC_SUPABASE_URL=https://kilkdvsuvaulqoyoxcsi.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_R7jHTGhDjoGfawl2NRSyGA_Z7JprZhL
-SUPABASE_SERVICE_ROLE_KEY=sb_secret_Wz-3zQfUO5baM2R6J2LHZQ_5snTgnjL
-DATABASE_URL=postgresql://postgres:Maty182094420.@db.kilkdvsuvaulqoyoxcsi.supabase.co:5432/postgres
+NEXT_PUBLIC_SUPABASE_URL=${process.env.NEXT_PUBLIC_SUPABASE_URL || 'TU_URL_DE_SUPABASE'}
+NEXT_PUBLIC_SUPABASE_ANON_KEY=${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'TU_ANON_KEY'}
+SUPABASE_SERVICE_ROLE_KEY=${process.env.SUPABASE_SERVICE_ROLE_KEY || 'TU_SERVICE_ROLE_KEY'}
+DATABASE_URL=${process.env.DATABASE_URL || 'TU_DATABASE_URL'}
 
 # App Configuration
 NODE_ENV=production

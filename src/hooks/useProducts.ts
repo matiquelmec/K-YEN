@@ -1,72 +1,28 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase/client';
-
+import { useState, useEffect, useCallback } from 'react';
+import { productService, GetProductsOptions } from '@/services/productService';
 import { Product } from '@/types';
 
-interface UseProductsOptions {
-  category?: string;
-  limit?: number;
-  search?: string;
-  sortBy?: 'price_asc' | 'price_desc' | 'newest' | 'rating';
-}
-
-export function useProducts(options: UseProductsOptions = {}) {
+export function useProducts(options: GetProductsOptions = {}) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    fetchProducts();
-  }, [options.category, options.search, options.sortBy, options.limit]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
-      let query = supabase.from('products').select('*');
-
-      // Apply filters
-      if (options.category && options.category !== 'all') {
-        query = query.eq('category', options.category);
-      }
-
-      if (options.search) {
-        query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
-      }
-
-      // Apply sorting
-      switch (options.sortBy) {
-        case 'price_asc':
-          query = query.order('price', { ascending: true });
-          break;
-        case 'price_desc':
-          query = query.order('price', { ascending: false });
-          break;
-        case 'newest':
-          query = query.order('created_at', { ascending: false });
-          break;
-        case 'rating':
-          query = query.order('rating', { ascending: false, nullsFirst: false });
-          break;
-        default:
-          query = query.order('created_at', { ascending: false });
-      }
-
-      // Apply limit
-      if (options.limit) {
-        query = query.limit(options.limit);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      setProducts(data || []);
+      const data = await productService.getProducts(options);
+      setProducts(data);
     } catch (err) {
       setError(err as Error);
       console.error('Error fetching products:', err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [options.category, options.search, options.sortBy, options.limit]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
   return { products, loading, error, refetch: fetchProducts };
 }
@@ -76,22 +32,10 @@ export function useProduct(id: number) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    if (id) {
-      fetchProduct();
-    }
-  }, [id]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       setLoading(true);
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
+      const data = await productService.getProductById(id);
       setProduct(data);
     } catch (err) {
       setError(err as Error);
@@ -99,7 +43,13 @@ export function useProduct(id: number) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      fetchProduct();
+    }
+  }, [id, fetchProduct]);
 
   return { product, loading, error, refetch: fetchProduct };
 }

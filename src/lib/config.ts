@@ -5,14 +5,14 @@ export const APP_CONFIG = {
 
   // URLs and endpoints
   urls: {
-    base:
-      process.env.NODE_ENV === 'production'
-        ? 'https://kuyen.cl'
-        : 'http://localhost:3000',
-    api:
-      process.env.NODE_ENV === 'production'
-        ? 'https://api.kuyen.cl'
-        : 'http://localhost:3001',
+    base: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+    api: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+  },
+
+  // Database / Supabase
+  supabase: {
+    url: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
   },
 
   // Performance settings
@@ -50,18 +50,18 @@ export const APP_CONFIG = {
 
   // Contact
   contact: {
-    email: 'hola@kuyen.cl',
-    phone: '+56 9 1234 5678',
-    whatsapp: '+56912345678',
-    support: 'soporte@kuyen.cl',
+    email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'hola@kuyen.cl',
+    phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || '+56 9 1234 5678',
+    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+56912345678',
+    support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'soporte@kuyen.cl',
   },
 
   // Social media
   social: {
-    instagram: 'https://instagram.com/kuyen_oficial',
-    facebook: 'https://facebook.com/kuyen.oficial',
-    tiktok: 'https://tiktok.com/@kuyen_oficial',
-    pinterest: 'https://pinterest.com/kuyen_oficial',
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/kuyen_oficial',
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/kuyen.oficial',
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || 'https://tiktok.com/@kuyen_oficial',
+    pinterest: process.env.NEXT_PUBLIC_PINTEREST_URL || 'https://pinterest.com/kuyen_oficial',
   },
 
   // Cache and performance

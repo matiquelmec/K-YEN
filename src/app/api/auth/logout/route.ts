@@ -25,9 +25,14 @@ export async function POST(request: Request) {
     // Sign out from Supabase (this invalidates the session in the DB if persisted)
     await supabase.auth.signOut();
 
-    // The sign out method should also clear the cookies.
-    // However, createRouteHandlerClient handles cookie clearing automatically
-    // when using the standard methods.
+    // FORCE CLEAR any lingering cookies that might confuse middleware
+    // specifically the manual one we created before or any other sb- tokens
+    const allCookies = cookieStore.getAll();
+    allCookies.forEach((cookie) => {
+        if (cookie.name.includes('-auth-token') || cookie.name.startsWith('sb-')) {
+            cookieStore.delete(cookie.name);
+        }
+    });
 
     return NextResponse.json({ success: true });
 }
