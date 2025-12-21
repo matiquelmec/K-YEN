@@ -24,15 +24,13 @@ function CatalogoContent() {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, 150000]);
   const [showPlusSize, setShowPlusSize] = useState(false);
-  const [sortBy, setSortBy] = useState<'price_asc' | 'price_desc' | 'newest' | 'rating'>('newest');
+  const [sortBy, setSortBy] = useState<'price_asc' | 'price_desc' | 'newest'>('newest');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
     const category = searchParams.get('category');
-    if (category) {
-      setSelectedCategory(category);
-    }
+    setSelectedCategory(category || 'all');
   }, [searchParams]);
 
   const { products, loading, error } = useProducts({
@@ -156,7 +154,7 @@ function CatalogoContent() {
                     <option value='newest'>Nuevos</option>
                     <option value='price_asc'>$-$$$</option>
                     <option value='price_desc'>$$$-$</option>
-                    <option value='rating'>Populares</option>
+
                   </select>
 
                   {/* View Mode */}

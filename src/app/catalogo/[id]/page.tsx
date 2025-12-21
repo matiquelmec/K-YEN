@@ -5,7 +5,7 @@ import { useProduct } from '@/hooks/useProducts';
 import Image from 'next/image';
 import { useState } from 'react';
 import Header from '@/components/Header';
-import { ShoppingBag, Star, Heart, ArrowLeft } from 'lucide-react';
+import { ShoppingBag, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
@@ -116,16 +116,7 @@ export default function ProductDetailPage() {
                             <h1 className='font-display text-4xl md:text-5xl font-bold text-gradient-earth mb-4'>{product.name}</h1>
 
                             {/* Rating */}
-                            <div className='flex items-center gap-2 mb-4'>
-                                <div className='flex text-yellow-500'>
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star key={i} className={`w-5 h-5 ${i < Math.floor(product.rating || 0) ? 'fill-current' : 'text-earth-700'}`} />
-                                    ))}
-                                </div>
-                                <span className='text-earth-300 text-sm'>
-                                    {product.rating} ({product.reviews_count} reseñas)
-                                </span>
-                            </div>
+
 
                             <div className='flex items-baseline gap-4 mb-6'>
                                 {product.original_price && (
@@ -191,9 +182,7 @@ export default function ProductDetailPage() {
                                     <ShoppingBag className='w-5 h-5' />
                                     {selectedSize && selectedColor ? 'Agregar al Carrito' : 'Elige talla y color'}
                                 </button>
-                                <button className='w-14 h-14 rounded-full border border-earth-600 flex items-center justify-center text-earth-300 hover:bg-white/10 hover:text-sensual-400 transition-colors'>
-                                    <Heart className='w-6 h-6' />
-                                </button>
+
                             </div>
 
                             {/* Additional Info */}

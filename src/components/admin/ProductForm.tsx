@@ -98,9 +98,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 colors: formData.colors,
                 images: formData.images,
                 is_new: formData.is_new,
-                is_sale: formData.is_sale,
-                rating: initialData?.rating || 5,
-                reviews_count: initialData?.reviews_count || 0
+                is_sale: formData.is_sale
             };
 
             if (initialData?.id) {

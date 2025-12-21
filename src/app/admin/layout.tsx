@@ -11,7 +11,7 @@ import {
     Menu,
     X,
     Package,
-    Settings,
+
     Bell,
     ExternalLink
 } from 'lucide-react';
@@ -50,7 +50,7 @@ export default function AdminLayout({
         { name: 'Catálogo', href: '/admin/products', icon: Package },
         { name: 'Pedidos', href: '/admin/orders', icon: ShoppingBag },
         { name: 'Comunidad', href: '/admin/subscribers', icon: Users },
-        { name: 'Ajustes', href: '/admin/settings', icon: Settings },
+
     ];
 
     return (

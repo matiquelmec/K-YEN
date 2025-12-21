@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, ShoppingBag, Eye, Star } from 'lucide-react'; // Added Star back for the list view if needed, or remove if unused in list view logic
+import { ShoppingBag } from 'lucide-react';
 import { useState, memo, useCallback } from 'react';
 import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { getCategoryColor, getCategoryName, getColorClass } from '@/lib/product-utils';
 import ProductBadges from './product-card/ProductBadges';
 import ProductPrice from './product-card/ProductPrice';
-import ProductRating from './product-card/ProductRating';
+
 
 import { Product } from '@/types';
 
@@ -19,8 +19,8 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+
+
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const { addItem } = useCart();
@@ -47,8 +47,6 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     return (
       <motion.div
         whileHover={{ scale: 1.02 }}
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
         className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-500'
       >
         <div className='flex flex-col md:flex-row'>
@@ -75,16 +73,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             />
 
             {/* Heart Button */}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setIsFavorite(!isFavorite)}
-              className='absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg'
-            >
-              <Heart
-                className={`w-5 h-5 ${isFavorite ? 'text-sensual-500 fill-current' : 'text-gray-600'}`}
-              />
-            </motion.button>
+
           </div>
 
           {/* Content */}
@@ -107,7 +96,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                   {product.description}
                 </p>
 
-                <ProductRating rating={product.rating} reviewsCount={product.reviews_count} />
+
               </div>
 
               <ProductPrice price={product.price} originalPrice={originalPrice} />
@@ -170,12 +159,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 Agregar al Carrito
               </motion.button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className='px-4 py-2 border border-earth-400 text-earth-700 rounded-full hover:bg-earth-50 transition-colors'
-              >
-                <Eye className='w-4 h-4' />
-              </motion.button>
+
             </div>
           </div>
         </div>
@@ -186,8 +170,6 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
       className='group cursor-pointer h-full'
     >
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 h-full flex flex-col'>
@@ -208,37 +190,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             )}
           </Link>
 
-          {/* Overlay */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: isHovered ? 1 : 0 }}
-            className='absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center pb-4'
-          >
-            <div className='flex gap-2'>
-              <motion.button
-                initial={{ y: 20, opacity: 0 }}
-                animate={{
-                  y: isHovered ? 0 : 20,
-                  opacity: isHovered ? 1 : 0,
-                }}
-                className='bg-white/90 backdrop-blur-sm text-earth-800 p-2 rounded-full hover:bg-white transition-colors'
-              >
-                <Eye className='w-4 h-4' />
-              </motion.button>
-              <motion.button
-                initial={{ y: 20, opacity: 0 }}
-                animate={{
-                  y: isHovered ? 0 : 20,
-                  opacity: isHovered ? 1 : 0,
-                }}
-                transition={{ delay: 0.1 }}
-                onClick={handleAddToCart}
-                className='bg-sensual-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-sensual-600 transition-colors'
-              >
-                Agregar
-              </motion.button>
-            </div>
-          </motion.div>
+
 
           <ProductBadges
             isNew={isNew}
@@ -247,7 +199,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           />
 
           {/* Category Badge */}
-          <div className='absolute top-4 right-14'>
+          <div className='absolute top-4 right-4'>
             <span
               className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(product.category)}`}
             >
@@ -256,16 +208,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </div>
 
           {/* Heart Icon */}
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => setIsFavorite(!isFavorite)}
-            className='absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg'
-          >
-            <Heart
-              className={`w-5 h-5 ${isFavorite ? 'text-sensual-500 fill-current' : 'text-gray-600'}`}
-            />
-          </motion.button>
+
         </div>
 
         {/* Product Info */}
@@ -280,7 +223,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             {product.description}
           </p>
 
-          <ProductRating rating={product.rating} reviewsCount={product.reviews_count} />
+
 
           {/* Size Options */}
           <div className='flex flex-wrap gap-1 mb-4 mt-auto'>

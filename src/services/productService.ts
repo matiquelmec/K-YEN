@@ -5,7 +5,7 @@ export interface GetProductsOptions {
     category?: string;
     limit?: number;
     search?: string;
-    sortBy?: 'price_asc' | 'price_desc' | 'newest' | 'rating';
+    sortBy?: 'price_asc' | 'price_desc' | 'newest';
 }
 
 export const productService = {
@@ -32,9 +32,7 @@ export const productService = {
             case 'newest':
                 query = query.order('created_at', { ascending: false });
                 break;
-            case 'rating':
-                query = query.order('rating', { ascending: false, nullsFirst: false });
-                break;
+
             default:
                 query = query.order('created_at', { ascending: false });
         }
