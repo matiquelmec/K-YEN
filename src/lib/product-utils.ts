@@ -24,26 +24,33 @@ export const getCategoryName = (category: string) => {
     }
 };
 
+export const PRODUCT_COLORS: { [key: string]: string } = {
+    'Negro': 'bg-black',
+    'Borgoña': 'bg-red-900',
+    'Azul Medianoche': 'bg-blue-900',
+    'Rosa Suave': 'bg-pink-300',
+    'Verde Menta': 'bg-green-300',
+    'Lavanda': 'bg-purple-300',
+    'Dorado': 'bg-yellow-500',
+    'Coral': 'bg-orange-400',
+    'Turquesa': 'bg-teal-400',
+    'Tierra': 'bg-amber-700',
+    'Cobre': 'bg-orange-800',
+    'Óxido': 'bg-red-800',
+    'Azul Océano': 'bg-blue-600',
+    'Verde Agua': 'bg-cyan-400',
+    'Blanco Espuma': 'bg-white border-gray-300',
+    'Verde Bosque': 'bg-green-800',
+    'Rosa Salvaje': 'bg-pink-600',
+    'Violeta': 'bg-purple-600',
+    'Rojo': 'bg-red-600',
+    'Gris': 'bg-gray-500',
+    'Plata': 'bg-gray-300',
+    'Marfil': 'bg-orange-50',
+};
+
+export const AVAILABLE_COLORS = Object.keys(PRODUCT_COLORS);
+
 export const getColorClass = (color: string) => {
-    const colorMap: { [key: string]: string } = {
-        Negro: 'bg-black',
-        Borgoña: 'bg-red-900',
-        'Azul Medianoche': 'bg-blue-900',
-        'Rosa Suave': 'bg-pink-300',
-        'Verde Menta': 'bg-green-300',
-        Lavanda: 'bg-purple-300',
-        Dorado: 'bg-yellow-500',
-        Coral: 'bg-orange-400',
-        Turquesa: 'bg-teal-400',
-        Tierra: 'bg-amber-700',
-        Cobre: 'bg-orange-800',
-        Óxido: 'bg-red-800',
-        'Azul Océano': 'bg-blue-600',
-        'Verde Agua': 'bg-cyan-400',
-        'Blanco Espuma': 'bg-white border-gray-300',
-        'Verde Bosque': 'bg-green-800',
-        'Rosa Salvaje': 'bg-pink-600',
-        Violeta: 'bg-purple-600',
-    };
-    return colorMap[color] || 'bg-gray-400';
+    return PRODUCT_COLORS[color] || 'bg-gray-400';
 };

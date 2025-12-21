@@ -16,11 +16,10 @@ const CATEGORIES = [
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
 
-const COLORS = [
-    'Negro', 'Borgoña', 'Azul Medianoche', 'Rosa Suave', 'Verde Menta',
-    'Lavanda', 'Dorado', 'Coral', 'Turquesa', 'Tierra', 'Cobre', 'Óxido',
-    'Azul Océano', 'Verde Agua', 'Blanco Espuma', 'Verde Bosque', 'Rosa Salvaje', 'Violeta'
-];
+import { AVAILABLE_COLORS } from '@/lib/product-utils';
+
+const COLORS = AVAILABLE_COLORS;
+
 
 interface ProductFormProps {
     initialData?: Product;
