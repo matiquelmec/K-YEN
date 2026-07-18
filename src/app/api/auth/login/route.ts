@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
     try {
         const { email, password } = await request.json();
         
-        const expectedEmail = 'admin@kuyen.cl'; // Standard admin email or we can check environment variables
+        const expectedEmail = 'contacto@kuyenchile.cl'; // Standard admin email
         const expectedPassword = process.env.ADMIN_PASSWORD || 'admin_kuyen_2026';
 
         if (email !== expectedEmail || password !== expectedPassword) {
