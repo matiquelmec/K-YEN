@@ -1,43 +1,36 @@
-import { createServerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
+import { signJWT } from '@/lib/auth';
 
-export async function POST(request: Request) {
-    const formData = await request.json();
-    const email = formData.email;
-    const password = formData.password;
+export async function POST(request: NextRequest) {
+    try {
+        const { email, password } = await request.json();
+        
+        const expectedEmail = 'admin@kuyen.cl'; // Standard admin email or we can check environment variables
+        const expectedPassword = process.env.ADMIN_PASSWORD || 'admin_kuyen_2026';
 
-    // Use standard Supabase auth helper
-    // Note: In Next.js 15+, cookies() is async
-    const cookieStore = await cookies();
-    const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-            cookies: {
-                get(name: string) {
-                    return cookieStore.get(name)?.value;
-                },
-                set(name: string, value: string, options: any) {
-                    cookieStore.set({ name, value, ...options });
-                },
-                remove(name: string, options: any) {
-                    cookieStore.set({ name, value: '', ...options });
-                },
-            },
+        if (email !== expectedEmail || password !== expectedPassword) {
+            return NextResponse.json({ error: 'Credenciales inválidas' }, { status: 401 });
         }
-    );
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-    });
+        // Generate JWT token for 24 hours
+        const token = await signJWT({ email, role: 'admin' }, 86400);
 
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 401 });
+        const response = NextResponse.json({ success: true });
+        
+        // Set secure session cookie
+        response.cookies.set({
+            name: 'kuyen_admin_session',
+            value: token,
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 86400, // 24 hours in seconds
+            path: '/',
+        });
+
+        return response;
+    } catch (error: any) {
+        console.error('Login error:', error);
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
-
-    // Return success. The cookies are automatically set by supabase.auth.signInWithPassword
-    // on the cookieStore, which propagates to the response in Next.js App Router.
-    return NextResponse.json({ success: true });
 }

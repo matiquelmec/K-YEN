@@ -30,7 +30,7 @@ export default function AdminProductsPage() {
         fetchProducts();
     }, [fetchProducts]);
 
-    const handleDelete = async (id: number) => {
+    const handleDelete = async (id: string | number) => {
         if (!confirm('¿Estás segura de que quieres eliminar este vestido? Esta acción no se puede deshacer.')) {
             return;
         }

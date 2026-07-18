@@ -1,6 +1,24 @@
-import { Database } from '@/lib/supabase/database.types';
-
-export type Product = Database['public']['Tables']['products']['Row'];
+export interface Product {
+  id: string;
+  sku: string;
+  name: string;
+  slug: string;
+  description: string;
+  short_description?: string | null;
+  category: string;
+  price: number;
+  original_price: number | null;
+  sizes: string[];
+  colors: string[];
+  images: string[];
+  stock: number;
+  rating?: number | null;
+  reviews_count: number;
+  is_new?: boolean;
+  is_sale?: boolean;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface CartItem {
   id: string;

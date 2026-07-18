@@ -2,12 +2,11 @@
 
 import { useState } from 'react';
 import { useCart } from '@/hooks/useCart';
-import AddressForm from '@/components/checkout/AddressForm';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import AddressForm from '@/components/checkout/AddressForm';
 import { ChevronLeft, Truck, CreditCard } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
 
 export default function CheckoutPage() {
     const { state, clearCart } = useCart(); // Destructure clearCart from useCart
@@ -20,13 +19,31 @@ export default function CheckoutPage() {
         setIsSubmitting(true);
 
         try {
-            // 1. Prepare Order Data
-            // We omit 'status' to let the DB use its default (avoiding potential Enum mismatch)
+            // 1. Llamar a la API de Checkout para crear la preferencia de Mercado Pago
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    items: items,
+                    customerInfo: formData,
+                }),
+            });
+
+            const checkoutData = await response.json();
+
+            if (!response.ok) {
+                throw new Error(checkoutData.error || 'Error al iniciar checkout');
+            }
+
+            // 2. Prepare Order Data including the payment_id (external_reference)
             const orderData = {
-                // user_id: undefined, // Let DB handle null functionality ensuring Guest works
                 is_guest: true,
                 total: total,
                 shipping_address: formData,
+                payment_id: checkoutData.paymentId, // Link order with external_reference
+                payment_status: 'pending',
                 items: items.map(item => ({
                     product_id: item.product.id,
                     product_name: item.product.name,
@@ -38,31 +55,26 @@ export default function CheckoutPage() {
                 }))
             };
 
-            console.log('Enviando orden:', orderData);
+            const orderRes = await fetch('/api/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            });
 
-            // 2. Insert into Supabase
-            const { data, error } = await supabase
-                .from('orders')
-                .insert(orderData)
-                .select()
-                .single();
-
-            if (error) {
-                console.error('Supabase Error:', error);
-                throw error;
+            if (!orderRes.ok) {
+                const orderError = await orderRes.json();
+                throw new Error(orderError.error || 'Error al guardar la orden');
             }
 
-            // 3. Success
+            // 4. Success - Clear cart and redirect to Mercado Pago
             clearCart();
-
-            // Redirect
-            alert(`¡Orden #${data.order_number || data.id} creada con éxito!\nTe contactaremos al correo ${formData.email}.`);
-            router.push('/');
+            window.location.href = checkoutData.checkoutUrl;
 
         } catch (error: any) {
             console.error('Error creating order:', error);
-            // Show the actual error message to the user for debugging
-            alert(`Error al procesar tu pedido: ${error.message || error.details || 'Intenta nuevamente.'}`);
+            alert(`Error al procesar tu pago: ${error.message || 'Intenta nuevamente.'}`);
         } finally {
             setIsSubmitting(false);
         }

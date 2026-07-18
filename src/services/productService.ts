@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/supabase/client';
 import { Product } from '@/types';
 
 export interface GetProductsOptions {
@@ -10,101 +9,82 @@ export interface GetProductsOptions {
 
 export const productService = {
     async getProducts(options: GetProductsOptions = {}): Promise<Product[]> {
-        let query = supabase.from('products').select('*');
+        const queryParams = new URLSearchParams();
+        if (options.category) queryParams.append('category', options.category);
+        if (options.search) queryParams.append('search', options.search);
+        if (options.sortBy) queryParams.append('sortBy', options.sortBy);
+        if (options.limit) queryParams.append('limit', String(options.limit));
 
-        // Apply filters
-        if (options.category && options.category !== 'all') {
-            query = query.eq('category', options.category);
+        const res = await fetch(`/api/products?${queryParams.toString()}`);
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al obtener productos');
         }
-
-        if (options.search) {
-            query = query.or(`name.ilike.%${options.search}%,description.ilike.%${options.search}%`);
-        }
-
-        // Apply sorting
-        switch (options.sortBy) {
-            case 'price_asc':
-                query = query.order('price', { ascending: true });
-                break;
-            case 'price_desc':
-                query = query.order('price', { ascending: false });
-                break;
-            case 'newest':
-                query = query.order('created_at', { ascending: false });
-                break;
-
-            default:
-                query = query.order('created_at', { ascending: false });
-        }
-
-        // Apply limit
-        if (options.limit) {
-            query = query.limit(options.limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) throw error;
-        return data || [];
+        return res.json();
     },
 
-    async getProductById(id: number): Promise<Product | null> {
-        const { data, error } = await supabase
-            .from('products')
-            .select('*')
-            .eq('id', id)
-            .single();
-
-        if (error) throw error;
-        return data;
+    async getProductById(id: string | number): Promise<Product | null> {
+        const res = await fetch(`/api/products/${id}`);
+        if (res.status === 404) return null;
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al obtener producto');
+        }
+        return res.json();
     },
 
     async createProduct(product: Partial<Product>): Promise<Product> {
-        const { data, error } = await supabase
-            .from('products')
-            .insert(product)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data;
+        const res = await fetch('/api/products', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product),
+        });
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al crear producto');
+        }
+        return res.json();
     },
 
-    async updateProduct(id: number, product: Partial<Product>): Promise<Product> {
-        const { data, error } = await supabase
-            .from('products')
-            .update(product)
-            .eq('id', id)
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data;
+    async updateProduct(id: string | number, product: Partial<Product>): Promise<Product> {
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(product),
+        });
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al actualizar producto');
+        }
+        return res.json();
     },
 
-    async deleteProduct(id: number): Promise<void> {
-        const { error } = await supabase
-            .from('products')
-            .delete()
-            .eq('id', id);
-
-        if (error) throw error;
+    async deleteProduct(id: string | number): Promise<void> {
+        const res = await fetch(`/api/products/${id}`, {
+            method: 'DELETE',
+        });
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al eliminar producto');
+        }
     },
 
-    async uploadProductImage(file: File | Blob, path: string): Promise<string> {
-        const { error: uploadError } = await supabase.storage
-            .from('product-images')
-            .upload(path, file, {
-                upsert: true,
-                contentType: file instanceof File ? file.type : 'image/webp'
-            });
+    async uploadProductImage(file: File | Blob, category: string = 'otros'): Promise<string> {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('category', category);
 
-        if (uploadError) throw uploadError;
+        const res = await fetch('/api/products/upload', {
+            method: 'POST',
+            body: formData,
+        });
 
-        const { data } = supabase.storage
-            .from('product-images')
-            .getPublicUrl(path);
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Error al subir la imagen');
+        }
 
+        const data = await res.json();
         return data.publicUrl;
     }
 };

@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase/client';
 import ProductForm from '@/components/admin/ProductForm';
 import { Product } from '@/types';
 import { useParams } from 'next/navigation';
+import { productService } from '@/services/productService';
 
 export default function EditProductPage() {
     const params = useParams();
@@ -14,13 +14,7 @@ export default function EditProductPage() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const { data, error } = await supabase
-                    .from('products')
-                    .select('*')
-                    .eq('id', params.id)
-                    .single();
-
-                if (error) throw error;
+                const data = await productService.getProductById(params.id as string);
                 setProduct(data);
             } catch (error) {
                 console.error('Error fetching product:', error);

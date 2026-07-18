@@ -13,7 +13,7 @@ import { getCategoryColor, getCategoryName, getColorClass } from '@/lib/product-
 
 export default function ProductDetailPage() {
     const { id } = useParams();
-    const { product, loading, error } = useProduct(Number(id));
+    const { product, loading, error } = useProduct(id as string);
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
     const { addItem } = useCart();

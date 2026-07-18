@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase/client';
 import { ArrowLeft, MapPin, Mail, Phone, Package, Calendar, Truck } from 'lucide-react';
 import Link from 'next/link';
 
@@ -21,13 +20,9 @@ export default function OrderDetailPage() {
 
     const fetchOrder = async () => {
         try {
-            const { data, error } = await supabase
-                .from('orders')
-                .select('*')
-                .eq('id', params.id)
-                .single();
-
-            if (error) throw error;
+            const res = await fetch(`/api/orders/${params.id}`);
+            if (!res.ok) throw new Error('Error al cargar la orden');
+            const data = await res.json();
             setOrder(data);
         } catch (error) {
             console.error('Error fetching order:', error);
@@ -39,12 +34,12 @@ export default function OrderDetailPage() {
     const updateStatus = async (newStatus: string) => {
         setUpdating(true);
         try {
-            const { error } = await supabase
-                .from('orders')
-                .update({ status: newStatus })
-                .eq('id', params.id);
-
-            if (error) throw error;
+            const res = await fetch(`/api/orders/${params.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus }),
+            });
+            if (!res.ok) throw new Error('Error al actualizar el estado');
             setOrder({ ...order, status: newStatus });
             alert('Estado actualizado correctamente');
         } catch (error) {

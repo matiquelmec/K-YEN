@@ -145,19 +145,23 @@ export default function Footer() {
 
                   try {
                     if (btn) btn.disabled = true;
-                    // Dynamic import to avoid dependency issues if any
-                    const { supabase } = await import('@/lib/supabase/client');
+                    
+                    const res = await fetch('/api/subscribers', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ email }),
+                    });
 
-                    const { error } = await supabase
-                      .from('subscribers')
-                      .insert({ email });
+                    if (!res.ok) {
+                      throw new Error('Error al registrar suscripción');
+                    }
 
-                    if (error) {
-                      if (error.code === '23505') { // Unique violation
-                        alert('¡Ya estás suscrita! Gracias por tu interés.');
-                      } else {
-                        throw error;
-                      }
+                    const data = await res.json();
+                    
+                    if (data.message === 'Ya suscrito') {
+                      alert('¡Ya estás suscrita! Gracias por tu interés.');
                     } else {
                       alert('¡Gracias por suscribirte! Te avisaremos de nuestras novedades.');
                       emailInput.value = '';

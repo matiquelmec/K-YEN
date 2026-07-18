@@ -27,7 +27,7 @@ export function useProducts(options: GetProductsOptions = {}) {
   return { products, loading, error, refetch: fetchProducts };
 }
 
-export function useProduct(id: number) {
+export function useProduct(id: string | number) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);

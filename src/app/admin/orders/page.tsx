@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Search, Eye, Truck, CheckCircle, Clock } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
 
 export default function AdminOrdersPage() {
     const [orders, setOrders] = useState<any[]>([]);
@@ -16,12 +15,9 @@ export default function AdminOrdersPage() {
 
     const fetchOrders = async () => {
         try {
-            const { data, error } = await supabase
-                .from('orders')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
+            const res = await fetch('/api/orders');
+            if (!res.ok) throw new Error('Error al cargar pedidos');
+            const data = await res.json();
             setOrders(data || []);
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -48,6 +44,29 @@ export default function AdminOrdersPage() {
             return (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                     <Clock className="w-3 h-3" /> Pendiente
+                </span>
+            );
+        }
+    };
+
+    const getPaymentStatusBadge = (status: string) => {
+        const s = status?.toLowerCase() || 'pending';
+        if (s === 'approved') {
+            return (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase tracking-tighter">
+                    Aprobado
+                </span>
+            );
+        } else if (s === 'rejected' || s === 'cancelled') {
+            return (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200 uppercase tracking-tighter">
+                    Rechazado
+                </span>
+            );
+        } else {
+            return (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200 uppercase tracking-tighter animate-pulse">
+                    Pendiente
                 </span>
             );
         }
@@ -99,13 +118,13 @@ export default function AdminOrdersPage() {
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">
-                            <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-100">
+                        <table className="w-full text-left text-sm">                             <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-100">
                                 <tr>
                                     <th className="px-6 py-3">N° Orden</th>
                                     <th className="px-6 py-3">Cliente</th>
                                     <th className="px-6 py-3">Fecha</th>
-                                    <th className="px-6 py-3">Estado</th>
+                                    <th className="px-6 py-3">Envío</th>
+                                    <th className="px-6 py-3">Estado Pago</th>
                                     <th className="px-6 py-3">Total</th>
                                     <th className="px-6 py-3 text-right">Acciones</th>
                                 </tr>
@@ -130,6 +149,9 @@ export default function AdminOrdersPage() {
                                         <td className="px-6 py-4">
                                             {getStatusBadge(order.status)}
                                         </td>
+                                        <td className="px-6 py-4">
+                                            {getPaymentStatusBadge(order.payment_status)}
+                                        </td>
                                         <td className="px-6 py-4 font-medium text-gray-900">
                                             ${Number(order.total).toLocaleString('es-CL')}
                                         </td>
@@ -142,7 +164,7 @@ export default function AdminOrdersPage() {
                                             </Link>
                                         </td>
                                     </tr>
-                                ))}
+                                 ))}
                             </tbody>
                         </table>
                     </div>

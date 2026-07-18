@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Mail, Calendar, Search } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
 
 export default function SubscribersPage() {
     const [subscribers, setSubscribers] = useState<any[]>([]);
@@ -15,12 +14,9 @@ export default function SubscribersPage() {
 
     const fetchSubscribers = async () => {
         try {
-            const { data, error } = await supabase
-                .from('subscribers')
-                .select('*')
-                .order('created_at', { ascending: false });
-
-            if (error) throw error;
+            const res = await fetch('/api/subscribers');
+            if (!res.ok) throw new Error('Error al cargar suscriptores');
+            const data = await res.json();
             setSubscribers(data || []);
         } catch (error) {
             console.error('Error fetching subscribers:', error);

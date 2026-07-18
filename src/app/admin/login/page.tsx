@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase/client';
 import { Lock, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 
