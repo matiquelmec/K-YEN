@@ -13,8 +13,8 @@ const collections = [
       'Donde el misterio abraza la sensualidad. Vestidos oscuros con terciopelos, encajes y transparencias. Elegancia cruda para mujeres que celebran su poder nocturno.',
     icon: Moon,
     gradient: 'from-ink-700 to-blood-600',
-    bgGradient: 'from-ink-50/10 to-blood-50/10',
-    textGradient: 'from-ink-700 to-blood-600',
+    bgGradient: 'from-ink-950/40 to-blood-900/20',
+    textGradient: 'from-bone-50 to-blood-400',
   },
   {
     id: 'primaveral', // Internal key for "Eclipse Floral"
@@ -24,8 +24,8 @@ const collections = [
       'El renacer de la naturaleza bajo la luz de la luna. Estampados florales oscuros, telas fluidas y cortes románticos. La belleza de la primavera con un toque de misterio.',
     icon: Leaf,
     gradient: 'from-spring-500 to-earth-500',
-    bgGradient: 'from-spring-50/10 to-earth-50/10',
-    textGradient: 'from-spring-600 to-earth-500',
+    bgGradient: 'from-spring-950/40 to-earth-900/20',
+    textGradient: 'from-spring-200 to-earth-200',
   },
   {
     id: 'veraniego', // Internal key for "Solsticio"
@@ -35,8 +35,8 @@ const collections = [
       'El punto donde el sol toca la tierra. Vestidos ligeros con linos, sedas y texturas orgánicas. Sensualidad natural que florece bajo el sol.',
     icon: Sun,
     gradient: 'from-terra-500 to-lunar-400',
-    bgGradient: 'from-terra-50/10 to-lunar-50/10',
-    textGradient: 'from-terra-600 to-lunar-500',
+    bgGradient: 'from-terra-950/40 to-lunar-900/20',
+    textGradient: 'from-terra-200 to-lunar-200',
   },
 ];
 

@@ -50,8 +50,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-500'
       >
         <div className='flex flex-col md:flex-row'>
-          {/* Image */}
-          <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden'>
+          <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden rounded-t-xl md:rounded-t-none md:rounded-l-xl'>
             {product.images && product.images[0] ? (
               <Image
                 src={product.images[0]}
@@ -174,7 +173,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     >
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 h-full flex flex-col'>
         {/* Product Image */}
-        <div className='relative aspect-[3/4] overflow-hidden'>
+        <div className='relative aspect-[3/4] overflow-hidden rounded-t-2xl'>
           <Link href={`/catalogo/${product.id}`}>
             {product.images && product.images[0] ? (
               <Image
