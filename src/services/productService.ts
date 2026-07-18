@@ -69,10 +69,13 @@ export const productService = {
         }
     },
 
-    async uploadProductImage(file: File | Blob, category: string = 'otros'): Promise<string> {
+    async uploadProductImage(file: File | Blob, fileName?: string, category: string = 'otros'): Promise<string> {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('category', category);
+        if (fileName) {
+            formData.append('fileName', fileName);
+        }
 
         const res = await fetch('/api/products/upload', {
             method: 'POST',

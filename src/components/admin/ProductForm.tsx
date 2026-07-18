@@ -65,9 +65,11 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 console.warn('Compression failed, using original file:', compressErr);
                 // Fallback to original file
             }
-
-            const fileName = `product-${Date.now()}-${Math.random().toString(36).substring(7)}.${extension}`;
-            const publicUrl = await productService.uploadProductImage(fileToUpload, fileName);
+            const slugName = formData.name 
+                ? formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') 
+                : 'vestido';
+            const seoFileName = `${slugName}-${Date.now().toString().slice(-4)}`;
+            const publicUrl = await productService.uploadProductImage(fileToUpload, seoFileName, formData.category);
 
             setFormData(prev => ({
                 ...prev,

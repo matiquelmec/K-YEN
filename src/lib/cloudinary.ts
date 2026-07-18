@@ -15,7 +15,8 @@ export interface CloudinaryUploadResult {
 export async function uploadToCloudinary(
   fileBuffer: Buffer,
   mimeType: string,
-  category: string = 'otros'
+  category: string = 'otros',
+  fileName?: string
 ): Promise<CloudinaryUploadResult> {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
@@ -29,8 +30,18 @@ export async function uploadToCloudinary(
   const timestamp = Math.round(new Date().getTime() / 1000);
   const folder = `kuyen-tienda-vestidos/${category.toLowerCase().trim()}`;
   
-  // Create signature
-  const paramsToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
+  // Clean public_id to prevent extensions or spaces
+  const publicId = fileName 
+    ? fileName.replace(/\.[^/.]+$/, "").replace(/[^a-z0-9_-]+/gi, "-").toLowerCase() 
+    : undefined;
+
+  // Create signature including public_id if present
+  let paramsToSign = `folder=${folder}&timestamp=${timestamp}`;
+  if (publicId) {
+    paramsToSign = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}`;
+  }
+  paramsToSign += apiSecret;
+
   const signature = crypto.createHash('sha1').update(paramsToSign).digest('hex');
 
   const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
@@ -41,6 +52,9 @@ export async function uploadToCloudinary(
   formData.append('timestamp', timestamp.toString());
   formData.append('signature', signature);
   formData.append('folder', folder);
+  if (publicId) {
+    formData.append('public_id', publicId);
+  }
 
   const response = await fetch(cloudinaryUrl, {
     method: 'POST',

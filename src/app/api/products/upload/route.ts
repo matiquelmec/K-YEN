@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
     const category = formData.get('category') as string || 'otros';
+    const fileName = formData.get('fileName') as string | null || undefined;
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     console.log(`⏳ Subiendo imagen de vestido a Cloudinary en carpeta: kuyen-tienda-vestidos/${category}...`);
-    const uploadResult = await uploadToCloudinary(buffer, file.type, category);
+    const uploadResult = await uploadToCloudinary(buffer, file.type, category, fileName);
 
     return NextResponse.json({
       success: true,
