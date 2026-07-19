@@ -1,14 +1,15 @@
 # 🌙 KÜYEN - Donde la elegancia florece bajo la luna
 
-Plataforma de e-commerce moderna y elegante para vestidos exclusivos, construida con Next.js 15, TypeScript y las mejores prácticas de desarrollo.
+Plataforma de e-commerce moderna y de alta gama para vestidos exclusivos, construida con Next.js 16, React 19, TypeScript y las mejores prácticas de desarrollo.
 
-## 🚀 Tecnologías
+## 🚀 Stack Tecnológico
 
-- **Frontend**: Next.js 15.5.6 + TypeScript + Tailwind CSS
-- **Animaciones**: Framer Motion 12.x
-- **Íconos**: Lucide React
-- **Código Quality**: ESLint + Prettier + Husky
-- **Performance**: Optimizaciones enterprise-level
+- **Frontend & Routing**: Next.js 16 (App Router) + React 19 + TypeScript
+- **Base de Datos**: Turso (libsql/SQLite a nivel edge, ultra-rápido y descentralizado)
+- **Almacenamiento de Imágenes**: Cloudinary (con nombres de archivo optimizados para SEO y firma de seguridad activa)
+- **Pasarela de Pago**: Mercado Pago (integración nativa y flujos de retorno personalizados)
+- **Estilos y Estética**: Tailwind CSS + Framer Motion (interacciones inmersivas y animaciones "Boutique Dark")
+- **Control de Calidad**: ESLint + Prettier + Husky (git hooks para commits limpios)
 
 ## ⚡ Inicio rápido
 
@@ -36,7 +37,7 @@ npm run dev
 
 | Script | Descripción |
 |--------|-------------|
-| `npm run dev` | Servidor de desarrollo |
+| `npm run dev` | Servidor de desarrollo local |
 | `npm run build` | Build optimizado para producción |
 | `npm run start` | Servidor de producción |
 | `npm run type-check` | Verificar tipos TypeScript |
@@ -45,138 +46,73 @@ npm run dev
 | `npm run format` | Formatear código con Prettier |
 | `npm run setup` | Configuración automática del entorno |
 | `npm run test:build` | Test completo (types + lint + build) |
-| `npm run clean` | Limpiar cache y builds |
+| `npm run clean` | Limpiar caché y compilaciones anteriores |
 
 ## 🏗️ Estructura del proyecto
 
 ```
 src/
-├── app/                    # App Router (Next.js 13+)
+├── app/                    # App Router de Next.js
 │   ├── layout.tsx         # Layout principal con ErrorBoundary
 │   ├── page.tsx           # Página de inicio
-│   ├── catalogo/          # Página de catálogo
-│   └── globals.css        # Estilos globales
+│   ├── catalogo/          # Catálogo e interactividad de productos
+│   ├── checkout/          # Checkout oscuro inmersivo y confirmaciones de pago
+│   ├── politicas/         # Información legal y políticas de la tienda
+│   └── globals.css        # Estilos globales y tokens
 ├── components/            # Componentes reutilizables
-│   ├── ui/               # Componentes básicos de UI
-│   ├── error/           # Manejo de errores
-│   ├── ProductCard.tsx  # Tarjetas de productos (memoizado)
-│   ├── FilterSidebar.tsx # Filtros del catálogo
-│   └── ...              # Otros componentes
-├── hooks/                # Custom hooks
-│   └── useLoading.ts     # Hook de loading states
-├── lib/                  # Utilidades y configuraciones
-│   ├── utils.ts         # Utilidades generales
-│   ├── constants.ts     # Constantes de la aplicación
-│   ├── config.ts        # Configuración centralizada
-│   └── performance.ts   # Optimizaciones de performance
-└── types/                # Definiciones de tipos TypeScript
-    └── index.ts         # Tipos principales
+│   ├── ui/               # Componentes básicos de UI (Logo, etc.)
+│   ├── checkout/         # Formulario de dirección y pago
+│   ├── Cart.tsx          # Bolso lateral interactivo (Dark Theme)
+│   └── ...              # Otros componentes del negocio
+├── contexts/              # Contextos de React (Bolsa de compras, etc.)
+├── hooks/                # Custom hooks (Formularios, localStorage)
+├── lib/                  # Utilidades y servicios
+│   ├── db/               # Cliente y servicios de la base de datos Turso
+│   ├── auth.ts           # Autenticación segura mediante Web Crypto JWT
+│   ├── cloudinary.ts     # Integración con la API de Cloudinary
+│   └── config.ts         # Configuración centralizada de la aplicación
+└── types/                # Definiciones de tipos TypeScript estructurados
 ```
 
-## 🎯 Características principales
-
-### ✨ **UI/UX Enterprise**
-- ✅ Diseño responsive y accesible
-- ✅ Animaciones suaves con Framer Motion
-- ✅ Error boundaries profesionales
-- ✅ Loading states optimizados
-- ✅ Tema oscuro nativo
-
-### ⚡ **Performance**
-- ✅ Componentes memoizados (React.memo)
-- ✅ Code splitting automático
-- ✅ Optimización de imágenes
-- ✅ Bundle analysis integrado
-- ✅ Web Vitals tracking
-
-### 🔒 **Seguridad**
-- ✅ Headers de seguridad configurados
-- ✅ Validación TypeScript estricta
-- ✅ Sanitización de inputs
-- ✅ Variables de entorno protegidas
-
-### 🛠️ **Developer Experience**
-- ✅ TypeScript estricto (0 errores)
-- ✅ ESLint + Prettier configurados
-- ✅ Git hooks automáticos
-- ✅ Hot reload optimizado
-- ✅ Scripts de desarrollo útiles
-
-## 🔧 Configuración
+## 🔧 Configuración y Entorno
 
 ### Variables de entorno
 
-Copiar `.env.example` a `.env.local` y configurar:
+Copiar el archivo `.env.example` a `.env.local` para el entorno local y configurar las siguientes variables críticas:
 
 ```env
+# Configuración General de Next.js
 NODE_ENV=development
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_APP_NAME=KÜYEN
+
+# JWT para Autenticación del Administrador
+JWT_SECRET=kuyen_admin_default_secret_key_change_me
+
+# Base de Datos Turso (LibSQL)
+TURSO_CONNECTION_URL=your-turso-db-url
+TURSO_AUTH_TOKEN=your-turso-auth-token
+
+# Almacenamiento Cloudinary
+CLOUDINARY_CLOUD_NAME=x9zkuwyc
+CLOUDINARY_API_KEY=your-cloudinary-api-key
+CLOUDINARY_API_SECRET=your-cloudinary-api-secret
+
+# Mercado Pago
+MERCADOPAGO_ACCESS_TOKEN=your-mercadopago-access-token
 ```
 
-### Next.js config
+## 📦 Despliegue
 
-Las optimizaciones incluyen:
-- Compresión habilitada
-- Headers de seguridad
-- Optimización de paquetes
-- Tracing de archivos configurado
-
-## 📦 Build y deploy
-
-### Build local
+### Build local completo de validación
 ```bash
-npm run test:build  # Test completo
-npm run build      # Build optimizado
+npm run test:build
 ```
-
-### Análisis del bundle
-```bash
-npm run analyze
-```
-
-## 🎨 Customización
-
-### Colores y tema
-Los colores están definidos en `tailwind.config.js`:
-- **Terra**: Tonos tierra naturales
-- **Mystic**: Tonos místicos y lunares
-- **Lunar**: Tonos de luna creciente
-
-### Componentes
-Todos los componentes están en `src/components/` con:
-- TypeScript estricto
-- Props bien documentadas
-- Memoización cuando es necesario
-
-## 📈 Performance Metrics
-
-**Últimos resultados del build:**
-
-```
-Route (app)                Size    First Load JS
-┌ ○ /                   8.28 kB     148 kB
-├ ○ /_not-found           994 B     103 kB  
-└ ○ /catalogo           9.67 kB     149 kB
-+ First Load JS shared  102 kB
-```
-
-## 🤝 Contribución
-
-1. Fork del proyecto
-2. Crear feature branch: `git checkout -b feature/nueva-funcionalidad`
-3. Commit cambios: `git commit -m 'Agregar nueva funcionalidad'`
-4. Push al branch: `git push origin feature/nueva-funcionalidad`
-5. Crear Pull Request
 
 ## 📄 Licencia
 
-Este proyecto es privado y propiedad de KÜYEN.
+Este proyecto es privado y propiedad exclusiva de KÜYEN.
 
 ## 💫 Autor
 
-Desarrollado con 🤍 por el equipo de KÜYEN
-
----
-
-**KÜYEN** - Donde la elegancia florece bajo la luna ✨
+Desarrollado con 🤍 para KÜYEN Chile.

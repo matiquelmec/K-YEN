@@ -10,9 +10,15 @@ import {
   MapPin,
   Instagram,
   Facebook,
-  Twitter,
 } from 'lucide-react';
 import KuyenLogo from '@/components/ui/KuyenLogo';
+import { APP_CONFIG } from '@/lib/config';
+
+const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.17 1.72.3 2.58.46.01 1.37 0 2.75-.01 4.12-.99-.28-1.92-.76-2.73-1.43-.13-.1-.23-.23-.33-.36-.07 1.83-.03 3.67-.03 5.5 0 2.44-.8 4.96-2.58 6.64-1.74 1.7-4.32 2.37-6.66 1.88-2.51-.43-4.71-2.43-5.26-4.93-.72-2.95.83-6.17 3.68-7.1 1.08-.38 2.24-.41 3.34-.17v4.18c-.89-.35-1.92-.26-2.72.33-.86.58-1.25 1.7-1.02 2.71.21 1.07 1.22 1.86 2.31 1.82 1.13-.02 2.11-.93 2.17-2.06.07-2.86.02-5.72.03-8.58-.01-4.65-.01-9.3 0-13.95z"/>
+  </svg>
+);
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -80,15 +86,19 @@ export default function Footer() {
             </h4>
             <div className='space-y-4'>
               <div className='flex items-center gap-3 text-bone-200'>
-                <Mail className='w-5 h-5' />
-                <span>hola@kuyen.cl</span>
+                <Mail className='w-5 h-5 flex-shrink-0 text-terra-400' />
+                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-terra-300 transition-colors'>
+                  {APP_CONFIG.contact.email}
+                </a>
               </div>
               <div className='flex items-center gap-3 text-bone-200'>
-                <Phone className='w-5 h-5' />
-                <span>+56 9 1234 5678</span>
+                <Phone className='w-5 h-5 flex-shrink-0 text-terra-400' />
+                <a href={`tel:${APP_CONFIG.contact.phone.replace(/\s+/g, '')}`} className='hover:text-terra-300 transition-colors'>
+                  {APP_CONFIG.contact.phone}
+                </a>
               </div>
               <div className='flex items-center gap-3 text-bone-200'>
-                <MapPin className='w-5 h-5' />
+                <MapPin className='w-5 h-5 flex-shrink-0 text-terra-400' />
                 <span>Ñuble, Chile</span>
               </div>
             </div>
@@ -98,9 +108,9 @@ export default function Footer() {
               <h5 className='font-semibold text-gradient-lunar mb-4'>Síguenos</h5>
               <div className='flex gap-4'>
                 {[
-                  { icon: Instagram, href: '#', color: 'hover:text-mystic-400' },
-                  { icon: Facebook, href: '#', color: 'hover:text-terra-400' },
-                  { icon: Twitter, href: '#', color: 'hover:text-lunar-400' },
+                  { icon: Instagram, href: APP_CONFIG.social.instagram, color: 'hover:text-mystic-400' },
+                  { icon: Facebook, href: APP_CONFIG.social.facebook, color: 'hover:text-terra-400' },
+                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok, color: 'hover:text-lunar-400' },
                 ].map((social, index) => (
                   <motion.a
                     key={index}

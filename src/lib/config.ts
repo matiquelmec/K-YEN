@@ -9,11 +9,7 @@ export const APP_CONFIG = {
     api: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
   },
 
-  // Database / Supabase
-  supabase: {
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
-  },
+  // Database / Turso settings are loaded in src/lib/db/turso.ts
 
   // Performance settings
   performance: {
@@ -50,10 +46,10 @@ export const APP_CONFIG = {
 
   // Contact
   contact: {
-    email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'hola@kuyen.cl',
+    email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@kuyenchile.cl',
     phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || '+56 9 1234 5678',
     whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+56912345678',
-    support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'soporte@kuyen.cl',
+    support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@kuyenchile.cl',
   },
 
   // Social media
