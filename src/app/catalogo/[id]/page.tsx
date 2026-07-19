@@ -17,7 +17,7 @@ export default function ProductDetailPage() {
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    const { addItem } = useCart();
+    const { addItem, setCartOpen } = useCart();
 
     const handleAddToCart = () => {
         if (product && selectedSize && selectedColor) {
@@ -27,6 +27,7 @@ export default function ProductDetailPage() {
                 selectedSize,
                 selectedColor
             });
+            setCartOpen(true);
         }
     };
 

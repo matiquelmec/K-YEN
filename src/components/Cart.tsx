@@ -9,9 +9,8 @@ import Image from 'next/image';
 import { getColorClass } from '@/lib/product-utils';
 
 export default function Cart() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { state, updateQuantity, removeItem, clearCart } = useCart();
-  const { items, total, itemCount } = state;
+  const { state, updateQuantity, removeItem, clearCart, setCartOpen } = useCart();
+  const { items, total, itemCount, isOpen } = state;
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -35,47 +34,50 @@ export default function Cart() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm"
+            onClick={() => setCartOpen(false)}
+            className="fixed inset-0 bg-black/70 z-[60] backdrop-blur-md"
           />
 
-          {/* Sidebar */}
+          {/* Sidebar - Dark Boutique Theme */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-[70] shadow-2xl border-l border-gray-200"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-earth-950/98 backdrop-blur-md z-[70] shadow-[0_0_50px_rgba(0,0,0,0.8)] border-l border-earth-800 text-bone-50"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-white">
-                <h2 className="font-display text-2xl font-bold text-earth-900">Tu Bolso</h2>
+              <div className="flex items-center justify-between p-6 border-b border-earth-800 bg-earth-950">
+                <h2 className="font-display text-2xl font-bold text-bone-100 flex items-center gap-2">
+                  <ShoppingBag className="w-6 h-6 text-terra-400" />
+                  Tu Bolso
+                </h2>
                 <button
-                  onClick={() => setIsOpen(false)}
-                  className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
+                  onClick={() => setCartOpen(false)}
+                  className="p-2 rounded-full hover:bg-white/10 transition-colors text-bone-300 hover:text-white"
                 >
                   <X className="w-6 h-6" />
                 </button>
               </div>
 
               {/* Cart Items */}
-              <div className="flex-1 overflow-y-auto p-6 bg-gray-50/50">
+              <div className="flex-1 overflow-y-auto p-6 bg-earth-900/30">
                 {items.length === 0 ? (
                   <div className="text-center py-20 flex flex-col items-center">
-                    <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-6 text-gray-400">
-                      <ShoppingBag className="w-10 h-10" />
+                    <div className="w-20 h-20 bg-earth-900 rounded-full flex items-center justify-center mb-6 text-earth-300 border border-white/5">
+                      <ShoppingBag className="w-10 h-10 text-terra-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">Tu bolso está vacío</h3>
-                    <p className="text-gray-500 max-w-xs mx-auto">
-                      Parece que aún no has encontrado tu vestido perfecto.
+                    <h3 className="text-xl font-semibold text-bone-100 mb-2">Tu bolso está vacío</h3>
+                    <p className="text-bone-400 max-w-xs mx-auto text-sm">
+                      Parece que aún no has seleccionado el vestido perfecto para tu colección.
                     </p>
                     <button
                       onClick={() => {
-                        setIsOpen(false);
+                        setCartOpen(false);
                         window.location.href = '/catalogo';
                       }}
-                      className='mt-8 px-6 py-3 bg-earth-900 text-white rounded-full font-medium hover:bg-earth-800 transition-colors'
+                      className='mt-8 px-6 py-3 bg-sensual-600 text-white rounded-full font-medium hover:bg-sensual-500 transition-all duration-300 shadow-lg shadow-sensual-600/20 active:scale-95'
                     >
                       Explorar Catálogo
                     </button>
@@ -89,10 +91,10 @@ export default function Cart() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -100 }}
-                        className="flex gap-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                        className="flex gap-4 p-4 bg-earth-900/50 rounded-2xl border border-white/5 hover:border-white/10 transition-all duration-300 shadow-md"
                       >
                         {/* Product Image */}
-                        <div className="w-24 h-32 relative rounded-xl overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div className="w-24 h-32 relative rounded-xl overflow-hidden bg-earth-800/50 flex-shrink-0 border border-white/5">
                           {item.product?.images?.[0] ? (
                             <Image
                               src={item.product.images[0]}
@@ -101,7 +103,7 @@ export default function Cart() {
                               className="object-cover"
                             />
                           ) : (
-                            <div className="flex items-center justify-center h-full text-gray-300">
+                            <div className="flex items-center justify-center h-full text-earth-400">
                               <ShoppingBag className="w-8 h-8" />
                             </div>
                           )}
@@ -111,45 +113,45 @@ export default function Cart() {
                         <div className="flex-1 flex flex-col justify-between py-1">
                           <div>
                             <div className="flex justify-between items-start">
-                              <h3 className="font-semibold text-earth-900 text-lg leading-tight line-clamp-2">
+                              <h3 className="font-semibold text-bone-100 text-lg leading-tight line-clamp-2">
                                 {item.product?.name || 'Producto'}
                               </h3>
                               <button
                                 onClick={() => removeItem(item.id)}
-                                className="text-gray-400 hover:text-red-500 transition-colors p-1 -mr-2 -mt-2"
+                                className="text-bone-400 hover:text-red-400 transition-colors p-1 -mr-2 -mt-2"
                               >
                                 <Trash2 className="w-5 h-5" />
                               </button>
                             </div>
 
-                            <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
-                              <span className='bg-gray-100 px-2 py-1 rounded-md text-gray-700 font-medium'>
+                            <div className="flex items-center gap-3 mt-2 text-sm text-bone-400">
+                              <span className='bg-white/10 px-2 py-1 rounded-md text-bone-200 font-medium text-xs'>
                                 {item.selectedSize}
                               </span>
                               <div className="flex items-center gap-1.5">
-                                <div className={`w-4 h-4 rounded-full border border-gray-200 shadow-sm ${getColorClass(item.selectedColor)}`} />
-                                <span>{item.selectedColor}</span>
+                                <div className={`w-3.5 h-3.5 rounded-full border border-white/10 shadow-sm ${getColorClass(item.selectedColor)}`} />
+                                <span className="text-xs">{item.selectedColor}</span>
                               </div>
                             </div>
                           </div>
 
                           <div className="flex items-end justify-between mt-4">
-                            <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-1">
+                            <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-lg p-1">
                               <button
                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                className="w-7 h-7 flex items-center justify-center rounded-md bg-white shadow-sm text-gray-600 hover:text-gray-900 active:scale-95 transition-all"
+                                className="w-7 h-7 flex items-center justify-center rounded-md bg-earth-800 text-bone-200 hover:text-white hover:bg-earth-700 active:scale-95 transition-all"
                               >
                                 <Minus className="w-4 h-4" />
                               </button>
-                              <span className="w-4 text-center font-medium text-gray-900">{item.quantity}</span>
+                              <span className="w-4 text-center font-medium text-bone-100">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="w-7 h-7 flex items-center justify-center rounded-md bg-white shadow-sm text-gray-600 hover:text-gray-900 active:scale-95 transition-all"
+                                className="w-7 h-7 flex items-center justify-center rounded-md bg-earth-800 text-bone-200 hover:text-white hover:bg-earth-700 active:scale-95 transition-all"
                               >
                                 <Plus className="w-4 h-4" />
                               </button>
                             </div>
-                            <p className="font-display font-bold text-xl text-sensual-600">
+                            <p className="font-display font-bold text-xl text-terra-400">
                               {formatPrice(item.product?.price || 0)}
                             </p>
                           </div>
@@ -162,19 +164,19 @@ export default function Cart() {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="border-t border-gray-100 p-6 bg-white shadow-[0_-5px_20px_rgba(0,0,0,0.02)]">
+                <div className="border-t border-earth-800 p-6 bg-earth-950 shadow-[0_-5px_20px_rgba(0,0,0,0.4)]">
                   <div className="space-y-3 mb-6">
-                    <div className="flex items-center justify-between text-gray-500">
+                    <div className="flex items-center justify-between text-bone-400 text-sm">
                       <span>Subtotal</span>
-                      <span>{formatPrice(total)}</span>
+                      <span className="text-bone-200">{formatPrice(total)}</span>
                     </div>
-                    <div className="flex items-center justify-between text-gray-500">
+                    <div className="flex items-center justify-between text-bone-400 text-sm">
                       <span>Envío</span>
-                      <span className="text-green-600 font-medium">Gratis</span>
+                      <span className="text-spring-400 font-medium">Por Pagar</span>
                     </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-gray-200">
-                      <span className="font-display text-xl font-bold text-earth-900">Total</span>
-                      <span className="font-display text-2xl font-bold text-sensual-600">
+                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-earth-800">
+                      <span className="font-display text-xl font-bold text-bone-100">Total</span>
+                      <span className="font-display text-2xl font-bold text-terra-400">
                         {formatPrice(total)}
                       </span>
                     </div>
@@ -182,10 +184,10 @@ export default function Cart() {
 
                   <button
                     onClick={() => {
-                      setIsOpen(false);
+                      setCartOpen(false);
                       window.location.href = '/checkout';
                     }}
-                    className="w-full py-4 bg-gradient-to-r from-earth-900 to-earth-800 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-sensual-600 to-sensual-700 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sensual-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
                   >
                     <ShoppingBag className="w-5 h-5" />
                     Checkout Seguro
@@ -202,12 +204,12 @@ export default function Cart() {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
-        className="relative p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors group"
+        onClick={() => setCartOpen(true)}
+        className="relative p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors group animate-in fade-in duration-300"
       >
         <ShoppingBag className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
         {itemCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-sensual-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-in zoom-in">
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-sensual-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-bounce">
             {itemCount}
           </span>
         )}

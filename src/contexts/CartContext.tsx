@@ -27,6 +27,7 @@ type CartAction =
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
   | { type: 'TOGGLE_CART' }
+  | { type: 'SET_CART_OPEN'; payload: boolean }
   | { type: 'LOAD_CART'; payload: CartItem[] }
   | { type: 'SET_SYNCING'; payload: boolean };
 
@@ -37,6 +38,7 @@ const CartContext = createContext<{
   updateQuantity: (id: string, quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
   toggleCart: () => void;
+  setCartOpen: (isOpen: boolean) => void;
   getTotalPrice: () => number;
 } | undefined>(undefined);
 
@@ -95,6 +97,9 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
 
     case 'TOGGLE_CART':
       return { ...state, isOpen: !state.isOpen };
+
+    case 'SET_CART_OPEN':
+      return { ...state, isOpen: action.payload };
 
     case 'LOAD_CART': {
       const { total, itemCount } = calculateTotals(action.payload);
@@ -180,6 +185,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleCart = () => dispatch({ type: 'TOGGLE_CART' });
+  const setCartOpen = (isOpen: boolean) => dispatch({ type: 'SET_CART_OPEN', payload: isOpen });
   const getTotalPrice = () => state.total;
 
   return (
@@ -191,6 +197,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         updateQuantity,
         clearCart,
         toggleCart,
+        setCartOpen,
         getTotalPrice,
       }}
     >
