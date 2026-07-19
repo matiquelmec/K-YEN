@@ -16,6 +16,7 @@ export default function ProductDetailPage() {
     const { product, loading, error } = useProduct(id as string);
     const [selectedSize, setSelectedSize] = useState('');
     const [selectedColor, setSelectedColor] = useState('');
+    const [activeImageIndex, setActiveImageIndex] = useState(0);
     const { addItem } = useCart();
 
     const handleAddToCart = () => {
@@ -68,9 +69,9 @@ export default function ProductDetailPage() {
                         className='space-y-4'
                     >
                         <div className='relative aspect-[3/4] rounded-2xl overflow-hidden border border-earth-700/50 shadow-2xl'>
-                            {product.images && product.images[0] ? (
+                            {product.images && (product.images[activeImageIndex] || product.images[0]) ? (
                                 <Image
-                                    src={product.images[0]}
+                                    src={product.images[activeImageIndex] || product.images[0] || ''}
                                     alt={product.name}
                                     fill
                                     className='object-cover'
@@ -95,7 +96,11 @@ export default function ProductDetailPage() {
                         {product.images.length > 1 && (
                             <div className='flex gap-4 overflow-x-auto pb-2'>
                                 {product.images.map((img, idx) => (
-                                    <div key={idx} className='relative w-24 h-32 flex-shrink-0 rounded-lg overflow-hidden border border-earth-700 cursor-pointer hover:border-earth-400'>
+                                    <div 
+                                        key={idx} 
+                                        onClick={() => setActiveImageIndex(idx)}
+                                        className={`relative w-24 h-32 flex-shrink-0 rounded-lg overflow-hidden border cursor-pointer transition-all duration-300 ${activeImageIndex === idx ? 'border-sensual-500 ring-2 ring-sensual-500/20 scale-95' : 'border-earth-700 hover:border-earth-400'}`}
+                                    >
                                         <Image src={img} alt={`${product.name} view ${idx}`} fill className='object-cover' />
                                     </div>
                                 ))}
