@@ -212,15 +212,15 @@ export default function Footer() {
             </div>
 
             <div className='flex items-center gap-6 text-bone-300 text-sm'>
-              <a href='#' className='hover:text-terra-300 transition-colors'>
+              <Link href='/politicas?tab=privacidad' className='hover:text-terra-300 transition-colors'>
                 Política de Privacidad
-              </a>
-              <a href='#' className='hover:text-terra-300 transition-colors'>
+              </Link>
+              <Link href='/politicas?tab=terminos' className='hover:text-terra-300 transition-colors'>
                 Términos y Condiciones
-              </a>
-              <a href='#' className='hover:text-terra-300 transition-colors'>
+              </Link>
+              <Link href='/politicas?tab=devoluciones' className='hover:text-terra-300 transition-colors'>
                 Cambios y Devoluciones
-              </a>
+              </Link>
             </div>
           </div>
         </motion.div>
