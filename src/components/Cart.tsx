@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { getColorClass } from '@/lib/product-utils';
 
 export default function Cart() {
-  const { state, updateQuantity, removeItem, clearCart, setCartOpen } = useCart();
+  const { state, updateQuantity, removeItem, setCartOpen } = useCart();
   const { items, total, itemCount, isOpen } = state;
   const [mounted, setMounted] = useState(false);
 

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CheckCircle2, ArrowRight, ShoppingBag } from 'lucide-react';
+import { CheckCircle2, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 

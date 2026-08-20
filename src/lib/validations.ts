@@ -185,7 +185,7 @@ export interface ValidationRule {
   type: 'required' | 'email' | 'phone' | 'rut' | 'minLength' | 'maxLength' | 'custom';
   value?: any;
   message: string;
-  validator?: (value: any) => boolean;
+  validator?: (_value: any) => boolean;
 }
 
 export const validateField = (

@@ -5,13 +5,13 @@ import { Moon, Sun, Leaf, Heart, Filter } from 'lucide-react';
 
 interface FilterSidebarProps {
   selectedCategory: string;
-  onCategoryChange: (category: string) => void;
+  onCategoryChange: (_category: string) => void;
   selectedSizes: string[];
-  onSizesChange: (sizes: string[]) => void;
+  onSizesChange: (_sizes: string[]) => void;
   priceRange: number[];
-  onPriceRangeChange: (range: number[]) => void;
+  onPriceRangeChange: (_range: number[]) => void;
   showPlusSize: boolean;
-  onPlusSizeChange: (show: boolean) => void;
+  onPlusSizeChange: (_show: boolean) => void;
 }
 
 const categories = [

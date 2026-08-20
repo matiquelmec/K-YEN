@@ -7,17 +7,12 @@ interface ValidationRule {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  custom?: (value: any) => boolean | string;
+  custom?: (_value: any) => boolean | string;
   message?: string;
 }
 
-type ValidationRules<T> = {
-  [K in keyof T]?: ValidationRule;
-};
-
-type Errors<T> = {
-  [K in keyof T]?: string;
-};
+type ValidationRules<T> = Partial<Record<keyof T, ValidationRule>>;
+type Errors<T> = Partial<Record<keyof T, string>>;
 
 export function useForm<T extends Record<string, any>>(
   initialValues: T,
@@ -30,29 +25,36 @@ export function useForm<T extends Record<string, any>>(
 
   const validateField = useCallback(
     (name: keyof T, value: any): string | undefined => {
-      const rules = validationRules?.[name];
-      if (!rules) return undefined;
+      if (!validationRules || !validationRules[name]) {
+        return undefined;
+      }
 
-      if (rules.required && !value) {
+      const rules = validationRules[name]!;
+
+      if (rules.required && (!value || (typeof value === 'string' && !value.trim()))) {
         return rules.message || 'Este campo es requerido';
       }
 
-      if (rules.minLength && value.length < rules.minLength) {
+      if (rules.minLength && typeof value === 'string' && value.length < rules.minLength) {
         return rules.message || `Mínimo ${rules.minLength} caracteres`;
       }
 
-      if (rules.maxLength && value.length > rules.maxLength) {
+      if (rules.maxLength && typeof value === 'string' && value.length > rules.maxLength) {
         return rules.message || `Máximo ${rules.maxLength} caracteres`;
       }
 
-      if (rules.pattern && !rules.pattern.test(value)) {
+      if (rules.pattern && typeof value === 'string' && !rules.pattern.test(value)) {
         return rules.message || 'Formato inválido';
       }
 
       if (rules.custom) {
-        const result = rules.custom(value);
-        if (typeof result === 'string') return result;
-        if (!result) return rules.message || 'Validación falló';
+        const customResult = rules.custom(value);
+        if (typeof customResult === 'string') {
+          return customResult;
+        }
+        if (!customResult) {
+          return rules.message || 'Valor inválido';
+        }
       }
 
       return undefined;
@@ -63,26 +65,21 @@ export function useForm<T extends Record<string, any>>(
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       const { name, value, type } = e.target;
-      const fieldName = name as keyof T;
+      const checked = (e.target as HTMLInputElement).checked;
 
-      let fieldValue: any = value;
-      if (type === 'checkbox') {
-        fieldValue = (e.target as HTMLInputElement).checked;
-      } else if (type === 'number') {
-        fieldValue = parseFloat(value) || 0;
-      }
+      const fieldValue = type === 'checkbox' ? checked : value;
 
       setValues(prev => ({
         ...prev,
-        [fieldName]: fieldValue,
+        [name]: fieldValue,
       }));
 
-      // Validar campo si ya fue tocado
-      if (touched.has(fieldName)) {
-        const error = validateField(fieldName, fieldValue);
+      // Validar en tiempo real si ya fue tocado
+      if (touched.has(name as keyof T)) {
+        const error = validateField(name as keyof T, fieldValue);
         setErrors(prev => ({
           ...prev,
-          [fieldName]: error,
+          [name]: error,
         }));
       }
     },
@@ -91,28 +88,28 @@ export function useForm<T extends Record<string, any>>(
 
   const handleBlur = useCallback(
     (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-      const fieldName = e.target.name as keyof T;
+      const { name, value } = e.target;
+      setTouched(prev => new Set(prev).add(name as keyof T));
 
-      setTouched(prev => new Set(prev).add(fieldName));
-
-      const error = validateField(fieldName, values[fieldName]);
+      const error = validateField(name as keyof T, value);
       setErrors(prev => ({
         ...prev,
-        [fieldName]: error,
+        [name]: error,
       }));
     },
-    [values, validateField]
+    [validateField]
   );
 
   const validateForm = useCallback((): boolean => {
+    if (!validationRules) return true;
+
     const newErrors: Errors<T> = {};
     let isValid = true;
 
-    Object.keys(values).forEach(key => {
-      const fieldName = key as keyof T;
-      const error = validateField(fieldName, values[fieldName]);
+    (Object.keys(validationRules) as Array<keyof T>).forEach(key => {
+      const error = validateField(key, values[key]);
       if (error) {
-        newErrors[fieldName] = error;
+        newErrors[key] = error;
         isValid = false;
       }
     });
@@ -120,12 +117,12 @@ export function useForm<T extends Record<string, any>>(
     setErrors(newErrors);
     setTouched(new Set(Object.keys(values) as Array<keyof T>));
     return isValid;
-  }, [values, validateField]);
+  }, [values, validateField, validationRules]);
 
   const handleSubmit = useCallback(
     async (
       e: React.FormEvent,
-      onSubmit: (values: T) => Promise<void> | void
+      onSubmit: (_values: T) => Promise<void> | void
     ) => {
       e.preventDefault();
 

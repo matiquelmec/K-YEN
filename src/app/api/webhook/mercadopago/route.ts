@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MercadoPagoConfig, Payment } from 'mercadopago';
-import { turso } from '@/lib/db/turso';
+import { dbConfirmOrderPaymentAndDeductStock } from '@/lib/db/orders';
 
 const client = new MercadoPagoConfig({
   accessToken: process.env.MP_ACCESS_TOKEN || '',
@@ -19,30 +19,40 @@ export async function POST(req: NextRequest) {
     // Identify payment id
     const paymentId = body.data?.id || body.id;
 
-    if ((type === 'payment' || topic === 'payment') && paymentId) {
+    if ((type === 'payment' || topic === 'payment' || body.action === 'payment.updated' || body.action === 'payment.created') && paymentId) {
+      if (!process.env.MP_ACCESS_TOKEN) {
+        console.warn('⚠️ MP_ACCESS_TOKEN no configurado en Webhook');
+        return NextResponse.json({ received: true });
+      }
+
       // Query payment details from Mercado Pago
       const payment = await new Payment(client).get({ id: paymentId });
-      const externalReference = payment.external_reference; // This matches the paymentId generated at checkout
+      const externalReference = payment.external_reference; // Matches payment_id generated at checkout
       const status = payment.status;
 
-      console.log('💳 Estado del pago de Mercado Pago:', {
+      console.log('💳 Estado del pago verificado con Mercado Pago:', {
         paymentId,
         externalReference,
         status,
+        transaction_amount: payment.transaction_amount
       });
 
       if (externalReference) {
-        // Update order in Turso
-        const dbStatus = status === 'approved' ? 'paid' : 'pending';
-        const refStr = String(externalReference);
-        const statusStr = String(status || 'pending');
+        const orderStatus = status === 'approved' ? 'paid' : status === 'rejected' || status === 'cancelled' ? 'cancelled' : 'pending';
+        const paymentStatusStr = String(status || 'pending');
         
-        const result = await turso.execute({
-          sql: 'UPDATE orders SET payment_status = ?, status = ?, updated_at = ? WHERE payment_id = ?',
-          args: [statusStr, dbStatus, new Date().toISOString(), refStr]
-        });
+        // Actualización atómica en Turso y descuento de stock
+        const updated = await dbConfirmOrderPaymentAndDeductStock(
+          String(externalReference),
+          paymentStatusStr,
+          orderStatus
+        );
 
-        console.log('✅ Orden actualizada en base de datos de Turso:', result.rowsAffected, 'filas afectadas');
+        if (updated) {
+          console.log(`✅ Orden ${externalReference} actualizada a ${orderStatus} con stock descontado en Turso`);
+        } else {
+          console.warn(`⚠️ No se encontró la orden con external_reference: ${externalReference}`);
+        }
       }
     }
 

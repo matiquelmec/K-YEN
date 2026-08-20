@@ -96,6 +96,54 @@ export async function dbUpdateOrderPayment(id: string, paymentId: string, paymen
   }
 }
 
+export async function dbConfirmOrderPaymentAndDeductStock(paymentId: string, paymentStatus: string, orderStatus: string): Promise<boolean> {
+  const updated_at = new Date().toISOString();
+  
+  // Buscar orden por payment_id
+  const result = await turso.execute({
+    sql: 'SELECT * FROM orders WHERE payment_id = ? LIMIT 1',
+    args: [paymentId]
+  });
+
+  if (result.rows.length === 0) return false;
+  const row = result.rows[0] as any;
+  const items: any[] = row.items ? JSON.parse(String(row.items)) : [];
+  const currentStatus = String(row.status);
+
+  // Si ya fue marcada como 'paid', evitamos doble descuento de stock (idempotencia)
+  if (currentStatus === 'paid') {
+    await turso.execute({
+      sql: 'UPDATE orders SET payment_status = ?, updated_at = ? WHERE payment_id = ?',
+      args: [paymentStatus, updated_at, paymentId]
+    });
+    return true;
+  }
+
+  const statements: any[] = [
+    {
+      sql: 'UPDATE orders SET payment_status = ?, status = ?, updated_at = ? WHERE payment_id = ?',
+      args: [paymentStatus, orderStatus, updated_at, paymentId]
+    }
+  ];
+
+  // Si el pago es aprobado, descontar stock de cada producto atómicamente
+  if (orderStatus === 'paid') {
+    for (const item of items) {
+      const prodId = item.product_id || item.product?.id;
+      const qty = item.quantity || 1;
+      if (prodId) {
+        statements.push({
+          sql: 'UPDATE products SET stock = MAX(0, COALESCE(stock, 15) - ?) WHERE id = ?',
+          args: [qty, String(prodId)]
+        });
+      }
+    }
+  }
+
+  await turso.batch(statements, 'write');
+  return true;
+}
+
 export async function dbGetSubscribers(): Promise<SubscriberRow[]> {
   const result = await turso.execute('SELECT * FROM subscribers ORDER BY created_at DESC');
   return (result.rows as any[]).map((row: any) => ({

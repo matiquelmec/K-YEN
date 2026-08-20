@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export function useLocalStorage<T>(
   key: string,
   initialValue: T
-): [T, (value: T | ((val: T) => T)) => void, () => void] {
+): [T, (_value: T | ((_val: T) => T)) => void, () => void] {
   // Estado para almacenar nuestro valor
   const [storedValue, setStoredValue] = useState<T>(() => {
     if (typeof window === 'undefined') {
@@ -22,7 +22,7 @@ export function useLocalStorage<T>(
   });
 
   // Función para actualizar el estado y localStorage
-  const setValue = (value: T | ((val: T) => T)) => {
+  const setValue = (value: T | ((_val: T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);

@@ -1,24 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState, useCallback } from 'react';
+import { useParams } from 'next/navigation';
 import { ArrowLeft, MapPin, Mail, Phone, Package, Calendar, Truck } from 'lucide-react';
 import Link from 'next/link';
 
 export default function OrderDetailPage() {
     const params = useParams();
-    const router = useRouter();
     const [order, setOrder] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [updating, setUpdating] = useState(false);
 
-    useEffect(() => {
-        if (params.id) {
-            fetchOrder();
-        }
-    }, [params.id]);
-
-    const fetchOrder = async () => {
+    const fetchOrder = useCallback(async () => {
         try {
             const res = await fetch(`/api/orders/${params.id}`);
             if (!res.ok) throw new Error('Error al cargar la orden');
@@ -29,7 +22,13 @@ export default function OrderDetailPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [params.id]);
+
+    useEffect(() => {
+        if (params.id) {
+            fetchOrder();
+        }
+    }, [params.id, fetchOrder]);
 
     const updateStatus = async (newStatus: string) => {
         setUpdating(true);

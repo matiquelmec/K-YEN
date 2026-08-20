@@ -2,11 +2,6 @@
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { CartItem } from '@/types';
-// Removed: import { useAuth } from '@/contexts/AuthContext';
-// Removed: import { supabase } from '@/lib/supabase/client';
-// Actually supabase might not be needed if we remove sync logic.
-// Keeping supabase if logic needs it? No, sync is gone.
-// Let's check replacement lines. I am replacing lines 5-6.
 
 // Helper to generate consistent IDs
 const generateCartItemId = (productId: string | number, size: string, color: string) => {
@@ -33,12 +28,12 @@ type CartAction =
 
 const CartContext = createContext<{
   state: CartState;
-  addItem: (item: Omit<CartItem, 'id'>) => Promise<void>;
-  removeItem: (id: string) => Promise<void>;
-  updateQuantity: (id: string, quantity: number) => Promise<void>;
+  addItem: (_item: Omit<CartItem, 'id'>) => Promise<void>;
+  removeItem: (_id: string) => Promise<void>;
+  updateQuantity: (_id: string, _quantity: number) => Promise<void>;
   clearCart: () => Promise<void>;
   toggleCart: () => void;
-  setCartOpen: (isOpen: boolean) => void;
+  setCartOpen: (_isOpen: boolean) => void;
   getTotalPrice: () => number;
 } | undefined>(undefined);
 

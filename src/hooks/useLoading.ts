@@ -6,7 +6,7 @@ export interface UseLoadingReturn {
   isLoading: boolean;
   startLoading: () => void;
   stopLoading: () => void;
-  withLoading: <T>(fn: () => Promise<T>) => Promise<T>;
+  withLoading: <T>(_fn: () => Promise<T>) => Promise<T>;
 }
 
 export function useLoading(initialState = false): UseLoadingReturn {

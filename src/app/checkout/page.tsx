@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useCart } from '@/hooks/useCart';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import AddressForm from '@/components/checkout/AddressForm';
@@ -13,13 +12,12 @@ export default function CheckoutPage() {
     const { state, clearCart } = useCart();
     const { items, total } = state;
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const router = useRouter();
 
     const handleCheckout = async (formData: any) => {
         setIsSubmitting(true);
 
         try {
-            // 1. Llamar a la API de Checkout para crear la preferencia de Mercado Pago
+            // 1. Llamar a la API de Checkout (crea la orden en BD de forma atómica y genera preferencia de pago)
             const response = await fetch('/api/checkout', {
                 method: 'POST',
                 headers: {
@@ -37,44 +35,13 @@ export default function CheckoutPage() {
                 throw new Error(checkoutData.error || 'Error al iniciar checkout');
             }
 
-            // 2. Prepare Order Data including the payment_id (external_reference)
-            const orderData = {
-                is_guest: true,
-                total: total,
-                shipping_address: formData,
-                payment_id: checkoutData.paymentId, // Link order with external_reference
-                payment_status: 'pending',
-                items: items.map(item => ({
-                    product_id: item.product.id,
-                    product_name: item.product.name,
-                    price: item.product.price,
-                    quantity: item.quantity,
-                    size: item.selectedSize,
-                    color: item.selectedColor,
-                    image: item.product.images?.[0] || ''
-                }))
-            };
-
-            const orderRes = await fetch('/api/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            });
-
-            if (!orderRes.ok) {
-                const orderError = await orderRes.json();
-                throw new Error(orderError.error || 'Error al guardar la orden');
-            }
-
-            // 4. Success - Clear cart and redirect to Mercado Pago
+            // 2. Éxito: Limpiar carrito y redirigir inmediatamente a Mercado Pago
             clearCart();
             window.location.href = checkoutData.checkoutUrl;
 
         } catch (error: any) {
             console.error('Error creating order:', error);
-            alert(`Error al procesar tu pago: ${error.message || 'Intenta nuevamente.'}`);
+            alert(`Error al procesar tu pedido: ${error.message || 'Intenta nuevamente.'}`);
         } finally {
             setIsSubmitting(false);
         }

@@ -1,10 +1,13 @@
 import { createClient } from '@libsql/client';
+import '@/lib/env-validator';
 
 const url = process.env.TURSO_CONNECTION_URL || '';
 const authToken = process.env.TURSO_AUTH_TOKEN || '';
 
 if (!url) {
-  console.warn('⚠️ TURSO_CONNECTION_URL is missing. Using local SQLite fallback (local.db).');
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn('⚠️ TURSO_CONNECTION_URL no está configurada. Usando fallback SQLite local (file:local.db).');
+  }
 }
 
 const config: { url: string; authToken?: string } = {
@@ -16,3 +19,4 @@ if (authToken) {
 }
 
 export const turso = createClient(config);
+

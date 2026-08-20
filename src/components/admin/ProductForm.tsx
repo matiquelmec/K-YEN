@@ -54,13 +54,11 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
         try {
             let fileToUpload: File | Blob = file;
-            let extension = file.name.split('.').pop() || 'png';
 
             // Try to compress
             try {
                 const compressedBlob = await compressImage(file);
                 fileToUpload = compressedBlob;
-                extension = 'webp';
             } catch (compressErr) {
                 console.warn('Compression failed, using original file:', compressErr);
                 // Fallback to original file

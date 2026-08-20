@@ -59,6 +59,11 @@ export default function AdminProductsPage() {
 
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {error && (
+                <div className="p-4 bg-red-50 text-red-700 rounded-2xl border border-red-200">
+                    {error}
+                </div>
+            )}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div>
                     <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">

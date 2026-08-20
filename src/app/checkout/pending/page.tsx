@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Clock, ArrowRight, ShoppingBag } from 'lucide-react';
+import { Clock, ShoppingBag } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 

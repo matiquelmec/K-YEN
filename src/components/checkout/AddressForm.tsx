@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { regionesYComunas } from '@/lib/chile-data';
 
 interface AddressFormProps {
-    onSubmit: (data: any) => void;
+    onSubmit: (_data: any) => void;
 }
 
 export default function AddressForm({ onSubmit }: AddressFormProps) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Heart, Moon, Sun, Sparkles, Leaf, ChevronDown } from 'lucide-react';
+import { Moon, Sun, Leaf, ChevronDown } from 'lucide-react';
 import KuyenLogo from '@/components/ui/KuyenLogo';
 import Link from 'next/link';
 
