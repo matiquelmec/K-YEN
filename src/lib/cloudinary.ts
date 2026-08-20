@@ -57,12 +57,12 @@ export async function uploadToCloudinary(
       .replace(/^_+|_+$/g, '');
   }
 
-  // 4. Crear firma con parámetros
-  let paramsToSign = `folder=${folder}&timestamp=${timestamp}`;
-  if (publicId) {
-    paramsToSign = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}`;
+  // 4. Crear firma con parámetros ORDENADOS ALFABÉTICAMENTE (Requisito estricto de Cloudinary)
+  // Orden alfabético: folder, public_id, timestamp
+  let paramsToSign = `folder=${folder}&public_id=${publicId || ''}&timestamp=${timestamp}${apiSecret}`;
+  if (!publicId) {
+    paramsToSign = `folder=${folder}&timestamp=${timestamp}${apiSecret}`;
   }
-  paramsToSign += apiSecret;
 
   const signature = crypto.createHash('sha1').update(paramsToSign).digest('hex');
 
