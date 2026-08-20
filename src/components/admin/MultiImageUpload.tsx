@@ -3,11 +3,13 @@
 import { useState, useRef } from 'react';
 import { Upload, X, ArrowLeft, ArrowRight, Star, Loader2, Image as ImageIcon } from 'lucide-react';
 import { compressImage } from '@/lib/imageUtils';
+import { extractDominantColorsFromImage } from '@/lib/colorExtractor';
 import { productService } from '@/services/productService';
 
 interface MultiImageUploadProps {
     images: string[];
     onChange: (_images: string[]) => void;
+    onColorsDetected?: (_colors: string[]) => void;
     category?: string;
     productName?: string;
     maxImages?: number;
@@ -17,6 +19,7 @@ interface MultiImageUploadProps {
 export function MultiImageUpload({
     images,
     onChange,
+    onColorsDetected,
     category = 'gotico',
     productName = 'vestido',
     maxImages = 8,
@@ -43,6 +46,18 @@ export function MultiImageUpload({
         const newUploadedUrls: string[] = [];
 
         try {
+            // Auto-detectar colores del primer archivo de forma inteligente
+            if (onColorsDetected && filesToUpload[0]) {
+                try {
+                    const detected = await extractDominantColorsFromImage(filesToUpload[0]);
+                    if (detected.length > 0) {
+                        onColorsDetected(detected);
+                    }
+                } catch (colorErr) {
+                    console.warn('Auto-color detection failed:', colorErr);
+                }
+            }
+
             for (let i = 0; i < filesToUpload.length; i++) {
                 const file = filesToUpload[i];
                 if (!file) continue;

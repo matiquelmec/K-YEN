@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { productService } from '@/services/productService';
-import { Upload, Save, ArrowLeft, Loader2, CheckCircle2, Image as ImageIcon } from 'lucide-react';
+import { Upload, Save, ArrowLeft, Loader2, CheckCircle2, Image as ImageIcon, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { Product } from '@/types';
 import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
+import { extractDominantColorsFromImage } from '@/lib/colorExtractor';
 
 const CATEGORIES = [
     { id: 'gotico', label: 'Luna Nueva (Gótico)', color: 'bg-gray-900' },
@@ -43,6 +44,43 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         is_new: initialData?.is_new || false,
         is_sale: initialData?.is_sale || false
     });
+
+    const [detectingColors, setDetectingColors] = useState(false);
+    const [colorDetectionMsg, setColorDetectionMsg] = useState<string | null>(null);
+
+    const handleAutoDetectColors = (detected: string[]) => {
+        if (!detected || detected.length === 0) return;
+        setFormData(prev => {
+            const combined = Array.from(new Set([...prev.colors, ...detected]));
+            return { ...prev, colors: combined };
+        });
+        setColorDetectionMsg(`✨ Detectados: ${detected.join(', ')}`);
+        setTimeout(() => setColorDetectionMsg(null), 4000);
+    };
+
+    const triggerManualColorDetection = async () => {
+        if (formData.images.length === 0) {
+            alert('Sube primero al menos una imagen en la galería para detectar sus colores.');
+            return;
+        }
+        setDetectingColors(true);
+        try {
+            const firstImg = formData.images[0];
+            if (firstImg) {
+                const detected = await extractDominantColorsFromImage(firstImg, 3);
+                if (detected.length > 0) {
+                    handleAutoDetectColors(detected);
+                } else {
+                    setColorDetectionMsg('No se detectaron colores contrastantes.');
+                    setTimeout(() => setColorDetectionMsg(null), 3000);
+                }
+            }
+        } catch (err) {
+            console.warn('Error en detección manual:', err);
+        } finally {
+            setDetectingColors(false);
+        }
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -242,6 +280,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     <MultiImageUpload
                         images={formData.images}
                         onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))}
+                        onColorsDetected={handleAutoDetectColors}
                         category={formData.category}
                         productName={formData.name}
                         maxImages={8}
@@ -251,13 +290,34 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
                 {/* Variants */}
                 <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-8 shadow-xl shadow-earth-900/5">
-                    <div className="flex items-center gap-3 border-b border-gray-50 pb-5">
-                        <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
-                            <ImageIcon className="w-5 h-5" />
+                    <div className="flex items-center justify-between border-b border-gray-50 pb-5">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
+                                <ImageIcon className="w-5 h-5" />
+                            </div>
+                            <div>
+                                <h2 className="font-bold text-xl text-gray-900">
+                                    Variantes y Stock
+                                </h2>
+                                <p className="text-xs text-gray-400">Personaliza las tallas y colores que componen este diseño</p>
+                            </div>
                         </div>
-                        <h2 className="font-bold text-xl text-gray-900">
-                            Variantes y Stock
-                        </h2>
+
+                        {formData.images.length > 0 && (
+                            <button
+                                type="button"
+                                onClick={triggerManualColorDetection}
+                                disabled={detectingColors}
+                                className="px-3.5 py-2 bg-gradient-to-r from-amber-500/10 to-earth-500/10 border border-amber-200/50 hover:border-amber-400 text-amber-900 text-xs font-bold rounded-xl flex items-center gap-2 transition-all hover:shadow-sm active:scale-95 disabled:opacity-50"
+                            >
+                                {detectingColors ? (
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-600" />
+                                ) : (
+                                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                                )}
+                                <span>{detectingColors ? 'Analizando...' : 'Auto-detectar Colores'}</span>
+                            </button>
+                        )}
                     </div>
 
                     <div>
@@ -308,7 +368,14 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
                     <div>
                         <div className="flex items-center justify-between mb-4">
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Paleta de Colores ({formData.colors.length} seleccionados)</label>
+                            <div className="flex items-center gap-2">
+                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Paleta de Colores ({formData.colors.length} seleccionados)</label>
+                                {colorDetectionMsg && (
+                                    <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full animate-in fade-in zoom-in duration-300">
+                                        {colorDetectionMsg}
+                                    </span>
+                                )}
+                            </div>
                             <span className="text-[11px] text-gray-400">Haz clic para activar o desactivar</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
