@@ -1,43 +1,51 @@
-﻿# Desarrollo del Proyecto Tienda KÜYEN 👗
+﻿# 👗 Guía Técnica de Desarrollo - Tienda KÜYEN
 
-## Resumen del Proyecto
-Plataforma de E-commerce moderna y de alto rendimiento para la marca de vestidos KÜYEN, con panel de administración, catálogo dinámico, procesamiento de pagos con Mercado Pago y base de datos relacional distribuida en Turso (LibSQL).
+## 1. Resumen de la Plataforma
+KÜYEN es una plataforma de e-commerce de alto rendimiento construida con **Next.js 16 (Turbopack)**, **React 19**, **TypeScript 5.9** y base de datos relacional distribuida en **Turso DB**. Incluye panel de control administrativo, catálogo interactivo con filtrado dinámico, gestión de cupones/afiliadas, auto-detección de colores por Canvas y pagos seguros con Mercado Pago.
 
-## Stack Tecnológico
-- **Frontend / Framework**: Next.js 16 con App Router, React 19 y TypeScript 5.9.
-- **Base de Datos**: Turso (SQLite distribuido) vía `@libsql/client` con soporte offline/local (`file:local.db`).
-- **Imágenes & CDN**: Cloudinary con compresión WebP, sanitización NFD y transformaciones automáticas (`f_auto,q_auto`).
-- **Pagos**: Mercado Pago SDK con checkout atómico y validación de webhooks.
-- **Seguridad**: JWT HMAC-SHA256 en Web Crypto API, Rate Limiting por IP, Content Security Policy (CSP) y Validador de Entorno estricto.
-- **Testing**: Vitest con entorno JSDOM y `@testing-library/react`.
+---
 
-## Variables de Entorno (.env.local)
-```env
-# Aplicación
-NODE_ENV=development
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+## 2. Flujo de Variantes y Productos (Turso DB)
+Las tallas y colores de cada vestido se almacenan en un modelo relacional estricto:
+1. `products`: Datos generales de la prenda (precio, descripción, categoría, estado).
+2. `sizes`: Tallas normalizadas (`XS` a `6XL`).
+3. `colors`: Paleta oficial con nombres y códigos HEX.
+4. `product_variants`: Matriz combinada ($Talla \times Color$) con stock por variante.
+5. `product_images`: Galería de imágenes WebP con orden y portada.
 
-# Autenticación Admin
-JWT_SECRET=tu_secreto_jwt_seguro
-ADMIN_EMAIL=contacto@kuyenchile.cl
-ADMIN_PASSWORD=tu_password_admin_seguro
+La sincronización se realiza atómicamente a través de `syncProductVariants(...)` en `src/lib/db/products.ts`.
 
-# Base de datos Turso
-TURSO_CONNECTION_URL=libsql://...
-TURSO_AUTH_TOKEN=eyJ...
+---
 
-# Mercado Pago
-MP_ACCESS_TOKEN=APP_USR-...
+## 3. Auto-Detección Inteligente de Colores
+- Ubicación: `src/lib/colorExtractor.ts`
+- Implementación: 100% Client-Side mediante HTML5 Canvas (sin costos de APIs externas).
+- Lógica:
+  1. Reducción de la imagen a un canvas de $100 \times 100$ px.
+  2. Muestreo de píxeles ignorando fondos blancos o transparentes.
+  3. Cálculo de color mediante Distancia Euclidiana $\Delta E$ contra la paleta KÜYEN (`KUYEN_COLOR_MAP`).
+  4. Activación automática de botones de color en `ProductForm.tsx`.
 
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
+---
+
+## 4. Cupones y Sistema de Afiliadas / Embajadoras
+- Tabla: `coupons` en Turso DB.
+- Tipos de Descuento: Porcentual (`%`) o Monto Fijo (`$ CLP`).
+- Validaciones en Servidor:
+  - `POST /api/coupons/validate`: Verifica activación, vigencia, monto mínimo y límite de usos.
+  - `POST /api/checkout`: Re-calcula el descuento en el servidor de forma infalsificable.
+  - `POST /api/webhook/mercadopago`: Al confirmarse el pago, incrementa `usage_count` y asocia la orden a la embajadora.
+
+---
+
+## 5. Testing Automatizado (Vitest)
+Se cuenta con 26 pruebas unitarias estructuradas en `tests/unit/`:
+- `tests/unit/coupons.test.ts`: Validación de reglas de cupones y límites de uso.
+- `tests/unit/products-variants.test.ts`: Generación de SKUs y mapeo relacional.
+- `tests/unit/color-extractor.test.ts`: Algoritmo Canvas y matching perceptual.
+- `tests/unit/multi-image.test.ts`: Validaciones de subida múltiple.
+
+Para ejecutar las pruebas:
+```bash
+npm test
 ```
-
-## Arquitectura de Checkout Atómico
-1. **Petición del cliente**: Formulario de envío y carrito se envían a `POST /api/checkout`.
-2. **Validación del servidor**: Se valida stock y precios reales contra la base de datos Turso.
-3. **Persistencia previa**: Se crea la orden con estado `pending` y se asocia al `external_reference`.
-4. **Preferencia de Pago**: Se genera la preferencia en Mercado Pago con los datos del comprador.
-5. **Webhook Seguro**: Al completarse la transacción, el webhook valida el pago con la API de Mercado Pago, actualiza el estado a `paid` y descuenta el stock de los productos comprados de forma atómica.
