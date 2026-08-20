@@ -69,12 +69,13 @@ export default function ProductDetailPage() {
                         animate={{ opacity: 1, x: 0 }}
                         className='space-y-4'
                     >
-                        <div className='relative aspect-[3/4] rounded-2xl overflow-hidden border border-earth-700/50 shadow-2xl'>
+                        <div className='relative aspect-[3/4] rounded-2xl overflow-hidden border border-earth-700/50 shadow-2xl bg-earth-900/10'>
                             {product.images && (product.images[activeImageIndex] || product.images[0]) ? (
                                 <Image
                                     src={product.images[activeImageIndex] || product.images[0] || ''}
                                     alt={product.name}
                                     fill
+                                    unoptimized
                                     className='object-cover'
                                     priority
                                 />
@@ -102,7 +103,7 @@ export default function ProductDetailPage() {
                                         onClick={() => setActiveImageIndex(idx)}
                                         className={`relative w-24 h-32 flex-shrink-0 rounded-lg overflow-hidden border cursor-pointer transition-all duration-300 ${activeImageIndex === idx ? 'border-sensual-500 ring-2 ring-sensual-500/20 scale-95' : 'border-earth-700 hover:border-earth-400'}`}
                                     >
-                                        <Image src={img} alt={`${product.name} view ${idx}`} fill className='object-cover' />
+                                        <Image src={img} alt={`${product.name} view ${idx}`} fill unoptimized className='object-cover' />
                                     </div>
                                 ))}
                             </div>

@@ -19,10 +19,12 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
+  const sizes = product.sizes && product.sizes.length > 0 ? product.sizes : ['S', 'M', 'L'];
+  const colors = product.colors && product.colors.length > 0 ? product.colors : ['Negro', 'Blanco'];
 
-
-  const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedSize, setSelectedSize] = useState(sizes[0] || 'M');
+  const [selectedColor, setSelectedColor] = useState(colors[0] || 'Negro');
+  const [imgError, setImgError] = useState(false);
   const { addItem } = useCart();
 
   const handleAddToCart = useCallback(() => {
@@ -36,7 +38,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     }
   }, [product, selectedSize, selectedColor, addItem]);
 
-  const hasLargeSizes = product.sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
+  const hasLargeSizes = sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
 
   // Helper to ensure boolean | undefined is treated as boolean | undefined explicitly for the component props
   const isNew = product.is_new ? true : undefined;
@@ -50,12 +52,14 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
         className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-500'
       >
         <div className='flex flex-col md:flex-row'>
-          <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden rounded-t-xl md:rounded-t-none md:rounded-l-xl'>
-            {product.images && product.images[0] ? (
+          <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden rounded-t-xl md:rounded-t-none md:rounded-l-xl bg-earth-900/10'>
+            {product.images && product.images[0] && !imgError ? (
               <Image
                 src={product.images[0]}
                 alt={product.name}
                 fill
+                unoptimized
+                onError={() => setImgError(true)}
                 sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                 className='object-cover'
               />
@@ -173,13 +177,15 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
     >
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 h-full flex flex-col'>
         {/* Product Image */}
-        <div className='relative aspect-[3/4] overflow-hidden rounded-t-2xl'>
+        <div className='relative aspect-[3/4] overflow-hidden rounded-t-2xl bg-earth-900/10'>
           <Link href={`/catalogo/${product.id}`}>
-            {product.images && product.images[0] ? (
+            {product.images && product.images[0] && !imgError ? (
               <Image
                 src={product.images[0]}
                 alt={product.name}
                 fill
+                unoptimized
+                onError={() => setImgError(true)}
                 className='object-cover object-top group-hover:scale-110 transition-transform duration-500'
               />
             ) : (
@@ -188,8 +194,6 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               </div>
             )}
           </Link>
-
-
 
           <ProductBadges
             isNew={isNew}
@@ -222,11 +226,9 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             {product.description}
           </p>
 
-
-
           {/* Size Options */}
           <div className='flex flex-wrap gap-1 mb-4 mt-auto'>
-            {product.sizes.slice(0, 5).map(size => (
+            {sizes.slice(0, 5).map(size => (
               <span
                 key={size}
                 className='px-2 py-1 text-xs border border-earth-300 rounded text-earth-600 bg-earth-50'
@@ -234,25 +236,25 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 {size}
               </span>
             ))}
-            {product.sizes.length > 5 && (
+            {sizes.length > 5 && (
               <span className='px-2 py-1 text-xs text-earth-500'>
-                +{product.sizes.length - 5}
+                +{sizes.length - 5}
               </span>
             )}
           </div>
 
           {/* Colors */}
           <div className='flex gap-2 mb-4'>
-            {product.colors.slice(0, 5).map((color, colorIndex) => (
+            {colors.slice(0, 5).map((color, colorIndex) => (
               <div
                 key={colorIndex}
                 className={`w-4 h-4 rounded-full border-2 border-white shadow-sm ${getColorClass(color)}`}
                 title={color}
               />
             ))}
-            {product.colors.length > 5 && (
+            {colors.length > 5 && (
               <span className='text-xs text-gray-400 flex items-center'>
-                +{product.colors.length - 5}
+                +{colors.length - 5}
               </span>
             )}
           </div>
