@@ -23,28 +23,19 @@ export async function POST(request: NextRequest) {
             'admin@kuyenchile.cl'
         ];
 
+        // Validar estrictamente contra la variable de entorno de Vercel / .env.local
         const expectedPassword = process.env.ADMIN_PASSWORD || 'admin_kuyen_2026';
         const cleanEmail = String(email || '').toLowerCase().trim();
         const cleanPassword = String(password || '').trim();
 
-        // Lista de contraseñas administrativas válidas para evitar bloqueos
-        const validPasswords = [
-            expectedPassword,
-            'admin_kuyen_2026',
-            'joyasjp2024',
-            'kuyen2026',
-            'kuyen2024'
-        ];
-
         const isEmailValid = allowedEmails.includes(cleanEmail);
-        const isPasswordValid = validPasswords.includes(cleanPassword);
+        const isPasswordValid = cleanPassword === expectedPassword;
 
         if (!cleanEmail || !cleanPassword || !isEmailValid || !isPasswordValid) {
             console.warn('⚠️ Intento de login fallido:', {
                 receivedEmail: cleanEmail,
                 isEmailValid,
-                isPasswordValid,
-                expectedPasswordSet: !!process.env.ADMIN_PASSWORD
+                isPasswordValid
             });
             return NextResponse.json({ error: 'Credenciales inválidas' }, { status: 401 });
         }
