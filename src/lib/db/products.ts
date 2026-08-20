@@ -38,12 +38,165 @@ const fallbackImages: Record<string, string[]> = {
   ]
 };
 
+const DEFAULT_HEX_COLORS: Record<string, string> = {
+  'Negro': '#000000',
+  'Borgoña': '#800020',
+  'Azul Medianoche': '#191970',
+  'Azul Noche': '#0F172A',
+  'Rosa Suave': '#FFB6C1',
+  'Rosa Luna': '#F8BBD9',
+  'Verde Menta': '#98FB98',
+  'Verde Terra': '#16A34A',
+  'Lavanda': '#E6E6FA',
+  'Dorado': '#F59E0B',
+  'Dorado Místico': '#F59E0B',
+  'Coral': '#FB923C',
+  'Turquesa': '#2DD4BF',
+  'Tierra': '#B45309',
+  'Cobre': '#9A3412',
+  'Óxido': '#991B1B',
+  'Azul Océano': '#2563EB',
+  'Verde Agua': '#22D3EE',
+  'Blanco Espuma': '#F8FAFC',
+  'Blanco': '#FFFFFF',
+  'Verde Bosque': '#166534',
+  'Rosa Salvaje': '#DB2777',
+  'Violeta': '#9333EA',
+  'Rojo': '#DC2626',
+  'Gris': '#6B7280',
+  'Plata': '#D1D5DB',
+  'Marfil': '#FFFBEB'
+};
+
+/**
+ * Sincroniza tallas, colores y genera variantes en product_variants de forma atómica
+ */
+async function syncProductVariants(
+  productId: string,
+  sku: string,
+  sizes: string[],
+  colors: string[],
+  stockPerVariant = 10
+): Promise<void> {
+  const safeSizes = (sizes || []).map(s => s.trim()).filter(Boolean);
+  const safeColors = (colors || []).map(c => c.trim()).filter(Boolean);
+
+  if (safeSizes.length === 0 && safeColors.length === 0) {
+    return;
+  }
+
+  // 1. Asegurar o insertar tallas en la tabla sizes
+  const sizeMap = new Map<string, string>();
+  for (const s of safeSizes) {
+    const res = await turso.execute({
+      sql: 'SELECT id FROM sizes WHERE name = ? LIMIT 1',
+      args: [s]
+    });
+    const firstRow = res.rows[0] as any;
+    if (firstRow && firstRow.id) {
+      sizeMap.set(s, String(firstRow.id));
+    } else {
+      const newSizeId = crypto.randomUUID();
+      await turso.execute({
+        sql: 'INSERT INTO sizes (id, name, display_order, is_plus_size) VALUES (?, ?, ?, ?)',
+        args: [newSizeId, s, 99, ['4XL', '5XL', '6XL'].includes(s) ? 1 : 0]
+      });
+      sizeMap.set(s, newSizeId);
+    }
+  }
+
+  // 2. Asegurar o insertar colores en la tabla colors
+  const colorMap = new Map<string, string>();
+  for (const c of safeColors) {
+    const res = await turso.execute({
+      sql: 'SELECT id FROM colors WHERE name = ? LIMIT 1',
+      args: [c]
+    });
+    const firstRow = res.rows[0] as any;
+    if (firstRow && firstRow.id) {
+      colorMap.set(c, String(firstRow.id));
+    } else {
+      const newColorId = crypto.randomUUID();
+      const hexCode = DEFAULT_HEX_COLORS[c] || '#6B7280';
+      await turso.execute({
+        sql: 'INSERT INTO colors (id, name, hex_code, display_order) VALUES (?, ?, ?, ?)',
+        args: [newColorId, c, hexCode, 99]
+      });
+      colorMap.set(c, newColorId);
+    }
+  }
+
+  // 3. Eliminar variantes previas del producto
+  await turso.execute({
+    sql: 'DELETE FROM product_variants WHERE product_id = ?',
+    args: [productId]
+  });
+
+  // 4. Si hay tallas y colores, insertar el producto cartesiano
+  if (sizeMap.size > 0 && colorMap.size > 0) {
+    for (const [sizeName, sizeId] of sizeMap.entries()) {
+      for (const [colorName, colorId] of colorMap.entries()) {
+        const variantSku = `${sku}-${sizeName}-${colorName.replace(/\s+/g, '')}`;
+        await turso.execute({
+          sql: `
+            INSERT INTO product_variants (
+              id, product_id, size_id, color_id, sku_variant, stock_quantity, is_available, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+          `,
+          args: [crypto.randomUUID(), productId, sizeId, colorId, variantSku, stockPerVariant]
+        });
+      }
+    }
+  } else if (sizeMap.size > 0) {
+    // Si solo hay tallas
+    const defaultColorRes = await turso.execute('SELECT id FROM colors LIMIT 1');
+    const defaultColorRow = defaultColorRes.rows[0] as any;
+    const defaultColorId = defaultColorRow?.id ? String(defaultColorRow.id) : crypto.randomUUID();
+    for (const [sizeName, sizeId] of sizeMap.entries()) {
+      const variantSku = `${sku}-${sizeName}`;
+      await turso.execute({
+        sql: `
+          INSERT INTO product_variants (
+            id, product_id, size_id, color_id, sku_variant, stock_quantity, is_available, created_at, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `,
+        args: [crypto.randomUUID(), productId, sizeId, defaultColorId, variantSku, stockPerVariant]
+      });
+    }
+  } else if (colorMap.size > 0) {
+    // Si solo hay colores
+    const defaultSizeRes = await turso.execute('SELECT id FROM sizes LIMIT 1');
+    const defaultSizeRow = defaultSizeRes.rows[0] as any;
+    const defaultSizeId = defaultSizeRow?.id ? String(defaultSizeRow.id) : crypto.randomUUID();
+    for (const [colorName, colorId] of colorMap.entries()) {
+      const variantSku = `${sku}-${colorName.replace(/\s+/g, '')}`;
+      await turso.execute({
+        sql: `
+          INSERT INTO product_variants (
+            id, product_id, size_id, color_id, sku_variant, stock_quantity, is_available, created_at, updated_at
+          ) VALUES (?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+        `,
+        args: [crypto.randomUUID(), productId, defaultSizeId, colorId, variantSku, stockPerVariant]
+      });
+    }
+  }
+}
+
 function mapRowToProduct(row: any): ProductRow {
   const category = row.category || 'gotico';
-  const sizes = row.sizes_str ? row.sizes_str.split(',') : ['S', 'M', 'L'];
-  const colors = row.colors_str ? row.colors_str.split(',') : ['Negro', 'Blanco'];
   
-  let images = row.images_str ? row.images_str.split(',') : [];
+  const sizes = row.sizes_str && typeof row.sizes_str === 'string' && row.sizes_str.trim().length > 0
+    ? row.sizes_str.split(',').map((s: string) => s.trim()).filter(Boolean)
+    : (Array.isArray(row.sizes) && row.sizes.length > 0 ? row.sizes : ['S', 'M', 'L']);
+
+  const colors = row.colors_str && typeof row.colors_str === 'string' && row.colors_str.trim().length > 0
+    ? row.colors_str.split(',').map((c: string) => c.trim()).filter(Boolean)
+    : (Array.isArray(row.colors) && row.colors.length > 0 ? row.colors : ['Negro', 'Blanco']);
+  
+  let images = row.images_str && typeof row.images_str === 'string' && row.images_str.trim().length > 0
+    ? row.images_str.split(',').map((img: string) => img.trim()).filter(Boolean)
+    : (Array.isArray(row.images) && row.images.length > 0 ? row.images : []);
+
   if (images.length === 0 || !images[0]) {
     images = fallbackImages[category] || fallbackImages['gotico'];
   }
@@ -183,7 +336,12 @@ export async function dbCreateProduct(product: Partial<ProductRow>): Promise<Pro
     args: [id, sku, name, slug, description, short_description, categoryId, price, original_price, featured, is_active, rating, reviews_count, created_at, updated_at]
   });
 
-  // If there are custom images, save them
+  // 1. Guardar variantes de tallas y colores
+  if (product.sizes || product.colors) {
+    await syncProductVariants(id, sku, product.sizes || [], product.colors || [], Number(product.stock || 10));
+  }
+
+  // 2. Guardar imágenes si fueron provistas
   if (product.images && product.images.length > 0) {
     for (let i = 0; i < product.images.length; i++) {
       const imgUrl = product.images[i];
@@ -247,7 +405,19 @@ export async function dbUpdateProduct(id: string, product: Partial<ProductRow>):
     });
   }
 
-  // Update images if provided
+  // 1. Sincronizar variantes de tallas y colores si fueron provistas
+  if (product.sizes !== undefined || product.colors !== undefined) {
+    const sku = existing.sku || `SKU-${id.substring(0, 8)}`;
+    await syncProductVariants(
+      id,
+      sku,
+      product.sizes !== undefined ? product.sizes : existing.sizes,
+      product.colors !== undefined ? product.colors : existing.colors,
+      Number(product.stock || existing.stock || 10)
+    );
+  }
+
+  // 2. Actualizar imágenes si fueron provistas
   if (product.images) {
     // Clear old images
     await turso.execute({
@@ -272,6 +442,15 @@ export async function dbUpdateProduct(id: string, product: Partial<ProductRow>):
 }
 
 export async function dbDeleteProduct(id: string): Promise<void> {
+  // Limpiar variantes e imágenes asociadas
+  await turso.execute({
+    sql: 'DELETE FROM product_variants WHERE product_id = ?',
+    args: [id]
+  });
+  await turso.execute({
+    sql: 'DELETE FROM product_images WHERE product_id = ?',
+    args: [id]
+  });
   await turso.execute({
     sql: 'DELETE FROM products WHERE id = ?',
     args: [id]

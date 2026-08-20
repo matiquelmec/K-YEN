@@ -16,7 +16,7 @@ const CATEGORIES = [
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
 
-import { AVAILABLE_COLORS } from '@/lib/product-utils';
+import { AVAILABLE_COLORS, getColorClass } from '@/lib/product-utils';
 
 const COLORS = AVAILABLE_COLORS;
 
@@ -261,7 +261,34 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Tallas Disponibles</label>
+                        <div className="flex items-center justify-between mb-4">
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Tallas Disponibles ({formData.sizes.length} seleccionadas)</label>
+                            <div className="flex gap-2 text-[11px]">
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(p => ({ ...p, sizes: ['XS', 'S', 'M', 'L', 'XL'] }))}
+                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                >
+                                    Estándar (XS-XL)
+                                </button>
+                                <span className="text-gray-300">•</span>
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(p => ({ ...p, sizes: ['2XL', '3XL', '4XL', '5XL', '6XL'] }))}
+                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                >
+                                    Plus Size (2XL-6XL)
+                                </button>
+                                <span className="text-gray-300">•</span>
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(p => ({ ...p, sizes: SIZES }))}
+                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                >
+                                    Todas
+                                </button>
+                            </div>
+                        </div>
                         <div className="flex flex-wrap gap-2">
                             {SIZES.map(size => (
                                 <button
@@ -269,7 +296,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                     type="button"
                                     onClick={() => toggleSize(size)}
                                     className={`w-12 h-12 flex items-center justify-center text-xs font-bold rounded-xl border transition-all active:scale-90 ${formData.sizes.includes(size)
-                                        ? 'bg-earth-800 text-white border-earth-800 shadow-md shadow-earth-900/20'
+                                        ? 'bg-earth-800 text-white border-earth-800 shadow-md shadow-earth-900/20 ring-2 ring-earth-600/30'
                                         : 'bg-white text-gray-400 border-gray-100 hover:border-earth-200 hover:text-earth-700'
                                         }`}
                                 >
@@ -280,21 +307,28 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Paleta de Colores</label>
+                        <div className="flex items-center justify-between mb-4">
+                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Paleta de Colores ({formData.colors.length} seleccionados)</label>
+                            <span className="text-[11px] text-gray-400">Haz clic para activar o desactivar</span>
+                        </div>
                         <div className="flex flex-wrap gap-2">
-                            {COLORS.map(color => (
-                                <button
-                                    key={color}
-                                    type="button"
-                                    onClick={() => toggleColor(color)}
-                                    className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl border transition-all active:scale-90 ${formData.colors.includes(color)
-                                        ? 'bg-earth-50 text-earth-800 border-earth-200'
-                                        : 'bg-white text-gray-400 border-gray-100 hover:border-earth-200 hover:text-earth-700'
-                                        }`}
-                                >
-                                    {color}
-                                </button>
-                            ))}
+                            {COLORS.map(color => {
+                                const isSelected = formData.colors.includes(color);
+                                return (
+                                    <button
+                                        key={color}
+                                        type="button"
+                                        onClick={() => toggleColor(color)}
+                                        className={`px-4 py-2.5 text-xs font-bold rounded-xl border transition-all active:scale-90 flex items-center gap-2 ${isSelected
+                                            ? 'bg-earth-900 text-white border-earth-900 shadow-md ring-2 ring-earth-700/30'
+                                            : 'bg-white text-gray-600 border-gray-200 hover:border-earth-300 hover:text-earth-900'
+                                            }`}
+                                    >
+                                        <span className={`w-3.5 h-3.5 rounded-full border border-black/10 shadow-inner ${getColorClass(color)}`} />
+                                        <span>{color}</span>
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
