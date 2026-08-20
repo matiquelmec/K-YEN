@@ -5,13 +5,72 @@ import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
 import Image from 'next/image';
 import AddressForm from '@/components/checkout/AddressForm';
-import { ChevronLeft, Truck, CreditCard } from 'lucide-react';
+import { ChevronLeft, Truck, CreditCard, Tag, Check, X, Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
 
 export default function CheckoutPage() {
     const { state, clearCart } = useCart();
     const { items, total } = state;
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Estado del cupón de descuento
+    const [couponCode, setCouponCode] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState<{
+        code: string;
+        discount_amount: number;
+        discount_type: string;
+        discount_value: number;
+        affiliate_name?: string | null;
+    } | null>(null);
+    const [validatingCoupon, setValidatingCoupon] = useState(false);
+    const [couponError, setCouponError] = useState<string | null>(null);
+
+    const handleApplyCoupon = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!couponCode.trim()) return;
+
+        setValidatingCoupon(true);
+        setCouponError(null);
+
+        try {
+            const res = await fetch('/api/coupons/validate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    code: couponCode.trim().toUpperCase(),
+                    cart_amount: total
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || 'Cupón no válido');
+            }
+
+            setAppliedCoupon({
+                code: data.code,
+                discount_amount: data.discount_amount,
+                discount_type: data.discount_type,
+                discount_value: data.discount_value,
+                affiliate_name: data.affiliate_name
+            });
+            setCouponCode('');
+        } catch (err: any) {
+            setCouponError(err.message || 'Cupón no válido');
+            setAppliedCoupon(null);
+        } finally {
+            setValidatingCoupon(false);
+        }
+    };
+
+    const handleRemoveCoupon = () => {
+        setAppliedCoupon(null);
+        setCouponError(null);
+    };
+
+    const discountAmount = appliedCoupon ? appliedCoupon.discount_amount : 0;
+    const finalTotal = Math.max(0, total - discountAmount);
 
     const handleCheckout = async (formData: any) => {
         setIsSubmitting(true);
@@ -26,6 +85,7 @@ export default function CheckoutPage() {
                 body: JSON.stringify({
                     items: items,
                     customerInfo: formData,
+                    couponCode: appliedCoupon ? appliedCoupon.code : undefined,
                 }),
             });
 
@@ -69,24 +129,23 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-earth-900 via-earth-800 to-gothic-900 pt-28 pb-12 px-4 sm:px-6 lg:px-8 text-bone-100">
+        <div className="min-h-screen bg-gradient-to-br from-earth-900 via-gothic-900 to-earth-950">
             <Header />
-            <div className="max-w-7xl mx-auto">
-                <div className="mb-8">
-                    <Link href="/catalogo" className="text-bone-400 hover:text-bone-200 flex items-center gap-2 transition-colors">
-                        <ChevronLeft className="w-5 h-5" />
-                        Volver a comprar
-                    </Link>
-                </div>
 
-                <div className="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start">
-                    {/* Left Column: Forms */}
-                    <div className="lg:col-span-7 space-y-6">
+            <div className="container mx-auto px-4 py-12 pt-28">
+                <Link href="/catalogo" className="inline-flex items-center gap-2 text-bone-400 hover:text-bone-200 mb-8 transition-colors text-sm">
+                    <ChevronLeft className="w-4 h-4" />
+                    Continuar comprando
+                </Link>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    {/* Left Column: Address Form */}
+                    <div className="lg:col-span-7">
                         <AddressForm onSubmit={handleCheckout} />
 
-                        <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-xl">
-                            <h3 className="text-xl font-display font-bold text-bone-100 mb-4">Método de Envío</h3>
-                            <div className="flex items-start gap-4 p-4 border border-sensual-500/30 bg-sensual-950/20 rounded-xl">
+                        {/* Shipping Note */}
+                        <div className="mt-8 bg-earth-800/40 border border-white/5 rounded-2xl p-6">
+                            <div className="flex items-start gap-4">
                                 <Truck className="w-6 h-6 text-terra-400 mt-1" />
                                 <div>
                                     <p className="font-semibold text-bone-100">Envío por Pagar</p>
@@ -103,14 +162,14 @@ export default function CheckoutPage() {
                                 if (form) form.requestSubmit();
                             }}
                             disabled={isSubmitting}
-                            className="w-full py-4 bg-gradient-to-r from-sensual-600 to-sensual-700 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sensual-600/20 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full py-4 bg-gradient-to-r from-sensual-600 to-sensual-700 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sensual-600/20 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-8"
                         >
                             {isSubmitting ? 'Procesando...' : 'Confirmar Pedido'}
                         </button>
                     </div>
 
                     {/* Right Column: Order Summary */}
-                    <div className="lg:col-span-5 mt-10 lg:mt-0">
+                    <div className="lg:col-span-5">
                         <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-xl sticky top-24">
                             <h2 className="text-xl font-display font-bold text-bone-100 mb-6">Resumen del Pedido</h2>
 
@@ -143,18 +202,75 @@ export default function CheckoutPage() {
                                 ))}
                             </div>
 
-                            <div className="border-t border-white/10 pt-6 space-y-4">
-                                <div className="flex items-center justify-between text-bone-300">
+                            {/* Sección de Cupón de Descuento */}
+                            <div className="border-t border-white/10 pt-4 pb-4">
+                                {appliedCoupon ? (
+                                    <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <Check className="w-4 h-4 text-emerald-400" />
+                                            <div>
+                                                <p className="text-xs font-bold text-emerald-300 font-mono">{appliedCoupon.code}</p>
+                                                <p className="text-[10px] text-emerald-400/80">
+                                                    Descuento aplicado: -{formatPrice(appliedCoupon.discount_amount)}
+                                                    {appliedCoupon.affiliate_name ? ` (Embajadora: ${appliedCoupon.affiliate_name})` : ''}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={handleRemoveCoupon}
+                                            className="text-bone-400 hover:text-red-400 p-1 transition-colors"
+                                            title="Quitar cupón"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <form onSubmit={handleApplyCoupon} className="space-y-2">
+                                        <div className="flex gap-2">
+                                            <div className="relative flex-1">
+                                                <Tag className="w-4 h-4 text-bone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                                <input
+                                                    type="text"
+                                                    placeholder="Código de descuento"
+                                                    value={couponCode}
+                                                    onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                                                    className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-bone-100 uppercase font-mono placeholder:text-bone-400 focus:outline-none focus:border-terra-400 transition-colors"
+                                                />
+                                            </div>
+                                            <button
+                                                type="submit"
+                                                disabled={validatingCoupon || !couponCode.trim()}
+                                                className="px-4 py-2 bg-terra-500 hover:bg-terra-600 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-50 flex items-center gap-1"
+                                            >
+                                                {validatingCoupon ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Aplicar'}
+                                            </button>
+                                        </div>
+                                        {couponError && (
+                                            <p className="text-[11px] text-red-400 font-medium">{couponError}</p>
+                                        )}
+                                    </form>
+                                )}
+                            </div>
+
+                            <div className="border-t border-white/10 pt-4 space-y-3">
+                                <div className="flex items-center justify-between text-bone-300 text-sm">
                                     <span>Subtotal</span>
                                     <span className="text-bone-100">{formatPrice(total)}</span>
                                 </div>
-                                <div className="flex items-center justify-between text-bone-300">
+                                {appliedCoupon && (
+                                    <div className="flex items-center justify-between text-emerald-400 text-sm font-medium">
+                                        <span>Descuento ({appliedCoupon.code})</span>
+                                        <span>-{formatPrice(discountAmount)}</span>
+                                    </div>
+                                )}
+                                <div className="flex items-center justify-between text-bone-300 text-sm">
                                     <span>Envío</span>
                                     <span className="text-spring-400 font-medium">Por Pagar</span>
                                 </div>
                                 <div className="flex items-center justify-between border-t border-white/10 pt-4">
                                     <span className="text-xl font-display font-bold text-bone-100">Total</span>
-                                    <span className="text-2xl font-display font-bold text-terra-400">{formatPrice(total)}</span>
+                                    <span className="text-2xl font-display font-bold text-terra-400">{formatPrice(finalTotal)}</span>
                                 </div>
                             </div>
 

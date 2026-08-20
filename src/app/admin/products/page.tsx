@@ -48,6 +48,19 @@ export default function AdminProductsPage() {
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Métricas Financieras y de Inventario (Estándar JoyasJP)
+    const totalInventoryValue = products.reduce((acc, p) => acc + (Number(p.price) * (Number(p.stock) || 0)), 0);
+    const lowStockCount = products.filter(p => Number(p.stock) > 0 && Number(p.stock) <= 3).length;
+    const outOfStockCount = products.filter(p => Number(p.stock) <= 0).length;
+
+    const formatCLP = (amount: number) => {
+        return new Intl.NumberFormat('es-CL', {
+            style: 'currency',
+            currency: 'CLP',
+            minimumFractionDigits: 0
+        }).format(amount);
+    };
+
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center h-full min-h-[400px] gap-4">
@@ -70,7 +83,7 @@ export default function AdminProductsPage() {
                         Catálogo de Vestidos
                     </h1>
                     <p className="text-gray-500 font-medium mt-1">
-                        Gestiona y actualiza la colección de KÜYEN.
+                        Gestión total de piezas, inventario y precios en tiempo real.
                     </p>
                 </div>
 
@@ -81,6 +94,49 @@ export default function AdminProductsPage() {
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
                     Nuevo Vestido
                 </Link>
+            </div>
+
+            {/* KPI Cards de Inventario */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Modelos</p>
+                        <h3 className="text-2xl font-bold text-gray-900 mt-1">{products.length}</h3>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-earth-50 text-earth-700 flex items-center justify-center">
+                        <Package className="w-6 h-6" />
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Valor Inventario</p>
+                        <h3 className="text-2xl font-bold text-emerald-600 mt-1">{formatCLP(totalInventoryValue)}</h3>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                        $
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Stock Bajo (≤3)</p>
+                        <h3 className="text-2xl font-bold text-amber-600 mt-1">{lowStockCount}</h3>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                        ⚠️
+                    </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Agotados</p>
+                        <h3 className="text-2xl font-bold text-rose-600 mt-1">{outOfStockCount}</h3>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                        ✕
+                    </div>
+                </div>
             </div>
 
             <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden shadow-xl shadow-earth-900/5">

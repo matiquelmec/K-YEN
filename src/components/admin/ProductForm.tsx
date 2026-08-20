@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { productService } from '@/services/productService';
-import { Upload, X, Save, ArrowLeft, Loader2, Image as ImageIcon, CheckCircle2 } from 'lucide-react';
+import { Upload, Save, ArrowLeft, Loader2, CheckCircle2, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { Product } from '@/types';
-import { compressImage } from '@/lib/imageUtils';
+import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 
 const CATEGORIES = [
     { id: 'gotico', label: 'Luna Nueva (Gótico)', color: 'bg-gray-900' },
@@ -28,7 +28,6 @@ interface ProductFormProps {
 export default function ProductForm({ initialData }: ProductFormProps) {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
-    const [uploading, setUploading] = useState(false);
     const [success, setSuccess] = useState(false);
 
     // Initialize state with props or defaults
@@ -44,42 +43,6 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         is_new: initialData?.is_new || false,
         is_sale: initialData?.is_sale || false
     });
-
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!e.target.files || e.target.files.length === 0) return;
-        const file = e.target.files[0];
-        if (!file) return;
-
-        setUploading(true);
-
-        try {
-            let fileToUpload: File | Blob = file;
-
-            // Try to compress
-            try {
-                const compressedBlob = await compressImage(file);
-                fileToUpload = compressedBlob;
-            } catch (compressErr) {
-                console.warn('Compression failed, using original file:', compressErr);
-                // Fallback to original file
-            }
-            const slugName = formData.name 
-                ? formData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') 
-                : 'vestido';
-            const seoFileName = `${slugName}-${Date.now().toString().slice(-4)}`;
-            const publicUrl = await productService.uploadProductImage(fileToUpload, seoFileName, formData.category);
-
-            setFormData(prev => ({
-                ...prev,
-                images: [...prev.images, publicUrl]
-            }));
-        } catch (error: any) {
-            console.error('Error uploading image:', error);
-            alert('Error al subir la imagen: ' + (error.message || 'Desconocido'));
-        } finally {
-            setUploading(false);
-        }
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -262,7 +225,8 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 </div>
 
                 {/* Media */}
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-8 shadow-xl shadow-earth-900/5">
+                {/* Image Upload con MultiImageUpload */}
+                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6 shadow-xl shadow-earth-900/5">
                     <div className="flex items-center justify-between border-b border-gray-50 pb-5">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
@@ -272,48 +236,17 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                 Galería Visual
                             </h2>
                         </div>
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Recomendado: 1200x1800px</span>
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">WebP Automático • Alta Calidad</span>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {formData.images.map((url, idx) => (
-                            <div key={idx} className="relative aspect-[3/4] rounded-2xl overflow-hidden group ring-1 ring-gray-100 shadow-sm">
-                                <img src={url} alt={`Preview ${idx}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                                    <button
-                                        type="button"
-                                        onClick={() => setFormData(p => ({ ...p, images: p.images.filter((_, i) => i !== idx) }))}
-                                        className="p-3 bg-red-500 text-white rounded-2xl transform scale-75 group-hover:scale-100 transition-all hover:bg-red-600 shadow-xl"
-                                    >
-                                        <X className="w-6 h-6" />
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-
-                        <label className={`aspect-[3/4] border-2 border-dashed border-gray-200 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:border-earth-500 hover:bg-earth-50/30 transition-all group ${uploading ? 'pointer-events-none' : ''}`}>
-                            <input
-                                type="file"
-                                className="hidden"
-                                accept="image/*"
-                                onChange={handleImageUpload}
-                                disabled={uploading}
-                            />
-                            {uploading ? (
-                                <div className="flex flex-col items-center gap-4">
-                                    <div className="w-10 h-10 border-4 border-earth-100 border-t-earth-600 rounded-full animate-spin" />
-                                    <span className="text-[10px] font-bold text-earth-600 uppercase tracking-widest animate-pulse">Subiendo...</span>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center text-center px-4">
-                                    <div className="w-12 h-12 bg-gray-50 rounded-2xl flex items-center justify-center text-gray-300 group-hover:text-earth-600 group-hover:bg-white transition-all mb-4">
-                                        <Upload className="w-6 h-6" />
-                                    </div>
-                                    <span className="text-sm text-gray-400 group-hover:text-gray-600 font-bold transition-all">Añadir Imagen</span>
-                                </div>
-                            )}
-                        </label>
-                    </div>
+                    <MultiImageUpload
+                        images={formData.images}
+                        onChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))}
+                        category={formData.category}
+                        productName={formData.name}
+                        maxImages={8}
+                        disabled={loading}
+                    />
                 </div>
 
                 {/* Variants */}
@@ -406,7 +339,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     </Link>
                     <button
                         type="submit"
-                        disabled={loading || uploading}
+                        disabled={loading}
                         className="bg-earth-800 text-white px-10 py-4 rounded-2xl font-bold hover:bg-earth-900 transition-all shadow-xl shadow-earth-900/20 flex items-center gap-3 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
                     >
                         {loading ? (

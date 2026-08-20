@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { items, customerInfo } = await req.json();
+    const { items, customerInfo, couponCode } = await req.json();
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'El carrito está vacío' }, { status: 400 });
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Error al validar productos en la base de datos' }, { status: 500 });
     }
 
-    let totalAmount = 0;
+    let subtotalAmount = 0;
     const orderItems: any[] = [];
 
     const validatedItems = items.map((item: any) => {
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       }
 
       const itemTotal = dbPrice * item.quantity;
-      totalAmount += itemTotal;
+      subtotalAmount += itemTotal;
 
       orderItems.push({
         product_id: String(dbProduct.id),
@@ -85,22 +85,72 @@ export async function POST(req: NextRequest) {
       };
     });
 
+    // 3. Validar Cupón de Descuento en Base de Datos (Strict Server-Side)
+    let discountAmount = 0;
+    let validCouponCode: string | null = null;
+
+    if (couponCode) {
+      const upperCode = String(couponCode).trim().toUpperCase();
+      const couponRes = await turso.execute({
+        sql: 'SELECT * FROM coupons WHERE code = ? AND is_active = 1 LIMIT 1',
+        args: [upperCode]
+      });
+
+      if (couponRes.rows.length > 0) {
+        const coupon = couponRes.rows[0] as any;
+        const minCart = Number(coupon.min_cart_amount || 0);
+
+        if (subtotalAmount >= minCart) {
+          const discVal = Number(coupon.discount_value);
+          if (coupon.discount_type === 'percentage') {
+            discountAmount = Math.round(subtotalAmount * (discVal / 100));
+          } else {
+            discountAmount = discVal;
+          }
+          discountAmount = Math.min(discountAmount, subtotalAmount); // No puede ser mayor al subtotal
+          validCouponCode = upperCode;
+
+          // Registrar uso del cupón
+          await turso.execute({
+            sql: 'UPDATE coupons SET usage_count = COALESCE(usage_count, 0) + 1 WHERE code = ?',
+            args: [upperCode]
+          });
+        }
+      }
+    }
+
+    const finalTotalAmount = Math.max(0, subtotalAmount - discountAmount);
+
+    // Si hay descuento, ajustar proporcionalmente los items para Mercado Pago
+    let mpItems = validatedItems;
+    if (discountAmount > 0) {
+      const discountRatio = (subtotalAmount - discountAmount) / subtotalAmount;
+      mpItems = validatedItems.map((it: any) => ({
+        ...it,
+        unit_price: Math.round(it.unit_price * discountRatio)
+      }));
+    }
+
     const siteUrl = (process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin).replace(/\/$/, "");
     const internalOrderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // 3. PERSISTIR LA ORDEN EN BASE DE DATOS ANTES DE REDIRIGIR (Atómico - Estándar JoyasJP)
+    // 4. PERSISTIR LA ORDEN EN BASE DE DATOS ANTES DE REDIRIGIR (Atómico - Estándar JoyasJP)
     const savedOrder = await dbCreateOrder({
       order_number: internalOrderId,
       status: 'pending',
       payment_status: 'pending',
       payment_id: internalOrderId, // external_reference
-      total: totalAmount,
-      shipping_address: customerInfo || {},
+      total: finalTotalAmount,
+      shipping_address: {
+        ...(customerInfo || {}),
+        coupon_code: validCouponCode,
+        discount_applied: discountAmount
+      },
       items: orderItems
     });
 
     const preferenceBody: any = {
-      items: validatedItems,
+      items: mpItems,
       back_urls: {
         success: `${siteUrl}/checkout/success?order_id=${savedOrder.id}`,
         failure: `${siteUrl}/checkout/failure?order_id=${savedOrder.id}`,
