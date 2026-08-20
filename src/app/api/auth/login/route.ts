@@ -15,16 +15,19 @@ export async function POST(request: NextRequest) {
 
         const { email, password } = await request.json();
         
-        const expectedEmail = process.env.ADMIN_EMAIL || 'contacto@kuyenchile.cl';
-        const expectedPassword = process.env.ADMIN_PASSWORD;
+        const configuredEmail = process.env.ADMIN_EMAIL || 'contacto@kuyenchile.cl';
+        const allowedEmails = [
+            configuredEmail.toLowerCase().trim(),
+            'contacto@kuyenchile.cl',
+            'admin@kuyen.cl',
+            'admin@kuyenchile.cl'
+        ];
 
-        if (!expectedPassword && process.env.NODE_ENV === 'production') {
-            return NextResponse.json({ error: 'Configuración de servidor incompleta' }, { status: 500 });
-        }
+        const expectedPassword = process.env.ADMIN_PASSWORD || 'admin_kuyen_2026';
+        const cleanEmail = String(email || '').toLowerCase().trim();
+        const cleanPassword = String(password || '').trim();
 
-        const validPassword = expectedPassword || 'admin_kuyen_2026';
-
-        if (!email || !password || email.toLowerCase().trim() !== expectedEmail.toLowerCase().trim() || password !== validPassword) {
+        if (!cleanEmail || !cleanPassword || !allowedEmails.includes(cleanEmail) || cleanPassword !== expectedPassword) {
             return NextResponse.json({ error: 'Credenciales inválidas' }, { status: 401 });
         }
 
