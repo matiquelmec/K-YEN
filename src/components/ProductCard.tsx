@@ -178,7 +178,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
       <div className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 h-full flex flex-col'>
         {/* Product Image */}
         <div className='relative aspect-[3/4] overflow-hidden rounded-t-2xl bg-earth-900/10'>
-          <Link href={`/catalogo/${product.id}`}>
+          <Link href={`/catalogo/${product.slug || product.id}`}>
             {product.images && product.images[0] && !imgError ? (
               <Image
                 src={product.images[0]}
@@ -216,7 +216,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
         {/* Product Info */}
         <div className='p-6 flex-1 flex flex-col'>
-          <Link href={`/catalogo/${product.id}`}>
+          <Link href={`/catalogo/${product.slug || product.id}`}>
             <h3 className='font-display text-xl font-bold text-gradient-earth mb-2 line-clamp-1' title={product.name}>
               {product.name}
             </h3>

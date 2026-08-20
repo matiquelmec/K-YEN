@@ -277,7 +277,7 @@ export async function dbGetProducts(options: {
   return (result.rows as any[]).map(mapRowToProduct);
 }
 
-export async function dbGetProductById(id: string): Promise<ProductRow | null> {
+export async function dbGetProductById(idOrSlug: string): Promise<ProductRow | null> {
   const query = `
     SELECT 
       p.*,
@@ -287,9 +287,10 @@ export async function dbGetProductById(id: string): Promise<ProductRow | null> {
       (SELECT GROUP_CONCAT(DISTINCT pi.url) FROM product_images pi WHERE pi.product_id = p.id) as images_str
     FROM products p
     LEFT JOIN categories cat ON p.category_id = cat.id
-    WHERE p.id = ?
+    WHERE p.id = ? OR p.slug = ?
+    LIMIT 1
   `;
-  const result = await turso.execute({ sql: query, args: [id] });
+  const result = await turso.execute({ sql: query, args: [idOrSlug, idOrSlug] });
   if (result.rows.length === 0) return null;
   return mapRowToProduct(result.rows[0]);
 }

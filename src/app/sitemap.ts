@@ -2,12 +2,13 @@ import { MetadataRoute } from 'next';
 import { dbGetProducts } from '@/lib/db/products';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://kuyen-tienda-vestidos.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://kuyenchile.cl';
 
   // Base routes
   const routes = [
     '',
     '/catalogo',
+    '/politicas',
     '/checkout',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
@@ -20,10 +21,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     const products = await dbGetProducts();
     const productRoutes = products.map((product) => ({
-      url: `${baseUrl}/catalogo/${product.id}`,
+      url: `${baseUrl}/catalogo/${product.slug || product.id}`,
       lastModified: product.updated_at || new Date().toISOString(),
       changeFrequency: 'weekly' as const,
-      priority: 0.6,
+      priority: 0.7,
     }));
 
     return [...routes, ...productRoutes];
