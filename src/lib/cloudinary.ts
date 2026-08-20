@@ -90,15 +90,9 @@ export async function uploadToCloudinary(
 
   const uploadData = await response.json();
 
-  // Optimización de URL: entregamos URL segura con optimización automática
-  const secureUrl = String(uploadData.secure_url || '').replace(
-    '/upload/',
-    '/upload/f_auto,q_auto/'
-  );
-
   return {
     success: true,
-    publicUrl: secureUrl || uploadData.secure_url,
+    publicUrl: uploadData.secure_url,
     filePath: uploadData.public_id,
   };
 }
