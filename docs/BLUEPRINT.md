@@ -1,4 +1,4 @@
-﻿# 🏛️ BLUEPRINT ARQUITECTÓNICO MAESTRO - KÜYEN E-COMMERCE
+# 🏛️ BLUEPRINT ARQUITECTÓNICO MAESTRO - KÜYEN E-COMMERCE
 
 > **Versión del Sistema:** 2.4.0  
 > **Última Actualización:** Agosto 2026  
@@ -204,12 +204,13 @@ erDiagram
 
 ## 6. 🧪 Estrategia de Testing y Métricas de Calidad
 
-- **Testing Unitario:** 26 pruebas automáticas en Vitest (`tests/unit/*.test.ts`) cubriendo:
+- **Testing Unitario:** 29 pruebas automáticas en Vitest (`tests/unit/*.test.ts`) cubriendo:
   - Cupones y reglas de descuento porcentual y fijo.
   - Sincronización de variantes y SKU generation.
   - Extracción y matching de color en Canvas.
+  - Resolución de slugs semánticos y compatibilidad con UUIDs.
   - Tipado de productos y fallback seguro.
 - **Validación Continua:**
   - TypeScript: 100% libre de errores (`npm run type-check`).
   - ESLint: 0 errores y 0 warnings (`npm run lint`).
-  - Build de Producción: 28 páginas compiladas y sitemap XML autogenerado (`npm run build`).
+  - Build de Producción: 28 páginas compiladas y sitemap XML autogenerado con slugs (`npm run build`).

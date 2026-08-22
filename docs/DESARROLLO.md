@@ -1,4 +1,4 @@
-﻿# 👗 Guía Técnica de Desarrollo - Tienda KÜYEN
+# 👗 Guía Técnica de Desarrollo - Tienda KÜYEN
 
 ## 1. Resumen de la Plataforma
 KÜYEN es una plataforma de e-commerce de alto rendimiento construida con **Next.js 16 (Turbopack)**, **React 19**, **TypeScript 5.9** y base de datos relacional distribuida en **Turso DB**. Incluye panel de control administrativo, catálogo interactivo con filtrado dinámico, gestión de cupones/afiliadas, auto-detección de colores por Canvas y pagos seguros con Mercado Pago.
@@ -39,11 +39,12 @@ La sincronización se realiza atómicamente a través de `syncProductVariants(..
 ---
 
 ## 5. Testing Automatizado (Vitest)
-Se cuenta con 26 pruebas unitarias estructuradas en `tests/unit/`:
+Se cuenta con 29 pruebas unitarias estructuradas en `tests/unit/`:
 - `tests/unit/coupons.test.ts`: Validación de reglas de cupones y límites de uso.
 - `tests/unit/products-variants.test.ts`: Generación de SKUs y mapeo relacional.
 - `tests/unit/color-extractor.test.ts`: Algoritmo Canvas y matching perceptual.
 - `tests/unit/multi-image.test.ts`: Validaciones de subida múltiple.
+- `tests/unit/slug-resolution.test.ts`: Validación de slugs semánticos y fallback a UUID.
 
 Para ejecutar las pruebas:
 ```bash
