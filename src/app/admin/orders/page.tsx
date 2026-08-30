@@ -86,64 +86,75 @@ export default function AdminOrdersPage() {
     }
 
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="font-display text-2xl md:text-3xl font-bold text-gray-900">
-                    Pedidos
+        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-1">
+                    CASA AIRA • VENTAS
+                </span>
+                <h1
+                    className="font-serif text-3xl md:text-4xl font-normal text-[#181716] tracking-tight"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    Pedidos de Boutique
                 </h1>
-                <p className="text-gray-500 text-sm mt-1">
-                    Revisa y gestiona los envíos
+                <p className="text-stone-500 font-light text-sm mt-1">
+                    Revisa y gestiona los despachos y confirmaciones de pago en tiempo real.
                 </p>
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white border border-stone-200/80 shadow-sm overflow-hidden">
                 {/* Toolbar */}
-                <div className="p-4 border-b border-gray-100 flex gap-4">
+                <div className="p-5 border-b border-stone-100 flex gap-4 bg-stone-50/50">
                     <div className="relative flex-1 max-w-md">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-stone-400 w-4 h-4" />
                         <input
                             type="text"
-                            placeholder="Buscar por Orden # o cliente..."
+                            name="search"
+                            autoComplete="off"
+                            placeholder="Buscar por Orden # o clienta..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-earth-500"
+                            className="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-200 text-xs text-stone-900 tracking-wide placeholder:text-stone-400 focus:outline-none focus:border-calypso-600 transition-colors"
                         />
                     </div>
                 </div>
 
                 {/* Table */}
                 {filteredOrders.length === 0 ? (
-                    <div className="p-12 text-center text-gray-500">
-                        {searchTerm ? 'No se encontraron pedidos.' : 'No hay pedidos registrados aún.'}
+                    <div className="p-16 text-center text-stone-400">
+                        <p className="text-xs font-light">
+                            {searchTerm ? 'No se encontraron pedidos con ese criterio.' : 'No hay pedidos registrados aún.'}
+                        </p>
                     </div>
                 ) : (
                     <div className="overflow-x-auto">
-                        <table className="w-full text-left text-sm">                             <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-100">
+                        <table className="w-full text-left text-xs">
+                            <thead className="bg-stone-50 text-stone-500 text-[10px] font-semibold uppercase tracking-[0.25em] border-b border-stone-100">
                                 <tr>
-                                    <th className="px-6 py-3">N° Orden</th>
-                                    <th className="px-6 py-3">Cliente</th>
-                                    <th className="px-6 py-3">Fecha</th>
-                                    <th className="px-6 py-3">Envío</th>
-                                    <th className="px-6 py-3">Estado Pago</th>
-                                    <th className="px-6 py-3">Total</th>
-                                    <th className="px-6 py-3 text-right">Acciones</th>
+                                    <th className="px-6 py-3.5">N° Orden</th>
+                                    <th className="px-6 py-3.5">Clienta</th>
+                                    <th className="px-6 py-3.5">Fecha</th>
+                                    <th className="px-6 py-3.5">Envío</th>
+                                    <th className="px-6 py-3.5">Estado Pago</th>
+                                    <th className="px-6 py-3.5">Total</th>
+                                    <th className="px-6 py-3.5 text-right">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-100">
+                            <tbody className="divide-y divide-stone-100">
                                 {filteredOrders.map((order) => (
-                                    <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                                        <td className="px-6 py-4 font-mono text-xs text-earth-700 font-medium">
+                                    <tr key={order.id} className="hover:bg-stone-50/60 transition-colors">
+                                        <td className="px-6 py-4 font-mono text-[11px] text-stone-800 font-medium">
                                             {order.order_number}
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div className="font-medium text-gray-900">
-                                                {order.shipping_address?.full_name || 'Cliente sin nombre'}
+                                            <div className="font-medium text-[#181716]">
+                                                {order.shipping_address?.full_name || 'Clienta sin nombre'}
                                             </div>
-                                            <div className="text-xs text-gray-500">
+                                            <div className="text-[11px] text-stone-400 font-light">
                                                 {order.shipping_address?.email}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 text-gray-600">
+                                        <td className="px-6 py-4 text-stone-500 font-light">
                                             {new Date(order.created_at).toLocaleDateString('es-CL')}
                                         </td>
                                         <td className="px-6 py-4">
@@ -152,15 +163,16 @@ export default function AdminOrdersPage() {
                                         <td className="px-6 py-4">
                                             {getPaymentStatusBadge(order.payment_status)}
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-gray-900">
+                                        <td className="px-6 py-4 font-medium text-[#181716] tabular-nums">
                                             ${Number(order.total).toLocaleString('es-CL')}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <Link
                                                 href={`/admin/orders/${order.id}`}
-                                                className="inline-flex items-center gap-1 text-earth-600 hover:text-earth-800 font-medium text-xs bg-earth-50 hover:bg-earth-100 px-3 py-1.5 rounded-lg transition-colors"
+                                                className="inline-flex items-center gap-1.5 text-xs text-[#181716] hover:text-calypso-700 font-semibold uppercase tracking-wider transition-colors"
                                             >
-                                                Ver Detalle <Eye className="w-3 h-3" />
+                                                <span>Detalle</span>
+                                                <Eye className="w-3.5 h-3.5" />
                                             </Link>
                                         </td>
                                     </tr>

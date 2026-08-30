@@ -10,7 +10,10 @@ import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 import { extractDominantColorsFromImage } from '@/lib/colorExtractor';
 
 const CATEGORIES = [
-    { id: 'gotico', label: 'Luna Nueva (Gótico)', color: 'bg-gray-900' },
+    { id: 'brisa-calipso', label: 'Brisa & Calipso (Lino y Seda)', color: 'bg-calypso-600' },
+    { id: 'solsticio-dorado', label: 'Solsticio Dorado (Gala & Ocasión)', color: 'bg-gold-500' },
+    { id: 'rosa-alba', label: 'Rosa de Alba (Couture & Cocktail)', color: 'bg-rose-400' },
+    { id: 'gotico', label: 'Luna Nueva (Gótico)', color: 'bg-stone-900' },
     { id: 'primaveral', label: 'Eclipse Floral (Primaveral)', color: 'bg-rose-500' },
     { id: 'veraniego', label: 'Solsticio (Veraniego)', color: 'bg-amber-500' },
 ];
@@ -20,7 +23,6 @@ const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
 import { AVAILABLE_COLORS, getColorClass } from '@/lib/product-utils';
 
 const COLORS = AVAILABLE_COLORS;
-
 
 interface ProductFormProps {
     initialData?: Product;
@@ -36,7 +38,7 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         name: initialData?.name || '',
         description: initialData?.description || '',
         price: initialData?.price?.toString() || '',
-        category: initialData?.category || 'gotico',
+        category: initialData?.category || 'brisa-calipso',
         stock: initialData?.stock?.toString() || '10',
         sizes: initialData?.sizes || [] as string[],
         colors: initialData?.colors || [] as string[],
@@ -139,35 +141,46 @@ export default function ProductForm({ initialData }: ProductFormProps) {
         }));
     };
 
-    const pageTitle = initialData ? 'Editar Vestido' : 'Nueva Creación';
-    const pageSubtitle = initialData ? 'Perfecciona los detalles de esta pieza' : 'Comienza una nueva historia en el catálogo';
+    const pageTitle = initialData ? 'Editar Vestido' : 'Nueva Pieza de Autor';
+    const pageSubtitle = initialData ? 'Perfecciona los detalles y disponibilidad de esta prenda' : 'Incorpora un nuevo diseño a la curaduría de Casa Aira';
 
     if (success) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] animate-in fade-in zoom-in duration-500">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-600">
-                    <CheckCircle2 className="w-10 h-10" />
+                <div className="w-16 h-16 bg-emerald-50 border border-emerald-200 rounded-full flex items-center justify-center mb-5 text-emerald-600">
+                    <CheckCircle2 className="w-8 h-8" />
                 </div>
-                <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">¡Guardado con éxito!</h2>
-                <p className="text-gray-500 font-medium">Redirigiendo al catálogo...</p>
+                <h2
+                    className="text-3xl font-serif font-normal text-[#181716] mb-1"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    ¡Guardado con éxito!
+                </h2>
+                <p className="text-stone-500 font-light text-xs">Actualizando catálogo de boutique...</p>
             </div>
         );
     }
 
     return (
         <div className="max-w-4xl mx-auto pb-20 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="flex items-center gap-6 mb-10">
+            <div className="flex items-center gap-5 mb-8">
                 <Link
                     href="/admin/products"
-                    className="p-3 bg-white hover:bg-gray-50 rounded-2xl text-gray-400 hover:text-earth-600 transition-all border border-gray-100 shadow-sm active:scale-95"
+                    className="p-3 bg-white hover:bg-stone-50 text-stone-400 hover:text-stone-800 transition-all border border-stone-200 shadow-sm"
                 >
-                    <ArrowLeft className="w-6 h-6" />
+                    <ArrowLeft className="w-5 h-5" />
                 </Link>
                 <div>
-                    <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-1">
+                        CASA AIRA • CURADURÍA
+                    </span>
+                    <h1
+                        className="font-serif text-3xl md:text-4xl font-normal text-[#181716] tracking-tight"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
                         {pageTitle}
                     </h1>
-                    <p className="text-gray-500 font-medium mt-1">
+                    <p className="text-stone-500 font-light text-xs mt-0.5">
                         {pageSubtitle}
                     </p>
                 </div>
@@ -175,45 +188,48 @@ export default function ProductForm({ initialData }: ProductFormProps) {
 
             <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Basic Info */}
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-8 shadow-xl shadow-earth-900/5">
-                    <div className="flex items-center gap-3 border-b border-gray-50 pb-5">
-                        <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
-                            <ImageIcon className="w-5 h-5" />
+                <div className="bg-white p-8 border border-stone-200/80 shadow-sm space-y-8">
+                    <div className="flex items-center gap-3 border-b border-stone-100 pb-5">
+                        <div className="w-9 h-9 bg-stone-100 text-stone-700 flex items-center justify-center">
+                            <ImageIcon className="w-4 h-4" />
                         </div>
-                        <h2 className="font-bold text-xl text-gray-900">
-                            Detalles del Vestido
+                        <h2
+                            className="font-serif text-xl font-normal text-[#181716]"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                            Detalles de la Prenda
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Nombre Sugerente</label>
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] mb-2">Nombre del Vestido</label>
                             <input
                                 type="text"
                                 required
                                 value={formData.name}
                                 onChange={e => setFormData({ ...formData, name: e.target.value })}
-                                className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-earth-500/10 focus:border-earth-500 focus:outline-none transition-all font-medium text-gray-900 placeholder:text-gray-300"
-                                placeholder="Ej: Vestido Medianoche Velvet"
+                                className="w-full px-4 py-3 bg-stone-50/50 border border-stone-200 text-xs text-stone-900 tracking-wide placeholder:text-stone-400 focus:outline-none focus:border-calypso-600 transition-colors"
+                                placeholder="Ej: Vestido Brisa Calipso Seda"
                             />
                         </div>
 
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Descripción e Historia</label>
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] mb-2">Descripción & Nota de Estilo</label>
                             <textarea
                                 required
                                 rows={4}
                                 value={formData.description}
                                 onChange={e => setFormData({ ...formData, description: e.target.value })}
-                                className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-earth-500/10 focus:border-earth-500 focus:outline-none transition-all font-medium text-gray-900 placeholder:text-gray-300 resize-none"
-                                placeholder="Describe la caída, la tela y la ocasión ideal para este vestido..."
+                                className="w-full px-4 py-3 bg-stone-50/50 border border-stone-200 text-xs text-stone-900 tracking-wide placeholder:text-stone-400 focus:outline-none focus:border-calypso-600 transition-colors resize-none leading-relaxed"
+                                placeholder="Describe el corte, la textura, caída de la tela y ocasión recomendada..."
                             />
                         </div>
 
                         <div>
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Inversión (CLP)</label>
-                            <div className="relative group">
-                                <span className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold group-focus-within:text-earth-600 transition-colors">$</span>
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] mb-2">Inversión (CLP)</label>
+                            <div className="relative">
+                                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 font-semibold text-xs">$</span>
                                 <input
                                     type="text"
                                     required
@@ -222,39 +238,39 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                         const val = e.target.value.replace(/\D/g, '');
                                         setFormData({ ...formData, price: val ? parseInt(val).toLocaleString('es-CL') : '' });
                                     }}
-                                    className="w-full pl-10 pr-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-earth-500/10 focus:border-earth-500 focus:outline-none transition-all font-bold text-gray-900"
+                                    className="w-full pl-8 pr-4 py-3 bg-stone-50/50 border border-stone-200 text-xs text-stone-900 tracking-wide font-medium focus:outline-none focus:border-calypso-600 transition-colors"
                                     placeholder="0"
                                 />
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Piezas Disponibles</label>
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] mb-2">Piezas Disponibles</label>
                             <input
                                 type="number"
                                 required
                                 min="0"
                                 value={formData.stock}
                                 onChange={e => setFormData({ ...formData, stock: e.target.value })}
-                                className="w-full px-5 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-4 focus:ring-earth-500/10 focus:border-earth-500 focus:outline-none transition-all font-bold text-gray-900"
+                                className="w-full px-4 py-3 bg-stone-50/50 border border-stone-200 text-xs text-stone-900 tracking-wide font-medium focus:outline-none focus:border-calypso-600 transition-colors"
                             />
                         </div>
 
                         <div className="col-span-2">
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Colección de Origen</label>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                {CATEGORIES.map(cat => (
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] mb-2">Capítulo de Colección</label>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                {CATEGORIES.slice(0, 3).map(cat => (
                                     <button
                                         key={cat.id}
                                         type="button"
                                         onClick={() => setFormData({ ...formData, category: cat.id })}
-                                        className={`flex flex-col p-4 rounded-2xl border transition-all text-left group ${formData.category === cat.id
-                                            ? 'bg-earth-800 border-earth-800 text-white shadow-lg shadow-earth-900/20'
-                                            : 'bg-white border-gray-100 text-gray-600 hover:border-earth-200'
+                                        className={`flex flex-col p-4 border transition-all text-left ${formData.category === cat.id
+                                            ? 'bg-[#181716] border-[#181716] text-white shadow-md'
+                                            : 'bg-white border-stone-200 text-stone-700 hover:border-calypso-600'
                                             }`}
                                     >
-                                        <div className={`w-8 h-8 rounded-lg mb-3 ${cat.color} ${formData.category === cat.id ? 'opacity-30' : 'opacity-100'}`} />
-                                        <span className="font-bold text-sm tracking-tight">{cat.label}</span>
+                                        <div className={`w-6 h-6 mb-2.5 ${cat.color}`} />
+                                        <span className="font-semibold text-xs tracking-tight">{cat.label}</span>
                                     </button>
                                 ))}
                             </div>
@@ -263,18 +279,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 </div>
 
                 {/* Media */}
-                {/* Image Upload con MultiImageUpload */}
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-6 shadow-xl shadow-earth-900/5">
-                    <div className="flex items-center justify-between border-b border-gray-50 pb-5">
+                <div className="bg-white p-8 border border-stone-200/80 shadow-sm space-y-6">
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-5">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
-                                <Upload className="w-5 h-5" />
+                            <div className="w-9 h-9 bg-stone-100 text-stone-700 flex items-center justify-center">
+                                <Upload className="w-4 h-4" />
                             </div>
-                            <h2 className="font-bold text-xl text-gray-900">
+                            <h2
+                                className="font-serif text-xl font-normal text-[#181716]"
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                            >
                                 Galería Visual
                             </h2>
                         </div>
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">WebP Automático • Alta Calidad</span>
+                        <span className="text-[9px] font-semibold text-stone-400 uppercase tracking-[0.25em]">WebP Automático • Calidad Boutique</span>
                     </div>
 
                     <MultiImageUpload
@@ -289,17 +307,20 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 </div>
 
                 {/* Variants */}
-                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 space-y-8 shadow-xl shadow-earth-900/5">
-                    <div className="flex items-center justify-between border-b border-gray-50 pb-5">
+                <div className="bg-white p-8 border border-stone-200/80 shadow-sm space-y-8">
+                    <div className="flex items-center justify-between border-b border-stone-100 pb-5">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600">
-                                <ImageIcon className="w-5 h-5" />
+                            <div className="w-9 h-9 bg-stone-100 text-stone-700 flex items-center justify-center">
+                                <ImageIcon className="w-4 h-4" />
                             </div>
                             <div>
-                                <h2 className="font-bold text-xl text-gray-900">
-                                    Variantes y Stock
+                                <h2
+                                    className="font-serif text-xl font-normal text-[#181716]"
+                                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                >
+                                    Tallas Reales & Colores
                                 </h2>
-                                <p className="text-xs text-gray-400">Personaliza las tallas y colores que componen este diseño</p>
+                                <p className="text-[11px] text-stone-400 font-light">Configura el tallaje inclusivo (XS a 6XL) y los tonos disponibles</p>
                             </div>
                         </div>
 
@@ -308,12 +329,12 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                 type="button"
                                 onClick={triggerManualColorDetection}
                                 disabled={detectingColors}
-                                className="px-3.5 py-2 bg-gradient-to-r from-amber-500/10 to-earth-500/10 border border-amber-200/50 hover:border-amber-400 text-amber-900 text-xs font-bold rounded-xl flex items-center gap-2 transition-all hover:shadow-sm active:scale-95 disabled:opacity-50"
+                                className="px-3.5 py-2 bg-stone-50 border border-stone-200 text-stone-700 hover:border-calypso-600 hover:text-calypso-700 text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
                             >
                                 {detectingColors ? (
-                                    <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-600" />
+                                    <Loader2 className="w-3.5 h-3.5 animate-spin text-calypso-600" />
                                 ) : (
-                                    <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                                    <Sparkles className="w-3.5 h-3.5 text-gold-600" />
                                 )}
                                 <span>{detectingColors ? 'Analizando...' : 'Auto-detectar Colores'}</span>
                             </button>
@@ -321,29 +342,29 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     </div>
 
                     <div>
-                        <div className="flex items-center justify-between mb-4">
-                            <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Tallas Disponibles ({formData.sizes.length} seleccionadas)</label>
-                            <div className="flex gap-2 text-[11px]">
+                        <div className="flex items-center justify-between mb-3">
+                            <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em]">Tallas Seleccionadas ({formData.sizes.length})</label>
+                            <div className="flex gap-2 text-[10px] uppercase font-semibold">
                                 <button
                                     type="button"
                                     onClick={() => setFormData(p => ({ ...p, sizes: ['XS', 'S', 'M', 'L', 'XL'] }))}
-                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                    className="text-stone-600 hover:text-calypso-700 tracking-wider"
                                 >
                                     Estándar (XS-XL)
                                 </button>
-                                <span className="text-gray-300">•</span>
+                                <span className="text-stone-300">•</span>
                                 <button
                                     type="button"
                                     onClick={() => setFormData(p => ({ ...p, sizes: ['2XL', '3XL', '4XL', '5XL', '6XL'] }))}
-                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                    className="text-stone-600 hover:text-calypso-700 tracking-wider"
                                 >
                                     Plus Size (2XL-6XL)
                                 </button>
-                                <span className="text-gray-300">•</span>
+                                <span className="text-stone-300">•</span>
                                 <button
                                     type="button"
                                     onClick={() => setFormData(p => ({ ...p, sizes: SIZES }))}
-                                    className="text-earth-600 hover:text-earth-800 font-bold hover:underline"
+                                    className="text-stone-600 hover:text-calypso-700 tracking-wider"
                                 >
                                     Todas
                                 </button>
@@ -355,9 +376,9 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                     key={size}
                                     type="button"
                                     onClick={() => toggleSize(size)}
-                                    className={`w-12 h-12 flex items-center justify-center text-xs font-bold rounded-xl border transition-all active:scale-90 ${formData.sizes.includes(size)
-                                        ? 'bg-earth-800 text-white border-earth-800 shadow-md shadow-earth-900/20 ring-2 ring-earth-600/30'
-                                        : 'bg-white text-gray-400 border-gray-100 hover:border-earth-200 hover:text-earth-700'
+                                    className={`w-11 h-11 flex items-center justify-center text-xs font-semibold transition-all active:scale-95 ${formData.sizes.includes(size)
+                                        ? 'bg-[#181716] text-white border border-[#181716] shadow-sm'
+                                        : 'bg-white text-stone-500 border border-stone-200 hover:border-stone-400'
                                         }`}
                                 >
                                     {size}
@@ -367,16 +388,16 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                     </div>
 
                     <div>
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Paleta de Colores ({formData.colors.length} seleccionados)</label>
+                                <label className="block text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em]">Paleta de Tonos ({formData.colors.length})</label>
                                 {colorDetectionMsg && (
-                                    <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full animate-in fade-in zoom-in duration-300">
+                                    <span className="text-[10px] font-medium text-calypso-700 bg-calypso-50 px-2 py-0.5 border border-calypso-200">
                                         {colorDetectionMsg}
                                     </span>
                                 )}
                             </div>
-                            <span className="text-[11px] text-gray-400">Haz clic para activar o desactivar</span>
+                            <span className="text-[10px] text-stone-400">Clic para activar / desactivar</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
                             {COLORS.map(color => {
@@ -386,12 +407,12 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                                         key={color}
                                         type="button"
                                         onClick={() => toggleColor(color)}
-                                        className={`px-4 py-2.5 text-xs font-bold rounded-xl border transition-all active:scale-90 flex items-center gap-2 ${isSelected
-                                            ? 'bg-earth-900 text-white border-earth-900 shadow-md ring-2 ring-earth-700/30'
-                                            : 'bg-white text-gray-600 border-gray-200 hover:border-earth-300 hover:text-earth-900'
+                                        className={`px-3.5 py-2 text-xs font-medium transition-all active:scale-95 flex items-center gap-2 border ${isSelected
+                                            ? 'bg-[#181716] text-white border-[#181716] shadow-sm'
+                                            : 'bg-white text-stone-700 border-stone-200 hover:border-stone-400'
                                             }`}
                                     >
-                                        <span className={`w-3.5 h-3.5 rounded-full border border-black/10 shadow-inner ${getColorClass(color)}`} />
+                                        <span className={`w-3 h-3 rounded-full border border-black/10 shadow-inner ${getColorClass(color)}`} />
                                         <span>{color}</span>
                                     </button>
                                 );
@@ -401,57 +422,55 @@ export default function ProductForm({ initialData }: ProductFormProps) {
                 </div>
 
                 {/* Options */}
-                <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 shadow-xl shadow-earth-900/5">
+                <div className="bg-white p-6 border border-stone-200/80 shadow-sm">
                     <div className="flex flex-wrap gap-8">
-                        <label className="flex items-center gap-4 cursor-pointer group">
-                            <div className="relative">
-                                <input
-                                    type="checkbox"
-                                    checked={formData.is_new}
-                                    onChange={e => setFormData({ ...formData, is_new: e.target.checked })}
-                                    className="peer sr-only"
-                                />
-                                <div className="w-12 h-6 bg-gray-200 rounded-full peer peer-checked:bg-earth-600 transition-colors after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-6" />
-                            </div>
-                            <span className="text-gray-900 font-bold text-sm tracking-tight group-hover:text-earth-800">Nueva Colección</span>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={formData.is_new}
+                                onChange={e => setFormData({ ...formData, is_new: e.target.checked })}
+                                className="w-4 h-4 text-calypso-600 rounded border-stone-300 focus:ring-calypso-500"
+                            />
+                            <span className="text-stone-800 text-xs font-semibold uppercase tracking-wider group-hover:text-calypso-700">
+                                Nueva Colección
+                            </span>
                         </label>
 
-                        <label className="flex items-center gap-4 cursor-pointer group">
-                            <div className="relative">
-                                <input
-                                    type="checkbox"
-                                    checked={formData.is_sale}
-                                    onChange={e => setFormData({ ...formData, is_sale: e.target.checked })}
-                                    className="peer sr-only"
-                                />
-                                <div className="w-12 h-6 bg-gray-200 rounded-full peer peer-checked:bg-amber-500 transition-colors after:content-[''] after:absolute after:top-1 after:left-1 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-6" />
-                            </div>
-                            <span className="text-gray-900 font-bold text-sm tracking-tight group-hover:text-amber-600">Oferta Especial</span>
+                        <label className="flex items-center gap-3 cursor-pointer group">
+                            <input
+                                type="checkbox"
+                                checked={formData.is_sale}
+                                onChange={e => setFormData({ ...formData, is_sale: e.target.checked })}
+                                className="w-4 h-4 text-gold-600 rounded border-stone-300 focus:ring-gold-500"
+                            />
+                            <span className="text-stone-800 text-xs font-semibold uppercase tracking-wider group-hover:text-gold-700">
+                                Selección Especial / Sale
+                            </span>
                         </label>
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-4 pt-6">
+                <div className="flex justify-end gap-3 pt-4">
                     <Link
                         href="/admin/products"
-                        className="px-8 py-4 bg-white text-gray-400 font-bold rounded-2xl border border-gray-100 hover:bg-gray-50 transition-all active:scale-95"
+                        className="px-6 py-3.5 bg-stone-100 text-stone-700 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-stone-200 transition-all active:scale-95"
                     >
                         Cancelar
                     </Link>
                     <button
                         type="submit"
                         disabled={loading}
-                        className="bg-earth-800 text-white px-10 py-4 rounded-2xl font-bold hover:bg-earth-900 transition-all shadow-xl shadow-earth-900/20 flex items-center gap-3 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
+                        className="bg-[#181716] text-white px-8 py-3.5 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-calypso-700 transition-all flex items-center gap-2.5 active:scale-95 disabled:opacity-50 disabled:pointer-events-none shadow-sm"
                     >
                         {loading ? (
                             <>
-                                <Loader2 className="w-5 h-5 animate-spin" />
-                                <span>Tejiendo cambios...</span>
+                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <span>Guardando pieza...</span>
                             </>
                         ) : (
                             <>
-                                <Save className="w-5 h-5" />
-                                <span>{initialData ? 'Guardar Cambios' : 'Lanzar Vestido'}</span>
+                                <Save className="w-4 h-4" />
+                                <span>{initialData ? 'Guardar Cambios' : 'Incorporar al Catálogo'}</span>
                             </>
                         )}
                     </button>

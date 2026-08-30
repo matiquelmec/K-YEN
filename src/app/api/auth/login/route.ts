@@ -15,9 +15,11 @@ export async function POST(request: NextRequest) {
 
         const { email, password } = await request.json();
         
-        const configuredEmail = process.env.ADMIN_EMAIL || 'contacto@kuyenchile.cl';
+        const configuredEmail = process.env.ADMIN_EMAIL || 'admin@casaaira.cl';
         const allowedEmails = [
             configuredEmail.toLowerCase().trim(),
+            'admin@casaaira.cl',
+            'contacto@casaaira.cl',
             'contacto@kuyenchile.cl',
             'admin@kuyen.cl',
             'admin@kuyenchile.cl'

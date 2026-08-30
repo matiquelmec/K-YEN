@@ -79,22 +79,28 @@ export default function OrderDetailPage() {
     if (!Array.isArray(items)) items = [];
 
     return (
-        <div className="max-w-5xl mx-auto space-y-6">
+        <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                     <Link
                         href="/admin/orders"
-                        className="p-2 hover:bg-gray-100 rounded-full text-gray-500 transition-colors"
+                        className="p-2.5 bg-white hover:bg-stone-50 text-stone-500 border border-stone-200 shadow-sm transition-colors"
                     >
-                        <ArrowLeft className="w-6 h-6" />
+                        <ArrowLeft className="w-5 h-5" />
                     </Link>
                     <div>
-                        <h1 className="font-display text-2xl font-bold text-gray-900">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-0.5">
+                            CASA AIRA • DETALLE DE PEDIDO
+                        </span>
+                        <h1
+                            className="font-serif text-2xl md:text-3xl font-normal text-[#181716] tracking-tight"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
                             {order.order_number}
                         </h1>
-                        <p className="text-gray-500 text-sm flex items-center gap-2">
-                            <Calendar className="w-4 h-4" />
+                        <p className="text-stone-400 text-xs flex items-center gap-1.5 mt-0.5">
+                            <Calendar className="w-3.5 h-3.5 text-calypso-600" />
                             {new Date(order.created_at).toLocaleDateString('es-CL', {
                                 year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
                             })}
@@ -103,12 +109,12 @@ export default function OrderDetailPage() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <label className="text-sm font-medium text-gray-700">Estado:</label>
+                    <label className="text-xs font-semibold uppercase tracking-wider text-stone-600">Estado:</label>
                     <select
                         value={order.status}
                         onChange={(e) => updateStatus(e.target.value)}
                         disabled={updating}
-                        className="border border-gray-300 rounded-lg px-3 py-1.5 bg-white text-sm font-medium focus:ring-2 focus:ring-earth-500 focus:outline-none"
+                        className="border border-stone-200 px-3 py-2 bg-white text-xs font-semibold uppercase tracking-wider focus:border-calypso-600 focus:outline-none"
                     >
                         <option value="pending">Pendiente</option>
                         <option value="shipped">Enviado</option>
@@ -121,36 +127,42 @@ export default function OrderDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left Column: Items */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <Package className="w-5 h-5 text-earth-600" /> Detalle del Pedido
+                    <div className="bg-white p-6 sm:p-8 border border-stone-200/80 shadow-sm">
+                        <h2
+                            className="font-serif text-lg font-normal text-[#181716] mb-4 flex items-center gap-2"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                            <Package className="w-4 h-4 text-calypso-600" /> Prendas Seleccionadas
                         </h2>
-                        <div className="divide-y divide-gray-100">
+                        <div className="divide-y divide-stone-100">
                             {items.map((item: any, idx: number) => (
                                 <div key={idx} className="py-4 flex gap-4">
                                     {item.image ? (
-                                        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-md border border-gray-100" />
+                                        <img src={item.image} alt={item.name} className="w-16 h-20 object-cover border border-stone-200" />
                                     ) : (
-                                        <div className="w-16 h-16 bg-gray-100 rounded-md" />
+                                        <div className="w-16 h-20 bg-stone-100 border border-stone-200" />
                                     )}
                                     <div className="flex-1">
-                                        <h3 className="font-medium text-gray-900">{item.name}</h3>
-                                        <p className="text-sm text-gray-500">
-                                            Talla: {item.size} • Color: {item.color}
+                                        <h3 className="font-medium text-xs text-[#181716]">{item.name}</h3>
+                                        <p className="text-[11px] text-stone-500 font-light mt-0.5">
+                                            Talla: <span className="font-medium text-stone-800">{item.size}</span> • Tono: <span className="font-medium text-stone-800">{item.color}</span>
                                         </p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-medium text-gray-900">
+                                        <p className="font-medium text-xs text-[#181716] tabular-nums">
                                             ${Number(item.price).toLocaleString('es-CL')}
                                         </p>
-                                        <p className="text-sm text-gray-500">x{item.quantity}</p>
+                                        <p className="text-[10px] text-stone-400 font-light">Cant: {item.quantity}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between items-center">
-                            <span className="font-semibold text-gray-900">Total Pagado</span>
-                            <span className="font-bold text-xl text-earth-700">
+                        <div className="border-t border-stone-100 mt-4 pt-4 flex justify-between items-center">
+                            <span className="text-xs uppercase tracking-wider font-semibold text-stone-600">Total Pagado</span>
+                            <span
+                                className="font-serif font-normal text-2xl text-[#181716]"
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                            >
                                 ${Number(order.total).toLocaleString('es-CL')}
                             </span>
                         </div>
@@ -159,33 +171,36 @@ export default function OrderDetailPage() {
 
                 {/* Right Column: Customer Info */}
                 <div className="space-y-6">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <Truck className="w-5 h-5 text-earth-600" /> Datos de Envío
+                    <div className="bg-white p-6 sm:p-8 border border-stone-200/80 shadow-sm">
+                        <h2
+                            className="font-serif text-lg font-normal text-[#181716] mb-4 flex items-center gap-2"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                            <Truck className="w-4 h-4 text-calypso-600" /> Destino & Clienta
                         </h2>
-                        <div className="space-y-3 text-sm">
+                        <div className="space-y-4 text-xs">
                             <div>
-                                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Cliente</span>
-                                <p className="font-medium text-gray-900">{address.full_name}</p>
+                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Nombre</span>
+                                <p className="font-medium text-[#181716]">{address.full_name}</p>
                             </div>
                             <div>
-                                <label className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Contacto</label>
-                                <div className="flex items-center gap-2 text-gray-600">
-                                    <Mail className="w-4 h-4" /> {address.email}
+                                <label className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Contacto</label>
+                                <div className="flex items-center gap-2 text-stone-600">
+                                    <Mail className="w-3.5 h-3.5 text-calypso-600" /> {address.email}
                                 </div>
                                 {address.phone && (
-                                    <div className="flex items-center gap-2 text-gray-600 mt-1">
-                                        <Phone className="w-4 h-4" /> {address.phone}
+                                    <div className="flex items-center gap-2 text-stone-600 mt-1">
+                                        <Phone className="w-3.5 h-3.5 text-calypso-600" /> {address.phone}
                                     </div>
                                 )}
                             </div>
-                            <div className="pt-2 border-t border-gray-50">
-                                <span className="block text-gray-500 text-xs uppercase tracking-wider mb-1">Dirección</span>
-                                <div className="flex items-start gap-2 text-gray-800">
-                                    <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-earth-500" />
+                            <div className="pt-3 border-t border-stone-100">
+                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Dirección de Despacho</span>
+                                <div className="flex items-start gap-2 text-stone-800">
+                                    <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-calypso-600" />
                                     <div>
-                                        <p>{address.address}</p>
-                                        <p>{address.city}, {address.postal_code}</p>
+                                        <p className="font-medium">{address.address}</p>
+                                        <p className="text-stone-500 font-light">{address.city}, {address.postal_code}</p>
                                     </div>
                                 </div>
                             </div>

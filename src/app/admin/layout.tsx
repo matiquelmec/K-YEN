@@ -15,7 +15,7 @@ import {
     Bell,
     ExternalLink
 } from 'lucide-react';
-import KuyenLogo from '@/components/ui/KuyenLogo';
+import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 
 export default function AdminLayout({
     children,
@@ -47,37 +47,36 @@ export default function AdminLayout({
 
     const navItems = [
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-        { name: 'Catálogo', href: '/admin/products', icon: Package },
-        { name: 'Pedidos', href: '/admin/orders', icon: ShoppingBag },
-        { name: 'Cupones & Afiliados', href: '/admin/coupons', icon: Tag },
-        { name: 'Comunidad', href: '/admin/subscribers', icon: Users },
+        { name: 'Catálogo & Vestidos', href: '/admin/products', icon: Package },
+        { name: 'Pedidos Boutique', href: '/admin/orders', icon: ShoppingBag },
+        { name: 'Cupones & Cortesías', href: '/admin/coupons', icon: Tag },
+        { name: 'Club Casa Aira', href: '/admin/subscribers', icon: Users },
     ];
 
     return (
-        <div className="min-h-screen bg-[#fcfcfb] flex font-sans selection:bg-earth-100 selection:text-earth-900">
+        <div className="min-h-screen bg-[#FAF8F5] flex font-sans selection:bg-calypso-100 selection:text-calypso-900">
             {/* Mobile Sidebar Overlay */}
             {isSidebarOpen && (
                 <div
-                    className="fixed inset-0 bg-earth-950/40 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
+                    className="fixed inset-0 bg-[#141312]/60 backdrop-blur-sm z-40 lg:hidden animate-in fade-in duration-300"
                     onClick={() => setIsSidebarOpen(false)}
                 />
             )}
 
             {/* Sidebar */}
             <aside
-                className={`fixed lg:static inset-y-0 left-0 w-72 bg-earth-950 text-white transform transition-all duration-500 ease-in-out z-50 shadow-2xl lg:shadow-none ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-                    }`}
+                className={`fixed lg:static inset-y-0 left-0 w-72 bg-[#141312] text-[#FAF8F5] border-r border-stone-800/80 transform transition-all duration-500 ease-in-out z-50 shadow-2xl lg:shadow-none ${
+                    isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+                }`}
             >
                 <div className="p-8 flex flex-col h-full">
                     {/* Logo */}
-                    <div className="mb-12 flex items-center justify-between">
-                        <Link href="/" className="hover:opacity-80 transition-opacity">
-                            <div className="scale-90 origin-left">
-                                <KuyenLogo variant="full" />
-                            </div>
+                    <div className="mb-10 flex items-center justify-between pb-6 border-b border-stone-800/60">
+                        <Link href="/admin" className="hover:opacity-90 transition-opacity">
+                            <CasaAiraLogo variant="full" size="md" theme="dark" />
                         </Link>
                         <button
-                            className="lg:hidden p-2 text-earth-400 hover:text-white transition-colors"
+                            className="lg:hidden p-2 text-stone-400 hover:text-white transition-colors"
                             onClick={() => setIsSidebarOpen(false)}
                         >
                             <X className="w-5 h-5" />
@@ -86,7 +85,9 @@ export default function AdminLayout({
 
                     {/* Navigation */}
                     <nav className="flex-1 space-y-2">
-                        <div className="text-[10px] font-bold text-earth-500 uppercase tracking-[0.2em] mb-4 px-4">Administración</div>
+                        <div className="text-[10px] font-semibold text-stone-500 uppercase tracking-[0.3em] mb-4 px-4">
+                            GESTIÓN & CURADURÍA
+                        </div>
                         {navItems.map((item) => {
                             const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
                             return (
@@ -94,35 +95,38 @@ export default function AdminLayout({
                                     key={item.href}
                                     href={item.href}
                                     onClick={() => setIsSidebarOpen(false)}
-                                    className={`group flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 ${isActive
-                                        ? 'bg-earth-800 text-white shadow-lg shadow-earth-900/40 translate-x-1'
-                                        : 'text-earth-400 hover:text-earth-100 hover:bg-white/5'
-                                        }`}
+                                    className={`group flex items-center gap-3.5 px-4 py-3 rounded-none border-l-2 transition-all duration-300 text-xs tracking-wider uppercase font-medium ${
+                                        isActive
+                                            ? 'bg-stone-800/70 text-white border-calypso-400 shadow-sm translate-x-1'
+                                            : 'text-stone-400 hover:text-white hover:bg-stone-900/60 border-transparent'
+                                    }`}
                                 >
-                                    <item.icon className={`w-5 h-5 transition-transform duration-300 group-hover:scale-110 ${isActive ? 'text-white' : 'text-earth-500'}`} />
-                                    <span className="font-bold text-sm tracking-tight">{item.name}</span>
-                                    {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
+                                    <item.icon className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
+                                        isActive ? 'text-calypso-400' : 'text-stone-500'
+                                    }`} />
+                                    <span>{item.name}</span>
+                                    {isActive && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse" />}
                                 </Link>
                             );
                         })}
                     </nav>
 
                     {/* Footer Actions */}
-                    <div className="pt-8 border-t border-white/5 space-y-2">
+                    <div className="pt-6 border-t border-stone-800/60 space-y-2">
                         <Link
                             href="/"
                             target="_blank"
-                            className="flex items-center gap-4 px-4 py-3 text-earth-400 hover:text-earth-100 hover:bg-white/5 rounded-2xl transition-all text-sm font-bold group"
+                            className="flex items-center gap-3 px-4 py-2.5 text-stone-400 hover:text-white hover:bg-stone-900/60 transition-all text-xs tracking-wider uppercase font-medium group"
                         >
-                            <ExternalLink className="w-5 h-5 text-earth-500 group-hover:rotate-12 transition-transform" />
-                            Ver Tienda
+                            <ExternalLink className="w-4 h-4 text-stone-500 group-hover:rotate-12 transition-transform" />
+                            Ver Tienda Online
                         </Link>
 
                         <button
                             onClick={() => setShowLogoutConfirm(true)}
-                            className="flex items-center gap-4 px-4 py-3 w-full rounded-2xl text-red-400/80 hover:bg-red-500/10 hover:text-red-400 transition-all text-sm font-bold group"
+                            className="flex items-center gap-3 px-4 py-2.5 w-full text-rose-400/80 hover:bg-rose-950/20 hover:text-rose-300 transition-all text-xs tracking-wider uppercase font-medium group"
                         >
-                            <LogOut className="w-5 h-5 text-red-500/50 group-hover:-translate-x-1 transition-transform" />
+                            <LogOut className="w-4 h-4 text-rose-400/60 group-hover:-translate-x-1 transition-transform" />
                             Cerrar Sesión
                         </button>
                     </div>
@@ -132,36 +136,36 @@ export default function AdminLayout({
             {/* Main Content */}
             <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
                 {/* Desktop Header */}
-                <header className="hidden lg:flex h-20 items-center justify-end px-10 gap-6 bg-white/50 backdrop-blur-md border-b border-earth-100/50 sticky top-0 z-30">
-                    <button className="p-2 text-earth-400 hover:text-earth-800 transition-colors relative">
-                        <Bell className="w-5 h-5" />
-                        <span className="absolute top-2 right-2 w-2 h-2 bg-amber-500 rounded-full border-2 border-white" />
+                <header className="hidden lg:flex h-20 items-center justify-end px-10 gap-6 bg-white/70 backdrop-blur-md border-b border-stone-200/80 sticky top-0 z-30">
+                    <button className="p-2 text-stone-400 hover:text-stone-800 transition-colors relative" title="Notificaciones">
+                        <Bell className="w-4 h-4" />
+                        <span className="absolute top-2 right-2 w-1.5 h-1.5 bg-gold-500 rounded-full" />
                     </button>
-                    <div className="w-px h-6 bg-earth-200" />
+                    <div className="w-px h-6 bg-stone-200" />
                     <div className="flex items-center gap-3">
                         <div className="text-right">
-                            <p className="text-xs font-bold text-gray-900 tracking-tight">KÜYEN Admin</p>
-                            <p className="text-[10px] font-bold text-earth-500 uppercase tracking-widest">Editora principal</p>
+                            <p className="text-xs font-semibold text-[#181716] tracking-tight">Casa Aira Boutique</p>
+                            <p className="text-[9px] font-medium text-stone-400 uppercase tracking-widest">Panel de Administración</p>
                         </div>
-                        <div className="w-10 h-10 rounded-xl bg-earth-100 border border-earth-200 flex items-center justify-center text-earth-700 font-bold overflow-hidden shadow-inner">
-                            K
+                        <div className="w-9 h-9 rounded-full bg-calypso-50 border border-calypso-200/60 flex items-center justify-center text-calypso-700 font-serif font-semibold text-xs shadow-sm">
+                            CA
                         </div>
                     </div>
                 </header>
 
                 {/* Mobile Header */}
-                <header className="lg:hidden bg-white/80 backdrop-blur-md border-b border-gray-100 p-5 flex items-center justify-between sticky top-0 z-30">
+                <header className="lg:hidden bg-white/90 backdrop-blur-md border-b border-stone-200/80 p-4 flex items-center justify-between sticky top-0 z-30">
                     <button
                         onClick={() => setIsSidebarOpen(true)}
-                        className="p-2 -ml-2 text-earth-600 hover:bg-earth-50 rounded-xl transition-all"
+                        className="p-2 -ml-2 text-stone-700 hover:bg-stone-100 transition-all"
                     >
-                        <Menu className="w-6 h-6" />
+                        <Menu className="w-5 h-5" />
                     </button>
-                    <div className="scale-75">
-                        <KuyenLogo variant="full" />
+                    <div className="scale-90">
+                        <CasaAiraLogo variant="full" size="sm" />
                     </div>
-                    <div className="w-10 h-10 rounded-xl bg-earth-50 flex items-center justify-center text-earth-700 font-bold text-xs">
-                        K
+                    <div className="w-8 h-8 rounded-full bg-calypso-50 border border-calypso-200/60 flex items-center justify-center text-calypso-700 font-serif font-semibold text-xs">
+                        CA
                     </div>
                 </header>
 
@@ -173,30 +177,37 @@ export default function AdminLayout({
                 </div>
 
                 {/* Subtle Background Elements */}
-                <div className="absolute top-0 right-0 w-96 h-96 bg-earth-100/30 rounded-full blur-[120px] -z-10 pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-amber-50/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-calypso-100/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-96 h-96 bg-gold-100/20 rounded-full blur-[120px] -z-10 pointer-events-none" />
             </main>
 
             {/* Logout Confirmation Modal */}
             {showLogoutConfirm && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
-                    <div className="absolute inset-0 bg-earth-950/60 backdrop-blur-md" onClick={() => setShowLogoutConfirm(false)} />
-                    <div className="bg-white rounded-[2.5rem] p-10 max-w-sm w-full relative shadow-2xl border border-earth-100 text-center animate-in zoom-in duration-300">
-                        <div className="w-20 h-20 bg-red-50 text-red-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
-                            <LogOut className="w-10 h-10" />
+                    <div className="absolute inset-0 bg-[#141312]/60 backdrop-blur-sm" onClick={() => setShowLogoutConfirm(false)} />
+                    <div className="bg-white p-8 sm:p-10 max-w-sm w-full relative shadow-2xl border border-stone-200 text-center animate-in zoom-in duration-300">
+                        <div className="w-16 h-16 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center mx-auto mb-5 border border-rose-100">
+                            <LogOut className="w-7 h-7" />
                         </div>
-                        <h3 className="text-2xl font-display font-bold text-gray-900 mb-3">¿Cerrar Sesión?</h3>
-                        <p className="text-gray-500 font-medium mb-10 leading-relaxed">¿Estás segura de que deseas salir del panel de administración?</p>
+                        <h3
+                            className="text-2xl font-serif text-[#181716] font-normal mb-2"
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
+                            ¿Cerrar Sesión?
+                        </h3>
+                        <p className="text-stone-500 text-xs font-light mb-8 leading-relaxed">
+                            ¿Estás segura de que deseas salir del panel de administración de Casa Aira?
+                        </p>
                         <div className="flex flex-col gap-3">
                             <button
                                 onClick={handleLogout}
-                                className="w-full py-4 bg-red-500 text-white font-bold rounded-2xl hover:bg-red-600 transition-all shadow-xl shadow-red-500/20 active:scale-95"
+                                className="w-full py-3.5 bg-[#181716] text-white text-xs uppercase tracking-[0.2em] font-semibold hover:bg-rose-700 transition-colors"
                             >
                                 Sí, cerrar sesión
                             </button>
                             <button
                                 onClick={() => setShowLogoutConfirm(false)}
-                                className="w-full py-4 bg-gray-50 text-gray-500 font-bold rounded-2xl hover:bg-gray-100 transition-all active:scale-95"
+                                className="w-full py-3 bg-stone-100 text-stone-700 text-xs uppercase tracking-[0.2em] font-semibold hover:bg-stone-200 transition-colors"
                             >
                                 Cancelar
                             </button>

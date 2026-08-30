@@ -147,107 +147,125 @@ export default function AdminCouponsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold text-gray-900">Cupones y Afiliados</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Gestiona códigos de descuento para campañas y programas de embajadoras/afiliadas.
+          <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-1">
+            CASA AIRA • PROMOCIONES
+          </span>
+          <h1
+            className="text-3xl md:text-4xl font-serif font-normal text-[#181716] tracking-tight"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            Cupones & Cortesías
+          </h1>
+          <p className="text-stone-500 text-sm font-light mt-1">
+            Gestiona códigos de descuento para campañas y programas de embajadoras de Casa Aira.
           </p>
         </div>
         <button
           onClick={openCreateModal}
-          className="px-5 py-3 bg-earth-800 text-white font-bold rounded-2xl hover:bg-earth-900 transition-all flex items-center gap-2 shadow-lg shadow-earth-900/20 active:scale-95 text-sm"
+          className="px-6 py-3.5 bg-[#181716] text-white text-xs uppercase tracking-[0.2em] font-semibold hover:bg-calypso-700 transition-all flex items-center gap-2 shadow-sm active:scale-95"
         >
           <Plus className="w-4 h-4" />
-          Crear Cupón
+          <span>Crear Cupón</span>
         </button>
       </div>
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 border border-stone-200/80 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Cupones Activos</p>
-            <h3 className="text-2xl font-bold text-gray-900 mt-1">{activeCoupons} / {coupons.length}</h3>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-[0.25em]">Cupones Activos</p>
+            <h3 className="text-2xl font-serif font-normal text-[#181716] mt-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {activeCoupons} / {coupons.length}
+            </h3>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-earth-50 text-earth-700 flex items-center justify-center">
-            <Tag className="w-6 h-6" />
+          <div className="w-10 h-10 bg-stone-100 text-stone-700 flex items-center justify-center">
+            <Tag className="w-5 h-5 stroke-[1.5]" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 border border-stone-200/80 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Afiliadas / Embajadoras</p>
-            <h3 className="text-2xl font-bold text-gray-900 mt-1">{affiliateCoupons}</h3>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-[0.25em]">Embajadoras</p>
+            <h3 className="text-2xl font-serif font-normal text-[#181716] mt-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {affiliateCoupons}
+            </h3>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center">
-            <Users className="w-6 h-6" />
+          <div className="w-10 h-10 bg-calypso-50 text-calypso-700 flex items-center justify-center">
+            <Users className="w-5 h-5 stroke-[1.5]" />
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 border border-stone-200/80 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Ventas por Cupones</p>
-            <h3 className="text-2xl font-bold text-emerald-600 mt-1">{formatCLP(totalSalesGenerated)}</h3>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-[0.25em]">Ventas Generadas</p>
+            <h3 className="text-2xl font-serif font-normal text-emerald-700 mt-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {formatCLP(totalSalesGenerated)}
+            </h3>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <DollarSign className="w-6 h-6" />
+          <div className="w-10 h-10 bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-base">
+            $
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-6 border border-stone-200/80 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Pedidos Generados</p>
-            <h3 className="text-2xl font-bold text-amber-600 mt-1">{totalOrdersGenerated}</h3>
+            <p className="text-[10px] font-semibold text-stone-400 uppercase tracking-[0.25em]">Pedidos con Cupón</p>
+            <h3 className="text-2xl font-serif font-normal text-amber-700 mt-1" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+              {totalOrdersGenerated}
+            </h3>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center">
-            <TrendingUp className="w-6 h-6" />
+          <div className="w-10 h-10 bg-amber-50 text-amber-700 flex items-center justify-center">
+            <TrendingUp className="w-5 h-5 stroke-[1.5]" />
           </div>
         </div>
       </div>
 
       {/* Tabla de Cupones */}
-      <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-white border border-stone-200/80 shadow-sm overflow-hidden">
+        <div className="p-5 border-b border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-stone-50/50">
           <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Buscar por código o afiliada..."
+              name="search"
+              autoComplete="off"
+              placeholder="Buscar por código o embajadora..."
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-earth-500"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-200 text-xs text-stone-900 tracking-wide placeholder:text-stone-400 focus:outline-none focus:border-calypso-600 transition-colors"
             />
           </div>
         </div>
 
         {loading ? (
-          <div className="p-12 text-center text-gray-400 font-medium">Cargando cupones...</div>
+          <div className="p-12 text-center text-stone-400 font-light text-xs">Cargando cupones...</div>
         ) : filteredCoupons.length === 0 ? (
-          <div className="p-12 text-center text-gray-400 font-medium">
+          <div className="p-16 text-center text-stone-400 font-light text-xs">
             {searchTerm ? 'No se encontraron cupones coincidentes.' : 'Aún no hay cupones creados.'}
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-gray-50 text-xs font-bold text-gray-400 uppercase tracking-wider">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-stone-50 text-[10px] font-semibold text-stone-500 uppercase tracking-[0.25em] border-b border-stone-100">
                 <tr>
-                  <th className="px-6 py-4">Código</th>
-                  <th className="px-6 py-4">Descuento</th>
-                  <th className="px-6 py-4">Tipo / Afiliada</th>
-                  <th className="px-6 py-4">Usos</th>
-                  <th className="px-6 py-4">Ventas ($)</th>
-                  <th className="px-6 py-4">Estado</th>
-                  <th className="px-6 py-4 text-right">Acciones</th>
+                  <th className="px-6 py-3.5">Código</th>
+                  <th className="px-6 py-3.5">Descuento</th>
+                  <th className="px-6 py-3.5">Tipo / Embajadora</th>
+                  <th className="px-6 py-3.5">Usos</th>
+                  <th className="px-6 py-3.5">Ventas ($)</th>
+                  <th className="px-6 py-3.5">Estado</th>
+                  <th className="px-6 py-3.5 text-right">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-stone-100">
                 {filteredCoupons.map((coupon) => (
-                  <tr key={coupon.code} className="hover:bg-gray-50/60 transition-colors">
-                    <td className="px-6 py-4 font-bold text-gray-900 tracking-wider">
-                      <span className="bg-earth-50 text-earth-800 px-3 py-1 rounded-lg border border-earth-200 font-mono">
+                  <tr key={coupon.code} className="hover:bg-stone-50/60 transition-colors">
+                    <td className="px-6 py-4 font-mono font-medium text-stone-900 tracking-wider">
+                      <span className="bg-stone-100 text-stone-800 px-2.5 py-1 border border-stone-200 text-[11px]">
                         {coupon.code}
                       </span>
                     </td>
