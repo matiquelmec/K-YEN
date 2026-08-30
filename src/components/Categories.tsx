@@ -2,47 +2,44 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Wind, Sparkles, Heart, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-const collections = [
+const chapters = [
   {
     id: 'veraniego',
-    title: 'Brisa Calipso',
-    subtitle: 'Frescura & Libertad',
+    number: '01',
+    title: 'Brisa & Calipso',
+    subtitle: 'COLECCIÓN VERANO & AIRE LIBRE',
     description:
-      'Telas livianas, caídas fluidas y la sensación envolvente de la brisa marina. Diseños creados para caminar con soltura y alegría.',
-    icon: Wind,
-    color: 'from-calypso-500 to-teal-400',
-    borderHover: 'hover:border-calypso-400/80',
-    badge: 'bg-calypso-50 text-calypso-700 border-calypso-200',
+      'Linos nobles, cortes asimétricos y la frescura del azul egeo. Vestidos diseñados para caminar con soltura junto al mar y celebrar los días luminosos.',
+    accentColor: 'text-calypso-700',
+    tag: 'Brisa Marina',
   },
   {
     id: 'gotico',
-    title: 'Dorado Solar',
-    subtitle: 'Gala & Distinción',
+    number: '02',
+    title: 'Solsticio Dorado',
+    subtitle: 'COLECCIÓN GALA & NOCHE',
     description:
-      'El resplandor del oro champagne y la sofisticación de la noche. Vestidos elegantes con detalles de alta costura para momentos inolvidables.',
-    icon: Sparkles,
-    color: 'from-gold-500 to-amber-400',
-    borderHover: 'hover:border-gold-400/80',
-    badge: 'bg-gold-50 text-gold-800 border-gold-200',
+      'El resplandor del oro champagne y la sofisticación del crepúsculo. Caídas envolventes para eventos especiales donde la distinción es protagonista.',
+    accentColor: 'text-gold-700',
+    tag: 'Gala & Fiesta',
   },
   {
     id: 'primaveral',
-    title: 'Rosa Amanecer',
-    subtitle: 'Romance & Delicadeza',
+    number: '03',
+    title: 'Rosa de Alba',
+    subtitle: 'COLECCIÓN ROMÁNTICA & CÓCTEL',
     description:
-      'La suavidad del rosa pastel y los cortes etéreos. Siluetas románticas y femeninas que celebran la belleza natural en todas sus formas.',
-    icon: Heart,
-    color: 'from-pink-500 to-rose-400',
-    borderHover: 'hover:border-pink-400/80',
-    badge: 'bg-pink-50 text-pink-700 border-pink-200',
+      'La delicadeza del rosa poudré y las siluetas etéreas. Diseños que abrazan la feminidad contemporánea con absoluta gracia y ligereza.',
+    accentColor: 'text-blush-700',
+    tag: 'Seda & Romance',
   },
 ];
 
 export default function Categories() {
   return (
-    <section id='categories' className='py-16 md:py-24 px-4 relative'>
+    <section id='categories' className='py-24 sm:py-32 px-4 sm:px-6 bg-[#FAF8F5] relative'>
       <div className='max-w-7xl mx-auto'>
         {/* Section Header */}
         <motion.div
@@ -50,61 +47,67 @@ export default function Categories() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className='text-center mb-16'
+          className='text-center mb-16 sm:mb-20'
         >
-          <span className='text-xs font-bold uppercase tracking-[0.25em] text-calypso-600 block mb-3'>
-            Curaduría de Temporada
+          <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
+            CURADURÍA DE TEMPORADA
           </span>
-          <h2 className='font-display text-3xl sm:text-5xl font-extrabold text-stone-900 mb-4 tracking-tight'>
-            Nuestras Colecciones
+          <h2
+            className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            Los Capítulos de Autor
           </h2>
-          <p className='text-stone-600 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Tres universos de diseño confeccionados para acompañar tu estilo con gracia, confort y distinción.
+          <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
+            Tres visiones de diseño confeccionadas para acompañar cada momento con fluidez y distinción sin esfuerzo.
           </p>
         </motion.div>
 
-        {/* Collections Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8'>
-          {collections.map((collection, index) => (
+        {/* Chapters Grid */}
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+          {chapters.map((chapter, index) => (
             <motion.div
-              key={collection.id}
+              key={chapter.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: index * 0.15 }}
+              transition={{ duration: 0.8, delay: index * 0.15 }}
               viewport={{ once: true }}
               whileHover={{ y: -6 }}
               className='h-full'
             >
-              <Link href={`/catalogo?category=${collection.id}`} className='block h-full'>
-                <div
-                  className={`card-aira p-8 h-full flex flex-col justify-between text-left transition-all duration-300 ${collection.borderHover} group`}
-                >
+              <Link href={`/catalogo?category=${chapter.id}`} className='block h-full'>
+                <div className='bg-white border border-stone-200/80 p-8 sm:p-10 h-full flex flex-col justify-between hover:border-stone-400/90 transition-all duration-500 shadow-sm hover:shadow-md group'>
                   <div>
-                    {/* Icon & Badge */}
-                    <div className='flex items-center justify-between mb-6'>
-                      <div
-                        className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${collection.color} flex items-center justify-center text-white shadow-md shadow-cyan-500/10 group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <collection.icon className='w-6 h-6' />
-                      </div>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${collection.badge}`}>
-                        {collection.subtitle}
+                    {/* Header del Capítulo */}
+                    <div className='flex items-center justify-between pb-6 mb-6 border-b border-stone-100'>
+                      <span className='font-serif text-3xl font-normal text-stone-300 group-hover:text-stone-700 transition-colors'>
+                        {chapter.number}
+                      </span>
+                      <span className='text-[9px] font-semibold uppercase tracking-[0.25em] text-stone-500 bg-stone-50 px-2.5 py-1 border border-stone-200/60'>
+                        {chapter.tag}
                       </span>
                     </div>
 
-                    <h3 className='font-display text-2xl font-bold text-stone-900 group-hover:text-calypso-700 transition-colors mb-3'>
-                      {collection.title}
+                    <span className='text-[10px] font-medium tracking-[0.25em] uppercase text-stone-400 block mb-2'>
+                      {chapter.subtitle}
+                    </span>
+
+                    <h3
+                      className='font-serif text-2xl sm:text-3xl text-[#181716] group-hover:text-calypso-700 transition-colors mb-4 font-normal'
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                      {chapter.title}
                     </h3>
 
-                    <p className='text-stone-600 text-sm leading-relaxed mb-6 font-light'>
-                      {collection.description}
+                    <p className='text-stone-600 text-sm leading-relaxed mb-8 font-light'>
+                      {chapter.description}
                     </p>
                   </div>
 
-                  {/* Action link */}
-                  <div className='pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-semibold text-calypso-600 group-hover:text-calypso-700'>
-                    <span>Explorar Vestidos</span>
-                    <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+                  {/* Enlace Editorial */}
+                  <div className='pt-6 border-t border-stone-100 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-[#181716] group-hover:text-calypso-700 transition-colors'>
+                    <span>Explorar Capítulo</span>
+                    <ArrowRight className='w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform' />
                   </div>
                 </div>
               </Link>

@@ -53,23 +53,26 @@ function CatalogoContent() {
   });
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-sand-50 via-white to-blush-50'>
+    <div className='min-h-screen bg-[#FAF8F5]'>
       <Header />
-      <div className='max-w-7xl mx-auto px-4 py-8 pt-28'>
+      <div className='max-w-7xl mx-auto px-4 py-8 pt-32'>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className='text-center mb-8 md:mb-12'
+          className='text-center mb-12 sm:mb-16'
         >
-          <span className='text-xs font-bold uppercase tracking-[0.25em] text-calypso-600 block mb-2'>
-            Catálogo Oficial 2026
+          <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
+            COLECCIÓN MAESTRA 2026
           </span>
-          <h1 className='font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-stone-900 tracking-tight mb-3'>
-            Colección Casa Aira
+          <h1
+            className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            Catálogo de Atelier
           </h1>
-          <p className='text-stone-600 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Diseños confeccionados con libertad, distinción y elegancia fluida para todas las tallas.
+          <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
+            Piezas concebidas para envolver con sutileza, confeccionadas a mano con patronaje inclusivo de la talla XS a la 6XL.
           </p>
         </motion.div>
 
@@ -78,19 +81,19 @@ function CatalogoContent() {
           <div className="flex gap-2.5 px-1 min-w-max">
             {[
               { id: 'all', label: 'Todo el Catálogo', icon: Grid },
-              { id: 'veraniego', label: 'Brisa Calipso', icon: Sun },
-              { id: 'gotico', label: 'Dorado Solar', icon: Moon },
-              { id: 'primaveral', label: 'Rosa Amanecer', icon: Leaf },
+              { id: 'veraniego', label: 'Cap. I: Brisa & Calipso', icon: Sun },
+              { id: 'gotico', label: 'Cap. II: Solsticio Dorado', icon: Moon },
+              { id: 'primaveral', label: 'Cap. III: Rosa de Alba', icon: Leaf },
             ].map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all whitespace-nowrap text-xs font-medium ${selectedCategory === cat.id
-                  ? 'bg-calypso-500 text-white border-calypso-500 shadow-md shadow-cyan-500/20'
-                  : 'bg-white text-stone-700 border-stone-200 hover:border-calypso-300'
+                className={`flex items-center gap-2 px-4 py-2 border transition-all whitespace-nowrap text-[11px] uppercase tracking-wider font-medium ${selectedCategory === cat.id
+                  ? 'bg-[#181716] text-white border-[#181716]'
+                  : 'bg-white text-stone-700 border-stone-200 hover:border-stone-400'
                   }`}
               >
-                <cat.icon className="w-3.5 h-3.5" />
+                <cat.icon className="w-3 h-3 stroke-[1.5]" />
                 <span>{cat.label}</span>
               </button>
             ))}

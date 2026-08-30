@@ -9,42 +9,66 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // PALETA OFICIAL CASA AIRA
+        // PALETA MINERAL HAUTE COUTURE - CASA AIRA
         calypso: {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#06b6d4', // Calipso Egeo Principal
-          600: '#0891b2',
-          700: '#0e7490',
-          800: '#155e75',
-          900: '#164e63',
+          50: '#f4f9fa',
+          100: '#e5f2f4',
+          200: '#c2e2e7',
+          300: '#93cad3',
+          400: '#5faabd',
+          500: '#3a96a5', // Calipso Egeo Medio
+          600: '#1d707f', // Calipso Couture Profundo
+          700: '#175763',
+          800: '#154751',
+          900: '#143c44',
         },
         gold: {
-          50: '#fffbeb',
-          100: '#fef3c7',
-          200: '#fde68a',
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#d4af37', // Dorado Champagne
-          600: '#d97706',
-          700: '#b45309',
-          800: '#92400e',
-          900: '#78350f',
+          50: '#faf8f3',
+          100: '#f4efe2',
+          200: '#e8dec3',
+          300: '#d8c69c',
+          400: '#c7ac73',
+          500: '#bfa15f', // Oro Champagne Cepillado
+          600: '#a68444',
+          700: '#856535',
+          800: '#6d522f',
+          900: '#5b4329',
         },
         blush: {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#ec4899',
-          600: '#db2777',
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
+          50: '#fdf9f8',
+          100: '#faf0ee',
+          200: '#f4e0dc',
+          300: '#e9c7c0',
+          400: '#d9a79e', // Rosa Poudré / Seda
+          500: '#c48b81',
+          600: '#a76d63',
+          700: '#88544c',
+          800: '#714640',
+          900: '#5f3d38',
+        },
+        alabaster: {
+          50: '#fdfcfb',
+          100: '#faf8f5', // Lienzo principal
+          200: '#f4efe8',
+          300: '#ebe3d8',
+          400: '#ded2c3',
+          500: '#cfc0ad',
+          600: '#b8a692',
+          700: '#988673',
+          800: '#7a6b5c',
+          900: '#5c5044',
+        },
+        ebony: {
+          50: '#f6f6f6',
+          100: '#e7e7e6',
+          200: '#d1d0ce',
+          300: '#b0adaa',
+          400: '#888480',
+          500: '#6d6965',
+          600: '#575350',
+          700: '#3a3735', // Carbón suave
+          800: '#292725',
+          900: '#181716', // Ébano editorial
         },
         sand: {
           50: '#fdfbf7',

@@ -6,7 +6,7 @@ import { useState, memo, useCallback } from 'react';
 import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCategoryColor, getCategoryName, getColorClass } from '@/lib/product-utils';
+import { getCategoryName, getColorClass } from '@/lib/product-utils';
 import ProductBadges from './product-card/ProductBadges';
 import ProductPrice from './product-card/ProductPrice';
 
@@ -48,11 +48,11 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   if (viewMode === 'list') {
     return (
       <motion.div
-        whileHover={{ scale: 1.01 }}
-        className='card-aira overflow-hidden hover:shadow-xl transition-all duration-500'
+        whileHover={{ y: -4 }}
+        className='bg-white border border-stone-200/80 hover:border-stone-400/90 transition-all duration-500 shadow-sm'
       >
         <div className='flex flex-col md:flex-row'>
-          <div className='relative w-full md:w-80 h-64 md:h-auto overflow-hidden rounded-t-3xl md:rounded-t-none md:rounded-l-3xl bg-stone-100'>
+          <div className='relative w-full md:w-80 h-72 md:h-auto overflow-hidden bg-stone-100'>
             <Link href={`/catalogo/${product.slug || product.id}`}>
               {product.images && product.images[0] && !imgError ? (
                 <Image
@@ -65,8 +65,8 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                   className='object-cover object-top hover:scale-105 transition-transform duration-700'
                 />
               ) : (
-                <div className='w-full h-full bg-gradient-to-br from-calypso-100 to-blush-100 flex items-center justify-center'>
-                  <ShoppingBag className='w-16 h-16 text-calypso-400/50' />
+                <div className='w-full h-full bg-stone-100 flex items-center justify-center'>
+                  <ShoppingBag className='w-12 h-12 text-stone-300 stroke-[1]' />
                 </div>
               )}
             </Link>
@@ -79,25 +79,24 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </div>
 
           {/* Content */}
-          <div className='flex-1 p-6 sm:p-8 flex flex-col justify-between'>
+          <div className='flex-1 p-8 flex flex-col justify-between'>
             <div>
               <div className='flex justify-between items-start mb-3'>
                 <div className='flex-1'>
-                  <div className='flex items-center gap-3 mb-2'>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(product.category)} shadow-sm`}
-                    >
-                      {getCategoryName(product.category)}
-                    </span>
-                  </div>
+                  <span className='text-[9px] font-semibold uppercase tracking-[0.25em] text-calypso-700 block mb-2'>
+                    {getCategoryName(product.category)}
+                  </span>
 
                   <Link href={`/catalogo/${product.slug || product.id}`}>
-                    <h3 className='font-display text-2xl font-bold text-stone-900 hover:text-calypso-700 transition-colors mb-2'>
+                    <h3
+                      className='font-serif text-2xl text-[#181716] hover:text-calypso-700 transition-colors mb-2 font-normal'
+                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
                       {product.name}
                     </h3>
                   </Link>
 
-                  <p className='text-stone-600 text-sm mb-4 line-clamp-2'>
+                  <p className='text-stone-600 text-sm mb-6 font-light line-clamp-2'>
                     {product.description}
                   </p>
                 </div>
@@ -108,18 +107,18 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               {/* Sizes and Colors */}
               <div className='mb-6 space-y-3'>
                 <div>
-                  <span className='text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 block'>
-                    Tallas Disponibles:
+                  <span className='text-[10px] font-semibold text-stone-500 uppercase tracking-[0.2em] mb-2 block'>
+                    Tallas:
                   </span>
                   <div className='flex flex-wrap gap-1.5'>
                     {sizes.slice(0, 8).map(size => (
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`px-2.5 py-1 text-xs font-medium border rounded-lg transition-all ${
+                        className={`px-3 py-1 text-[11px] font-light border transition-all ${
                           selectedSize === size
-                            ? 'bg-calypso-500 text-white border-calypso-500 shadow-sm'
-                            : 'border-stone-200 text-stone-700 bg-stone-50 hover:border-calypso-300'
+                            ? 'bg-[#181716] text-white border-[#181716]'
+                            : 'border-stone-200 text-stone-700 bg-white hover:border-stone-400'
                         }`}
                       >
                         {size}
@@ -129,17 +128,17 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 </div>
 
                 <div>
-                  <span className='text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5 block'>
-                    Colores:
+                  <span className='text-[10px] font-semibold text-stone-500 uppercase tracking-[0.2em] mb-2 block'>
+                    Colores Disponibles:
                   </span>
                   <div className='flex gap-2'>
                     {colors.map((color, colorIndex) => (
                       <button
                         key={colorIndex}
                         onClick={() => setSelectedColor(color)}
-                        className={`w-6 h-6 rounded-full border-2 ${
-                          selectedColor === color ? 'ring-2 ring-calypso-500 ring-offset-2' : 'border-white'
-                        } shadow-sm ${getColorClass(color)} transition-all`}
+                        className={`w-5 h-5 rounded-full border ${
+                          selectedColor === color ? 'ring-1 ring-stone-900 ring-offset-2' : 'border-stone-300'
+                        } ${getColorClass(color)} transition-all`}
                         title={color}
                       />
                     ))}
@@ -149,16 +148,14 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             </div>
 
             {/* Actions */}
-            <div className='flex gap-3 pt-4 border-t border-stone-100'>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+            <div className='flex gap-3 pt-6 border-t border-stone-100'>
+              <button
                 onClick={handleAddToCart}
-                className='btn-calypso flex-1'
+                className='btn-couture-primary flex-1'
               >
-                <ShoppingBag className='w-4 h-4 mr-2' />
-                Agregar a la Bolsa
-              </motion.button>
+                <ShoppingBag className='w-3.5 h-3.5 mr-2 stroke-[1.5]' />
+                Añadir al Bolso
+              </button>
             </div>
           </div>
         </div>
@@ -168,13 +165,13 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   return (
     <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.3 }}
+      whileHover={{ y: -5 }}
+      transition={{ duration: 0.4 }}
       className='group cursor-pointer h-full'
     >
-      <div className='card-aira overflow-hidden h-full flex flex-col'>
+      <div className='bg-white border border-stone-200/80 hover:border-stone-400/90 transition-all duration-500 h-full flex flex-col shadow-sm'>
         {/* Product Image */}
-        <div className='relative aspect-[3/4] overflow-hidden rounded-t-3xl bg-stone-100'>
+        <div className='relative aspect-[3/4] overflow-hidden bg-stone-100'>
           <Link href={`/catalogo/${product.slug || product.id}`}>
             {product.images && product.images[0] && !imgError ? (
               <Image
@@ -186,8 +183,8 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                 className='object-cover object-top group-hover:scale-105 transition-transform duration-700'
               />
             ) : (
-              <div className='w-full h-full bg-gradient-to-br from-calypso-100 to-blush-100 flex items-center justify-center'>
-                <ShoppingBag className='w-20 h-20 text-calypso-400/50' />
+              <div className='w-full h-full bg-stone-100 flex items-center justify-center'>
+                <ShoppingBag className='w-12 h-12 text-stone-300 stroke-[1]' />
               </div>
             )}
           </Link>
@@ -198,75 +195,75 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             hasLargeSizes={hasLargeSizes}
           />
 
-          {/* Category Badge */}
+          {/* Minimal Category Tag */}
           <div className='absolute top-4 right-4'>
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-semibold text-white bg-gradient-to-r ${getCategoryColor(product.category)} shadow-sm`}
-            >
+            <span className='px-2.5 py-1 text-[9px] font-semibold tracking-[0.2em] uppercase bg-white/90 text-stone-800 backdrop-blur-sm border border-stone-200/60'>
               {getCategoryName(product.category)}
             </span>
           </div>
         </div>
 
         {/* Product Info */}
-        <div className='p-6 flex-1 flex flex-col'>
-          <Link href={`/catalogo/${product.slug || product.id}`}>
-            <h3 className='font-display text-xl font-bold text-stone-900 group-hover:text-calypso-700 transition-colors mb-2 line-clamp-1' title={product.name}>
-              {product.name}
-            </h3>
-          </Link>
-
-          <p className='text-stone-600 text-sm mb-3 line-clamp-2'>
-            {product.description}
-          </p>
-
-          {/* Size Options */}
-          <div className='flex flex-wrap gap-1.5 mb-3 mt-auto'>
-            {sizes.slice(0, 5).map(size => (
-              <span
-                key={size}
-                className='px-2 py-0.5 text-[11px] font-medium border border-stone-200 rounded-md text-stone-700 bg-stone-50'
+        <div className='p-6 flex-1 flex flex-col justify-between bg-white'>
+          <div>
+            <Link href={`/catalogo/${product.slug || product.id}`}>
+              <h3
+                className='font-serif text-lg text-[#181716] group-hover:text-calypso-700 transition-colors mb-1.5 line-clamp-1 font-normal'
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                title={product.name}
               >
-                {size}
-              </span>
-            ))}
-            {sizes.length > 5 && (
-              <span className='px-2 py-0.5 text-[11px] text-stone-500 font-medium'>
-                +{sizes.length - 5}
-              </span>
-            )}
+                {product.name}
+              </h3>
+            </Link>
+
+            <p className='text-stone-500 text-xs mb-4 line-clamp-2 font-light leading-relaxed'>
+              {product.description}
+            </p>
           </div>
 
-          {/* Colors */}
-          <div className='flex gap-1.5 mb-4'>
-            {colors.slice(0, 5).map((color, colorIndex) => (
-              <div
-                key={colorIndex}
-                className={`w-3.5 h-3.5 rounded-full border border-stone-300 shadow-sm ${getColorClass(color)}`}
-                title={color}
-              />
-            ))}
-            {colors.length > 5 && (
-              <span className='text-[11px] text-stone-400 flex items-center font-medium'>
-                +{colors.length - 5}
-              </span>
-            )}
-          </div>
+          <div>
+            {/* Size Options */}
+            <div className='flex flex-wrap gap-1 mb-3'>
+              {sizes.slice(0, 5).map(size => (
+                <span
+                  key={size}
+                  className='px-1.5 py-0.5 text-[10px] font-light border border-stone-200 text-stone-600'
+                >
+                  {size}
+                </span>
+              ))}
+              {sizes.length > 5 && (
+                <span className='px-1.5 py-0.5 text-[10px] text-stone-400 font-light'>
+                  +{sizes.length - 5}
+                </span>
+              )}
+            </div>
 
-          {/* Price and Add to Cart */}
-          <div className='flex items-center justify-between mt-auto pt-4 border-t border-stone-100'>
-            <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left" />
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              onClick={(e) => {
-                e.preventDefault();
-                handleAddToCart();
-              }}
-              className='p-2.5 rounded-full bg-calypso-50 text-calypso-600 hover:bg-calypso-500 hover:text-white transition-colors shadow-sm'
-              title='Agregar a la bolsa'
-            >
-              <ShoppingBag className='w-4 h-4' />
-            </motion.button>
+            {/* Colors */}
+            <div className='flex gap-1.5 mb-4'>
+              {colors.slice(0, 5).map((color, colorIndex) => (
+                <div
+                  key={colorIndex}
+                  className={`w-3 h-3 rounded-full border border-stone-300 ${getColorClass(color)}`}
+                  title={color}
+                />
+              ))}
+            </div>
+
+            {/* Price and Add to Cart */}
+            <div className='flex items-center justify-between pt-4 border-t border-stone-100'>
+              <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left" />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddToCart();
+                }}
+                className='p-2.5 text-stone-700 hover:text-calypso-700 hover:bg-stone-50 transition-colors'
+                title='Añadir al bolso'
+              >
+                <ShoppingBag className='w-4 h-4 stroke-[1.5]' />
+              </button>
+            </div>
           </div>
         </div>
       </div>

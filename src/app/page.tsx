@@ -1,32 +1,30 @@
 'use client';
 
-
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
-import ProductCarousel from '@/components/ProductCarousel';
-
+import BrandManifesto from '@/components/BrandManifesto';
 import Categories from '@/components/Categories';
+import ProductCarousel from '@/components/ProductCarousel';
 import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className='min-h-screen relative overflow-x-hidden'>
+    <main className='min-h-screen relative overflow-x-hidden bg-[#FAF8F5]'>
       <Header />
-      {/* Efectos de partículas de fondo - reducidos */}
-
-
-      {/* Hero Section */}
+      
+      {/* Portada Editorial */}
       <Hero />
 
-      {/* Categories Section */}
+      {/* Manifiesto y Filosofía de Marca */}
+      <BrandManifesto />
+
+      {/* Capítulos y Colecciones */}
       <Categories />
 
-
-
-      {/* Featured Products */}
+      {/* Vestidos Destacados de Atelier */}
       <ProductCarousel />
 
-      {/* Footer */}
+      {/* Pie de Página Editorial */}
       <Footer />
     </main>
   );

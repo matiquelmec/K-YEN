@@ -1,7 +1,6 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Wind, Sparkles } from 'lucide-react';
 
 interface CasaAiraLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -20,62 +19,106 @@ export default function CasaAiraLogo({
 }: CasaAiraLogoProps) {
   const isLight = theme === 'light';
 
-  const iconSizes = {
-    sm: 'w-6 h-6',
-    md: 'w-8 h-8',
-    lg: 'w-10 h-10',
-    xl: 'w-16 h-16',
-    '2xl': 'w-24 h-24',
-  };
-
   const titleSizes = {
-    sm: 'text-base tracking-[0.2em]',
-    md: 'text-xl tracking-[0.25em]',
-    lg: 'text-2xl tracking-[0.3em]',
-    xl: 'text-4xl tracking-[0.35em]',
-    '2xl': 'text-6xl tracking-[0.4em]',
+    sm: 'text-sm tracking-[0.28em]',
+    md: 'text-lg tracking-[0.32em]',
+    lg: 'text-2xl tracking-[0.35em]',
+    xl: 'text-3xl sm:text-4xl tracking-[0.4em]',
+    '2xl': 'text-4xl sm:text-6xl tracking-[0.45em]',
   };
 
   const subtitleSizes = {
-    sm: 'text-[9px] tracking-widest',
-    md: 'text-[11px] tracking-widest',
-    lg: 'text-xs tracking-widest',
-    xl: 'text-sm tracking-widest',
-    '2xl': 'text-lg tracking-widest',
+    sm: 'text-[8px] tracking-[0.35em]',
+    md: 'text-[9px] tracking-[0.35em]',
+    lg: 'text-[10px] tracking-[0.4em]',
+    xl: 'text-xs tracking-[0.45em]',
+    '2xl': 'text-sm tracking-[0.5em]',
   };
 
+  const iconSizes = {
+    sm: 'w-5 h-5',
+    md: 'w-6 h-6',
+    lg: 'w-8 h-8',
+    xl: 'w-12 h-12',
+    '2xl': 'w-16 h-16',
+  };
+
+  // Emblema Lineal Fino - Onda de Seda y Brisa
   const IconComponent = () => (
     <div className={`relative flex items-center justify-center ${iconSizes[size]} ${className}`}>
       {animated ? (
-        <motion.div
-          animate={{ rotate: [0, 5, -5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-          className="relative"
+        <motion.svg
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
         >
-          <div className="w-full h-full rounded-full bg-gradient-to-tr from-calypso-400 via-teal-300 to-gold-400 p-[1.5px] shadow-sm">
-            <div className="w-full h-full rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center p-1.5">
-              <Wind className="w-full h-full text-calypso-600 stroke-[1.75]" />
-            </div>
-          </div>
-          <Sparkles className="absolute -top-1 -right-1 w-3 h-3 text-gold-500 animate-pulse" />
-        </motion.div>
+          {/* Círculo sutil exterior */}
+          <circle
+            cx="20"
+            cy="20"
+            r="18.5"
+            stroke={isLight ? '#E5D8CE' : '#3A3735'}
+            strokeWidth="0.75"
+          />
+          {/* Línea de brisa continua (Seda) */}
+          <motion.path
+            d="M10 21C13 14 17 14 20 20C23 26 27 26 30 19"
+            stroke={isLight ? '#1D707F' : '#93CAD3'}
+            strokeWidth="1.2"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 1.8, ease: 'easeInOut' }}
+          />
+          {/* Punto de luz dorado */}
+          <circle cx="20" cy="11.5" r="1.5" fill={isLight ? '#BFA15F' : '#D8C69C'} />
+        </motion.svg>
       ) : (
-        <div className="w-full h-full rounded-full bg-gradient-to-tr from-calypso-400 via-teal-300 to-gold-400 p-[1.5px]">
-          <div className="w-full h-full rounded-full bg-white/90 flex items-center justify-center p-1.5">
-            <Wind className="w-full h-full text-calypso-600 stroke-[1.75]" />
-          </div>
-        </div>
+        <svg
+          viewBox="0 0 40 40"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full h-full"
+        >
+          <circle
+            cx="20"
+            cy="20"
+            r="18.5"
+            stroke={isLight ? '#E5D8CE' : '#3A3735'}
+            strokeWidth="0.75"
+          />
+          <path
+            d="M10 21C13 14 17 14 20 20C23 26 27 26 30 19"
+            stroke={isLight ? '#1D707F' : '#93CAD3'}
+            strokeWidth="1.2"
+            strokeLinecap="round"
+          />
+          <circle cx="20" cy="11.5" r="1.5" fill={isLight ? '#BFA15F' : '#D8C69C'} />
+        </svg>
       )}
     </div>
   );
 
   const TextComponent = () => (
-    <div className="flex flex-col items-center">
-      <span className={`font-display font-bold uppercase ${titleSizes[size]} ${isLight ? 'bg-gradient-to-r from-stone-900 via-stone-800 to-calypso-800 bg-clip-text text-transparent' : 'text-white'}`}>
+    <div className="flex flex-col items-center select-none text-center">
+      <span
+        className={`font-serif font-normal uppercase ${titleSizes[size]} leading-none ${
+          isLight ? 'text-[#181716]' : 'text-[#FAF8F5]'
+        }`}
+        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+      >
         CASA AIRA
       </span>
-      <span className={`font-body uppercase ${isLight ? 'text-stone-500' : 'text-stone-400'} font-light ${subtitleSizes[size]} mt-0.5`}>
-        Elegancia & Libertad
+      <span
+        className={`font-sans font-light uppercase ${subtitleSizes[size]} ${
+          isLight ? 'text-stone-500' : 'text-stone-400'
+        } mt-1.5 leading-none`}
+      >
+        ATELIER CHILE
       </span>
     </div>
   );
@@ -89,14 +132,23 @@ export default function CasaAiraLogo({
   }
 
   return (
-    <div className={`flex items-center gap-2.5 ${className}`}>
+    <div className={`flex items-center gap-3.5 select-none ${className}`}>
       <IconComponent />
       <div className="flex flex-col text-left">
-        <span className={`font-display font-bold uppercase ${titleSizes[size]} leading-none ${isLight ? 'bg-gradient-to-r from-stone-900 via-stone-800 to-calypso-800 bg-clip-text text-transparent' : 'text-white'}`}>
+        <span
+          className={`font-serif font-normal uppercase ${titleSizes[size]} leading-tight ${
+            isLight ? 'text-[#181716]' : 'text-[#FAF8F5]'
+          }`}
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
           CASA AIRA
         </span>
-        <span className={`font-body uppercase ${isLight ? 'text-calypso-700 font-medium' : 'text-calypso-400'} ${subtitleSizes[size]} mt-1 leading-none`}>
-          Elegancia & Libertad
+        <span
+          className={`font-sans font-light uppercase ${subtitleSizes[size]} ${
+            isLight ? 'text-stone-500' : 'text-stone-400'
+          } mt-0.5 leading-none`}
+        >
+          ATELIER • MAISON
         </span>
       </div>
     </div>

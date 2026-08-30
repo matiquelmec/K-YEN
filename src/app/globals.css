@@ -14,85 +14,105 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-sand-50 via-white to-blush-50 min-h-screen font-body antialiased text-stone-800;
+    @apply bg-[#FAF8F5] min-h-screen font-body antialiased text-[#181716] selection:bg-calypso-100 selection:text-calypso-900;
   }
 }
 
 @layer components {
-  /* CASA AIRA - Botones de Alta Costura */
-  .btn-calypso {
-    @apply bg-gradient-to-r from-calypso-500 to-teal-500 hover:from-calypso-600 hover:to-teal-600 text-white font-medium py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-cyan-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
+  /* CASA AIRA - Botones de Atelier & Alta Costura */
+  .btn-couture-primary {
+    @apply bg-[#181716] text-[#FAF8F5] hover:bg-calypso-600 font-medium py-3.5 px-8 tracking-[0.2em] text-[11px] uppercase transition-all duration-500 shadow-sm hover:shadow-md flex items-center justify-center gap-2.5 active:scale-[0.99];
   }
 
-  .btn-gold {
-    @apply bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-500 hover:from-gold-600 hover:to-yellow-600 text-stone-900 font-semibold py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-amber-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
+  .btn-couture-calypso {
+    @apply bg-calypso-600 text-white hover:bg-calypso-700 font-medium py-3.5 px-8 tracking-[0.2em] text-[11px] uppercase transition-all duration-500 shadow-sm hover:shadow-md flex items-center justify-center gap-2.5 active:scale-[0.99];
   }
 
-  .btn-blush {
-    @apply bg-gradient-to-r from-blush-400 to-pink-500 hover:from-blush-500 hover:to-pink-600 text-white font-medium py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-pink-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
+  .btn-couture-outline {
+    @apply bg-transparent border border-[#181716] text-[#181716] hover:bg-[#181716] hover:text-[#FAF8F5] font-medium py-3 px-8 tracking-[0.2em] text-[11px] uppercase transition-all duration-500 flex items-center justify-center gap-2.5 active:scale-[0.99];
   }
 
-  .btn-outline-aira {
-    @apply bg-transparent border-2 border-calypso-500 text-calypso-600 hover:bg-calypso-50 font-medium py-3 px-7 rounded-full transition-all duration-300 flex items-center justify-center gap-2;
+  .btn-couture-gold {
+    @apply bg-transparent border border-gold-500 text-gold-700 hover:bg-gold-500 hover:text-white font-medium py-3 px-8 tracking-[0.2em] text-[11px] uppercase transition-all duration-500 flex items-center justify-center gap-2.5 active:scale-[0.99];
   }
 
-  /* Tarjetas de Vestidos Casa Aira */
-  .card-aira {
-    @apply bg-white/95 backdrop-blur-md border border-stone-200/70 rounded-3xl shadow-sm hover:shadow-xl hover:border-calypso-300/60 transition-all duration-500;
+  /* Tarjetas de Vestidos - Proporción y Sutileza Editorial */
+  .card-couture {
+    @apply bg-white border border-stone-200/60 transition-all duration-500 hover:border-stone-400/80 hover:shadow-sm;
   }
 
-  /* Gradientes de Texto Casa Aira */
-  .text-gradient-aira {
-    @apply bg-gradient-to-r from-calypso-600 via-teal-600 to-gold-600 bg-clip-text text-transparent;
+  /* Textos Editoriales y Acentos */
+  .text-couture-calypso {
+    @apply text-calypso-600;
   }
 
-  .text-gradient-gold {
-    @apply bg-gradient-to-r from-gold-600 via-amber-500 to-yellow-600 bg-clip-text text-transparent;
+  .text-couture-gold {
+    @apply text-gold-600;
   }
 
-  .text-gradient-blush {
-    @apply bg-gradient-to-r from-pink-600 via-rose-500 to-calypso-500 bg-clip-text text-transparent;
+  .text-couture-blush {
+    @apply text-blush-600;
   }
 
   /* Compatibilidad y Fallbacks */
+  .btn-calypso {
+    @apply btn-couture-calypso;
+  }
+
+  .btn-gold {
+    @apply btn-couture-gold;
+  }
+
+  .btn-blush {
+    @apply btn-couture-primary;
+  }
+
+  .btn-outline-aira {
+    @apply btn-couture-outline;
+  }
+
+  .card-aira {
+    @apply card-couture;
+  }
+
   .btn-terra {
-    @apply btn-calypso;
+    @apply btn-couture-primary;
   }
 
   .btn-ink {
-    @apply btn-gold;
+    @apply btn-couture-primary;
   }
 
   .btn-mystic {
-    @apply btn-blush;
+    @apply btn-couture-primary;
   }
 
   .btn-spring {
-    @apply btn-calypso;
+    @apply btn-couture-calypso;
   }
 
   .btn-blood {
-    @apply btn-blush;
+    @apply btn-couture-primary;
   }
 
   .text-gradient-earth-lunar {
-    @apply text-gradient-aira;
+    @apply text-[#181716];
   }
 
   .text-gradient-lunar {
-    @apply text-gradient-aira;
+    @apply text-[#181716];
   }
 
   .text-gradient-stardust {
-    @apply text-gradient-gold;
+    @apply text-gold-600;
   }
 
   .text-gradient-moonrose {
-    @apply text-gradient-blush;
+    @apply text-blush-600;
   }
 
   .card-raw {
-    @apply card-aira;
+    @apply card-couture;
   }
 }
 

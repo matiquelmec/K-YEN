@@ -19,25 +19,25 @@ const categories = [
     id: 'all',
     name: 'Todos los Estilos',
     icon: Filter,
-    color: 'from-calypso-500 to-teal-500',
+    color: 'from-stone-900 to-stone-800',
   },
   {
     id: 'veraniego',
-    name: 'Brisa Calipso',
+    name: 'Brisa & Calipso',
     icon: Sun,
-    color: 'from-calypso-500 to-teal-400',
+    color: 'from-calypso-600 to-teal-600',
   },
   {
     id: 'gotico',
-    name: 'Dorado Solar',
+    name: 'Solsticio Dorado',
     icon: Moon,
-    color: 'from-gold-500 to-amber-500',
+    color: 'from-gold-600 to-amber-600',
   },
   {
     id: 'primaveral',
-    name: 'Rosa Amanecer',
+    name: 'Rosa de Alba',
     icon: Leaf,
-    color: 'from-pink-500 to-rose-400',
+    color: 'from-blush-600 to-rose-600',
   },
 ];
 
@@ -62,18 +62,15 @@ export default function FilterSidebar({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      className='card-aira p-6 sticky top-24 shadow-sm'
-    >
+    <div className='bg-white border border-stone-200/80 p-8 sticky top-28 shadow-sm'>
       {/* Header */}
-      <div className='flex items-center gap-3 mb-6'>
-        <div className='w-8 h-8 rounded-full bg-calypso-50 flex items-center justify-center text-calypso-600'>
-          <Filter className='w-4 h-4' />
-        </div>
-        <h3 className='font-display text-xl font-bold text-stone-900'>
-          Filtros de Búsqueda
+      <div className='flex items-center gap-3 mb-6 pb-4 border-b border-stone-100'>
+        <Filter className='w-4 h-4 text-stone-700 stroke-[1.5]' />
+        <h3
+          className='font-serif text-lg text-[#181716] font-normal'
+          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+        >
+          Filtros de Atelier
         </h3>
       </div>
 
@@ -282,6 +279,6 @@ export default function FilterSidebar({
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
       `}</style>
-    </motion.div>
+    </div>
   );
 }

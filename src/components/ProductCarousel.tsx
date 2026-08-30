@@ -9,7 +9,7 @@ export default function ProductCarousel() {
   const { products, loading } = useProducts({ limit: 4 });
 
   return (
-    <section className='py-16 md:py-24 px-4 relative overflow-hidden'>
+    <section className='py-24 sm:py-32 px-4 sm:px-6 bg-[#FAF8F5] relative overflow-hidden'>
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Section Header */}
         <motion.div
@@ -17,28 +17,31 @@ export default function ProductCarousel() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className='text-center mb-16'
+          className='text-center mb-16 sm:mb-20'
         >
-          <span className='text-xs font-bold uppercase tracking-[0.25em] text-gold-600 block mb-3'>
-            Selección Exclusiva
+          <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
+            PIEZAS EMBLEMÁTICAS
           </span>
-          <h2 className='font-display text-3xl sm:text-5xl font-extrabold text-stone-900 mb-4 tracking-tight'>
-            Vestidos Destacados
+          <h2
+            className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
+            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+          >
+            Selección de Atelier
           </h2>
-          <p className='text-stone-600 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Piezas que celebran tu autenticidad y libertad con caídas envolventes y confección de atelier.
+          <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
+            Siluetas destacadas por su movimiento y la maestría en el patronaje para todas las curvas.
           </p>
         </motion.div>
 
         {/* Products Grid */}
         {loading ? (
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
             {[...Array(4)].map((_, index) => (
-              <div key={index} className='card-aira h-96 animate-pulse bg-stone-100/60' />
+              <div key={index} className='bg-stone-100 h-96 animate-pulse border border-stone-200/50' />
             ))}
           </div>
         ) : (
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8'>
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
@@ -60,17 +63,12 @@ export default function ProductCarousel() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className='text-center mt-14'
+          className='text-center mt-16 sm:mt-20'
         >
           <Link href='/catalogo' className='inline-block'>
-            <button className='btn-calypso px-9 py-4 text-sm font-semibold shadow-md shadow-calypso-500/20'>
-              <span>Ver Toda la Colección Casa Aira</span>
-              <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                →
-              </motion.span>
+            <button className='btn-couture-primary px-10 py-4'>
+              <span>Ver Todo el Catálogo Casa Aira</span>
+              <span className='ml-2'>→</span>
             </button>
           </Link>
         </motion.div>

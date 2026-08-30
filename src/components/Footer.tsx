@@ -3,10 +3,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
-  Heart,
-  Mail,
-  Phone,
-  MapPin,
   Instagram,
   Facebook,
 } from 'lucide-react';
@@ -23,24 +19,30 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='relative py-12 md:py-20 px-4 mt-16 md:mt-24 border-t border-stone-200/80 bg-stone-900 text-stone-300'>
+    <footer className='relative py-20 sm:py-28 px-4 sm:px-6 bg-[#181716] text-[#FAF8F5] border-t border-stone-800'>
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Main Footer Content */}
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-12 md:mb-16'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 mb-20'>
+          
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className='md:col-span-2 lg:col-span-1'
+            className='lg:col-span-4 space-y-6'
           >
             <div className='mb-6'>
               <CasaAiraLogo size='lg' variant='full' animated={true} theme='dark' />
             </div>
-            <p className='text-stone-400 text-sm leading-relaxed max-w-sm'>
-              Celebrando tu libertad, elegancia y autenticidad. Vestidos exclusivos diseñados para fluir con tu esencia.
+            <p className='text-stone-400 text-sm leading-relaxed font-light max-w-sm'>
+              Celebrando la libertad, elegancia y autenticidad femenina. Vestidos exclusivos de alta costura diseñados en Chile para abrazar todas las siluetas.
             </p>
+            <div className='pt-2'>
+              <span className='text-[10px] tracking-[0.3em] uppercase text-stone-500 block'>
+                TALLER & MAISON • CHILE
+              </span>
+            </div>
           </motion.div>
 
           {/* Quick Links */}
@@ -49,178 +51,144 @@ export default function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
+            className='lg:col-span-3'
           >
-            <h4 className='font-display text-lg font-bold text-white mb-6 uppercase tracking-wider'>
-              Colecciones
+            <h4 className='text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-300 mb-8'>
+              Los Capítulos
             </h4>
-            <ul className='space-y-3 text-sm'>
+            <ul className='space-y-4 text-xs tracking-wider uppercase font-light'>
               {[
-                { label: 'Brisa Calipso (Verano & Fiesta)', href: '/catalogo?category=veraniego' },
-                { label: 'Dorado Solar (Gala & Noche)', href: '/catalogo?category=gotico' },
-                { label: 'Rosa Amanecer (Cóctel & Romántico)', href: '/catalogo?category=primaveral' },
+                { label: 'Capítulo I: Brisa & Calipso', href: '/catalogo?category=veraniego' },
+                { label: 'Capítulo II: Solsticio Dorado', href: '/catalogo?category=gotico' },
+                { label: 'Capítulo III: Rosa de Alba', href: '/catalogo?category=primaveral' },
                 { label: 'Ver Todo el Catálogo', href: '/catalogo' },
+                { label: 'El Manifiesto de Marca', href: '/#manifiesto' },
               ].map((item, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ x: 4 }}
-                  className='text-stone-400 hover:text-calypso-400 transition-colors cursor-pointer'
-                >
-                  <Link href={item.href}>
+                <li key={index}>
+                  <Link
+                    href={item.href}
+                    className='text-stone-400 hover:text-white transition-colors duration-300'
+                  >
                     {item.label}
                   </Link>
-                </motion.li>
+                </li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Contact Info */}
+          {/* Contact Info & Newsletter */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
+            className='lg:col-span-5 space-y-6'
           >
-            <h4 className='font-display text-lg font-bold text-white mb-6 uppercase tracking-wider'>
-              Atención & Taller
+            <h4 className='text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-300 mb-6'>
+              Club Privado de Atelier
             </h4>
-            <div className='space-y-3.5 text-sm'>
-              <div className='flex items-center gap-3 text-stone-300'>
-                <Mail className='w-4 h-4 flex-shrink-0 text-calypso-400' />
-                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-calypso-400 transition-colors'>
+            <p className='text-stone-400 text-xs font-light leading-relaxed'>
+              Recibe avisos exclusivos de prelanzamiento de colecciones y atenciones personalizadas.
+            </p>
+
+            {/* Newsletter Form */}
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                const form = e.currentTarget;
+                const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+                const email = emailInput.value;
+                const btn = form.querySelector('button');
+
+                if (!email) return;
+
+                try {
+                  if (btn) btn.disabled = true;
+                  
+                  const res = await fetch('/api/subscribers', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                  });
+
+                  if (!res.ok) {
+                    throw new Error('Error al registrar suscripción');
+                  }
+
+                  const data = await res.json();
+                  
+                  if (data.message === 'Ya suscrito') {
+                    alert('¡Ya eres parte del Club Casa Aira! Gracias por tu preferencia.');
+                  } else {
+                    alert('¡Bienvenida al Club Casa Aira! Te avisaremos de nuestros próximos lanzamientos.');
+                    emailInput.value = '';
+                  }
+                } catch (err) {
+                  console.error(err);
+                  alert('Hubo un error al suscribirte. Intenta nuevamente.');
+                } finally {
+                  if (btn) btn.disabled = false;
+                }
+              }}
+              className='flex flex-col sm:flex-row gap-3 pt-2'
+            >
+              <input
+                name='email'
+                type='email'
+                required
+                placeholder='Tu correo electrónico...'
+                className='flex-1 px-4 py-3 bg-stone-900/80 border border-stone-700 text-stone-100 text-xs tracking-wider placeholder-stone-500 focus:outline-none focus:border-calypso-400'
+              />
+              <button
+                type='submit'
+                className='px-6 py-3 bg-[#FAF8F5] text-[#181716] hover:bg-calypso-600 hover:text-white tracking-[0.2em] text-[10px] uppercase font-semibold transition-all duration-300'
+              >
+                Suscribirme
+              </button>
+            </form>
+
+            {/* Redes y Contacto */}
+            <div className='pt-6 border-t border-stone-800/80 flex items-center justify-between'>
+              <div className='flex items-center gap-4 text-xs text-stone-400'>
+                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-white transition-colors'>
                   {APP_CONFIG.contact.email}
                 </a>
               </div>
-              <div className='flex items-center gap-3 text-stone-300'>
-                <Phone className='w-4 h-4 flex-shrink-0 text-calypso-400' />
-                <a href={`tel:${APP_CONFIG.contact.phone.replace(/\s+/g, '')}`} className='hover:text-calypso-400 transition-colors'>
-                  {APP_CONFIG.contact.phone}
-                </a>
-              </div>
-              <div className='flex items-center gap-3 text-stone-300'>
-                <MapPin className='w-4 h-4 flex-shrink-0 text-calypso-400' />
-                <span>Envíos a todo Chile vía Starken & Chilexpress</span>
-              </div>
-            </div>
-
-            {/* Social Media */}
-            <div className='mt-6'>
-              <h5 className='text-xs uppercase tracking-widest text-stone-400 mb-3'>Síguenos</h5>
               <div className='flex gap-3'>
                 {[
-                  { icon: Instagram, href: APP_CONFIG.social.instagram, color: 'hover:text-pink-400' },
-                  { icon: Facebook, href: APP_CONFIG.social.facebook, color: 'hover:text-calypso-400' },
-                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok, color: 'hover:text-gold-400' },
+                  { icon: Instagram, href: APP_CONFIG.social.instagram },
+                  { icon: Facebook, href: APP_CONFIG.social.facebook },
+                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok },
                 ].map((social, index) => (
-                  <motion.a
+                  <a
                     key={index}
                     href={social.href}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`w-9 h-9 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-300 ${social.color} transition-all duration-300`}
+                    className='w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors'
                   >
-                    <social.icon className='w-4 h-4' />
-                  </motion.a>
+                    <social.icon className='w-3.5 h-3.5' />
+                  </a>
                 ))}
               </div>
             </div>
           </motion.div>
         </div>
 
-        {/* Newsletter Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          viewport={{ once: true }}
-          className='bg-stone-800/80 border border-stone-700/80 rounded-3xl p-8 mb-12'
-        >
-          <div className='text-center max-w-2xl mx-auto'>
-            <h4 className='font-display text-2xl md:text-3xl font-bold text-white mb-2'>
-              Club Exclusivo Casa Aira
-            </h4>
-            <p className='text-stone-400 text-sm mb-6'>
-              Recibe lanzamientos de temporada, invitaciones a preventas y beneficios especiales.
-            </p>
-            <div className='flex flex-col md:flex-row gap-3 max-w-md mx-auto'>
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  const form = e.currentTarget;
-                  const emailInput = form.elements.namedItem('email') as HTMLInputElement;
-                  const email = emailInput.value;
-                  const btn = form.querySelector('button');
-
-                  if (!email) return;
-
-                  try {
-                    if (btn) btn.disabled = true;
-                    
-                    const res = await fetch('/api/subscribers', {
-                      method: 'POST',
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      body: JSON.stringify({ email }),
-                    });
-
-                    if (!res.ok) {
-                      throw new Error('Error al registrar suscripción');
-                    }
-
-                    const data = await res.json();
-                    
-                    if (data.message === 'Ya suscrito') {
-                      alert('¡Ya eres parte del Club Casa Aira! Gracias por tu preferencia.');
-                    } else {
-                      alert('¡Bienvenida a Casa Aira! Te avisaremos de nuestras próximas colecciones.');
-                      emailInput.value = '';
-                    }
-                  } catch (err) {
-                    console.error(err);
-                    alert('Hubo un error al suscribirte. Intenta nuevamente.');
-                  } finally {
-                    if (btn) btn.disabled = false;
-                  }
-                }}
-                className='contents'
-              >
-                <input
-                  name='email'
-                  type='email'
-                  required
-                  placeholder='Tu correo electrónico'
-                  className='flex-1 px-5 py-3 rounded-full bg-stone-900 border border-stone-700 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-calypso-400 text-sm'
-                />
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  type='submit'
-                  className='btn-calypso whitespace-nowrap disabled:opacity-50 text-sm'
-                >
-                  <span className='flex items-center gap-2'>
-                    <Heart className='w-4 h-4' />
-                    Unirme al Club
-                  </span>
-                </motion.button>
-              </form>
-            </div>
-          </div>
-        </motion.div>
-
         {/* Bottom Bar */}
-        <div className='border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-500'>
+        <div className='border-t border-stone-800/80 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.25em] text-stone-500 font-light'>
           <div>
-            © {currentYear} Casa Aira. Todos los derechos reservados.
+            © {currentYear} Casa Aira Atelier. Todos los derechos reservados.
           </div>
 
-          <div className='flex items-center gap-6'>
-            <Link href='/politicas?tab=privacidad' className='hover:text-calypso-400 transition-colors'>
+          <div className='flex items-center gap-8'>
+            <Link href='/politicas?tab=privacidad' className='hover:text-white transition-colors'>
               Privacidad
             </Link>
-            <Link href='/politicas?tab=terminos' className='hover:text-calypso-400 transition-colors'>
+            <Link href='/politicas?tab=terminos' className='hover:text-white transition-colors'>
               Términos
             </Link>
-            <Link href='/politicas?tab=devoluciones' className='hover:text-calypso-400 transition-colors'>
+            <Link href='/politicas?tab=devoluciones' className='hover:text-white transition-colors'>
               Cambios y Devoluciones
             </Link>
           </div>

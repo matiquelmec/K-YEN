@@ -109,12 +109,20 @@ export default function CheckoutPage() {
 
     if (items.length === 0) {
         return (
-            <div className="min-h-screen bg-gradient-to-br from-earth-900 to-gothic-900 flex flex-col items-center justify-center p-4 text-center">
+            <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-4 text-center">
                 <Header />
-                <h1 className="text-3xl font-display font-bold text-bone-100 mb-6">Tu bolso está vacío</h1>
-                <Link href="/catalogo" className="text-terra-400 hover:text-terra-300 font-medium flex items-center gap-2 transition-colors">
-                    <ChevronLeft className="w-5 h-5" />
-                    Volver al catálogo
+                <h1
+                    className="text-3xl font-serif text-[#181716] font-normal mb-4"
+                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                    Tu bolso está vacío
+                </h1>
+                <p className="text-stone-500 text-sm font-light mb-8 max-w-sm">
+                    No tienes prendas seleccionadas para procesar el pago.
+                </p>
+                <Link href="/catalogo" className="btn-couture-primary">
+                    <ChevronLeft className="w-4 h-4 mr-1 stroke-[1.5]" />
+                    <span>Volver al Catálogo</span>
                 </Link>
             </div>
         );
@@ -129,13 +137,13 @@ export default function CheckoutPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-earth-900 via-gothic-900 to-earth-950">
+        <div className="min-h-screen bg-[#FAF8F5] text-[#181716]">
             <Header />
 
-            <div className="container mx-auto px-4 py-12 pt-28">
-                <Link href="/catalogo" className="inline-flex items-center gap-2 text-bone-400 hover:text-bone-200 mb-8 transition-colors text-sm">
-                    <ChevronLeft className="w-4 h-4" />
-                    Continuar comprando
+            <div className="container mx-auto px-4 sm:px-6 py-12 pt-32 max-w-6xl">
+                <Link href="/catalogo" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-900 mb-8 transition-colors text-xs tracking-wider uppercase font-light">
+                    <ChevronLeft className="w-3.5 h-3.5 stroke-[1.5]" />
+                    <span>Continuar explorando</span>
                 </Link>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -144,13 +152,13 @@ export default function CheckoutPage() {
                         <AddressForm onSubmit={handleCheckout} />
 
                         {/* Shipping Note */}
-                        <div className="mt-8 bg-earth-800/40 border border-white/5 rounded-2xl p-6">
+                        <div className="mt-8 bg-white border border-stone-200 p-6 shadow-sm">
                             <div className="flex items-start gap-4">
-                                <Truck className="w-6 h-6 text-terra-400 mt-1" />
+                                <Truck className="w-5 h-5 text-calypso-700 mt-1 stroke-[1.5]" />
                                 <div>
-                                    <p className="font-semibold text-bone-100">Envío por Pagar</p>
-                                    <p className="text-sm text-bone-300 mt-1">
-                                        El costo del envío se pagará directamente a la empresa de transporte (Starken o Chilexpress) al momento de recibir tu pedido.
+                                    <p className="font-serif text-base text-[#181716] font-normal">Despacho por Pagar a Todo Chile</p>
+                                    <p className="text-xs text-stone-500 mt-1 font-light leading-relaxed">
+                                        El costo del envío se cancela directamente a la empresa de transporte (Starken o Chilexpress) al momento de recibir el paquete en tu domicilio o sucursal.
                                     </p>
                                 </div>
                             </div>
@@ -162,40 +170,50 @@ export default function CheckoutPage() {
                                 if (form) form.requestSubmit();
                             }}
                             disabled={isSubmitting}
-                            className="w-full py-4 bg-gradient-to-r from-sensual-600 to-sensual-700 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sensual-600/20 hover:scale-[1.01] active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed mt-8"
+                            className="w-full btn-couture-primary py-4 mt-8 justify-center disabled:opacity-50"
                         >
-                            {isSubmitting ? 'Procesando...' : 'Confirmar Pedido'}
+                            {isSubmitting ? 'Procesando con Mercado Pago...' : 'Confirmar Pedido & Ir al Pago Seguro'}
                         </button>
                     </div>
 
                     {/* Right Column: Order Summary */}
                     <div className="lg:col-span-5">
-                        <div className="bg-white/5 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-xl sticky top-24">
-                            <h2 className="text-xl font-display font-bold text-bone-100 mb-6">Resumen del Pedido</h2>
+                        <div className="bg-white p-8 border border-stone-200 shadow-sm sticky top-28">
+                            <h2
+                                className="text-xl font-serif text-[#181716] font-normal mb-6 pb-4 border-b border-stone-100"
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                            >
+                                Resumen del Pedido
+                            </h2>
 
                             <div className="space-y-4 mb-6 max-h-96 overflow-y-auto pr-2">
                                 {items.map((item) => (
-                                    <div key={item.id} className="flex gap-4">
-                                        <div className="relative w-16 h-20 rounded-md overflow-hidden bg-earth-800/50 flex-shrink-0 border border-white/5">
+                                    <div key={item.id} className="flex gap-4 pb-4 border-b border-stone-100 last:border-0">
+                                        <div className="relative w-16 h-20 bg-stone-100 flex-shrink-0 border border-stone-200 overflow-hidden">
                                             {item.product?.images?.[0] && (
                                                 <Image
                                                     src={item.product.images[0]}
                                                     alt={item.product.name}
                                                     fill
-                                                    className="object-cover"
+                                                    className="object-cover object-top"
                                                 />
                                             )}
                                         </div>
                                         <div className="flex-1">
-                                            <h4 className="text-sm font-medium text-bone-100 line-clamp-2">{item.product.name}</h4>
-                                            <p className="text-xs text-bone-400 mt-1">
+                                            <h4
+                                                className="text-sm font-serif text-[#181716] line-clamp-2 font-normal"
+                                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                            >
+                                                {item.product.name}
+                                            </h4>
+                                            <p className="text-xs text-stone-500 mt-1 font-light">
                                                 {item.quantity} x {formatPrice(item.product.price)}
                                             </p>
-                                            <p className="text-xs text-bone-400">
-                                                {item.selectedSize} / {item.selectedColor}
+                                            <p className="text-[11px] text-stone-400 font-light">
+                                                Talla {item.selectedSize} • {item.selectedColor}
                                             </p>
                                         </div>
-                                        <div className="text-sm font-medium text-bone-100">
+                                        <div className="text-sm font-medium text-[#181716]">
                                             {formatPrice(item.product.price * item.quantity)}
                                         </div>
                                     </div>
@@ -203,15 +221,15 @@ export default function CheckoutPage() {
                             </div>
 
                             {/* Sección de Cupón de Descuento */}
-                            <div className="border-t border-white/10 pt-4 pb-4">
+                            <div className="border-t border-stone-100 pt-4 pb-4">
                                 {appliedCoupon ? (
-                                    <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-3 flex items-center justify-between">
+                                    <div className="bg-stone-50 border border-stone-300 p-3 flex items-center justify-between">
                                         <div className="flex items-center gap-2">
-                                            <Check className="w-4 h-4 text-emerald-400" />
+                                            <Check className="w-4 h-4 text-calypso-700" />
                                             <div>
-                                                <p className="text-xs font-bold text-emerald-300 font-mono">{appliedCoupon.code}</p>
-                                                <p className="text-[10px] text-emerald-400/80">
-                                                    Descuento aplicado: -{formatPrice(appliedCoupon.discount_amount)}
+                                                <p className="text-xs font-bold text-stone-900 font-mono">{appliedCoupon.code}</p>
+                                                <p className="text-[10px] text-stone-500 font-light">
+                                                    Descuento: -{formatPrice(appliedCoupon.discount_amount)}
                                                     {appliedCoupon.affiliate_name ? ` (Embajadora: ${appliedCoupon.affiliate_name})` : ''}
                                                 </p>
                                             </div>
@@ -219,64 +237,69 @@ export default function CheckoutPage() {
                                         <button
                                             type="button"
                                             onClick={handleRemoveCoupon}
-                                            className="text-bone-400 hover:text-red-400 p-1 transition-colors"
+                                            className="text-stone-400 hover:text-stone-900 p-1 transition-colors"
                                             title="Quitar cupón"
                                         >
-                                            <X className="w-4 h-4" />
+                                            <X className="w-4 h-4 stroke-[1.5]" />
                                         </button>
                                     </div>
                                 ) : (
                                     <form onSubmit={handleApplyCoupon} className="space-y-2">
                                         <div className="flex gap-2">
                                             <div className="relative flex-1">
-                                                <Tag className="w-4 h-4 text-bone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                                                <Tag className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                                 <input
                                                     type="text"
-                                                    placeholder="Código de descuento"
+                                                    placeholder="CÓDIGO DE DESCUENTO"
                                                     value={couponCode}
                                                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                                                    className="w-full pl-9 pr-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-bone-100 uppercase font-mono placeholder:text-bone-400 focus:outline-none focus:border-terra-400 transition-colors"
+                                                    className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 text-xs text-stone-900 uppercase tracking-wider placeholder:text-stone-400 focus:outline-none focus:border-stone-900 transition-colors"
                                                 />
                                             </div>
                                             <button
                                                 type="submit"
                                                 disabled={validatingCoupon || !couponCode.trim()}
-                                                className="px-4 py-2 bg-terra-500 hover:bg-terra-600 text-white rounded-xl text-xs font-bold transition-colors disabled:opacity-50 flex items-center gap-1"
+                                                className="px-4 py-2 bg-[#181716] hover:bg-stone-800 text-white text-[10px] uppercase tracking-wider font-semibold transition-colors disabled:opacity-50 flex items-center gap-1"
                                             >
                                                 {validatingCoupon ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : 'Aplicar'}
                                             </button>
                                         </div>
                                         {couponError && (
-                                            <p className="text-[11px] text-red-400 font-medium">{couponError}</p>
+                                            <p className="text-[11px] text-rose-600 font-medium">{couponError}</p>
                                         )}
                                     </form>
                                 )}
                             </div>
 
-                            <div className="border-t border-white/10 pt-4 space-y-3">
-                                <div className="flex items-center justify-between text-bone-300 text-sm">
+                            <div className="border-t border-stone-100 pt-4 space-y-3">
+                                <div className="flex items-center justify-between text-stone-500 text-xs tracking-wider uppercase font-light">
                                     <span>Subtotal</span>
-                                    <span className="text-bone-100">{formatPrice(total)}</span>
+                                    <span className="text-[#181716] font-normal">{formatPrice(total)}</span>
                                 </div>
                                 {appliedCoupon && (
-                                    <div className="flex items-center justify-between text-emerald-400 text-sm font-medium">
+                                    <div className="flex items-center justify-between text-calypso-700 text-xs tracking-wider uppercase font-medium">
                                         <span>Descuento ({appliedCoupon.code})</span>
                                         <span>-{formatPrice(discountAmount)}</span>
                                     </div>
                                 )}
-                                <div className="flex items-center justify-between text-bone-300 text-sm">
-                                    <span>Envío</span>
-                                    <span className="text-spring-400 font-medium">Por Pagar</span>
+                                <div className="flex items-center justify-between text-stone-500 text-xs tracking-wider uppercase font-light">
+                                    <span>Despacho</span>
+                                    <span className="text-calypso-700 font-medium">Por Pagar</span>
                                 </div>
-                                <div className="flex items-center justify-between border-t border-white/10 pt-4">
-                                    <span className="text-xl font-display font-bold text-bone-100">Total</span>
-                                    <span className="text-2xl font-display font-bold text-terra-400">{formatPrice(finalTotal)}</span>
+                                <div className="flex items-center justify-between border-t border-stone-200 pt-4">
+                                    <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[#181716]">Total Final</span>
+                                    <span
+                                        className="text-2xl font-serif text-[#181716] font-normal"
+                                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                    >
+                                        {formatPrice(finalTotal)}
+                                    </span>
                                 </div>
                             </div>
 
-                            <div className="mt-6 flex items-center justify-center gap-2 text-bone-400 text-sm">
-                                <CreditCard className="w-4 h-4 text-terra-400" />
-                                <span>Transacción segura y encriptada</span>
+                            <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-center gap-2 text-stone-400 text-xs font-light">
+                                <CreditCard className="w-4 h-4 stroke-[1.5]" />
+                                <span>Pasarela segura procesada por Mercado Pago</span>
                             </div>
                         </div>
                     </div>

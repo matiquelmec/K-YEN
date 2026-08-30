@@ -15,15 +15,16 @@ export default function Header() {
 
   const navigation = [
     { name: 'Catálogo', href: '/catalogo' },
-    { name: 'Brisa Calipso', href: '/catalogo?category=veraniego' },
-    { name: 'Dorado Solar', href: '/catalogo?category=gotico' },
-    { name: 'Rosa Amanecer', href: '/catalogo?category=primaveral' },
+    { name: 'Brisa & Calipso', href: '/catalogo?category=veraniego' },
+    { name: 'Solsticio Dorado', href: '/catalogo?category=gotico' },
+    { name: 'Rosa de Alba', href: '/catalogo?category=primaveral' },
+    { name: 'El Manifiesto', href: '/#manifiesto' },
   ];
 
   return (
-    <header className='fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-md border-b border-stone-200/70 shadow-sm transition-all duration-300'>
+    <header className='fixed top-0 left-0 right-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b border-stone-200/60 transition-all duration-300'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex items-center justify-between h-18 py-2'>
+        <div className='flex items-center justify-between h-20'>
           {/* Logo */}
           <div className='flex-shrink-0'>
             <Link href='/' className='flex items-center'>
@@ -32,28 +33,28 @@ export default function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className='hidden md:flex items-center space-x-8'>
+          <nav className='hidden md:flex items-center space-x-9'>
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className='text-stone-700 hover:text-calypso-600 font-medium text-sm transition-colors duration-300 relative group py-1'
+                className='text-[#181716]/80 hover:text-calypso-700 tracking-[0.2em] uppercase text-[11px] font-medium transition-colors duration-300 relative py-1 group'
               >
                 {item.name}
-                <span className='absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gradient-to-r from-calypso-500 to-gold-400 group-hover:w-full transition-all duration-300 rounded-full' />
+                <span className='absolute bottom-0 left-0 w-0 h-[1px] bg-calypso-600 group-hover:w-full transition-all duration-300 ease-out' />
               </Link>
             ))}
           </nav>
 
           {/* Desktop Actions */}
-          <div className='hidden md:flex items-center space-x-4'>
+          <div className='hidden md:flex items-center space-x-3'>
             {/* Search */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className='p-2.5 rounded-full bg-stone-100/80 hover:bg-calypso-50 text-stone-600 hover:text-calypso-600 transition-colors'
+              className='p-2.5 rounded-full hover:bg-stone-200/50 text-stone-700 hover:text-calypso-700 transition-colors'
               title='Buscar vestidos'
             >
-              <Search className='w-4 h-4' />
+              <Search className='w-4 h-4 stroke-[1.5]' />
             </button>
 
             {/* Cart */}
@@ -65,7 +66,7 @@ export default function Header() {
             <Cart />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className='p-2 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors'
+              className='p-2 text-stone-800 hover:text-calypso-700 transition-colors'
             >
               {isMenuOpen ? (
                 <X className='w-5 h-5' />
@@ -84,14 +85,14 @@ export default function Header() {
           height: isMenuOpen ? 'auto' : 0,
           opacity: isMenuOpen ? 1 : 0,
         }}
-        className='md:hidden bg-white/95 backdrop-blur-md border-t border-stone-200/70 overflow-hidden'
+        className='md:hidden bg-[#FAF8F5] border-t border-stone-200/60 overflow-hidden'
       >
-        <div className='px-4 pt-3 pb-4 space-y-1'>
+        <div className='px-6 pt-4 pb-6 space-y-2'>
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className='block px-4 py-2.5 text-stone-700 hover:text-calypso-600 hover:bg-calypso-50/50 rounded-xl text-sm font-medium transition-colors'
+              className='block py-2.5 text-stone-800 hover:text-calypso-700 tracking-[0.2em] uppercase text-xs font-medium transition-colors'
               onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
@@ -105,13 +106,13 @@ export default function Header() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className='absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg border-t border-stone-200/80 p-4'
+          className='absolute top-full left-0 right-0 bg-[#FAF8F5] shadow-lg border-t border-stone-200/80 p-6'
         >
           <div className='max-w-2xl mx-auto'>
             <input
               type='text'
-              placeholder='Buscar por nombre, color o estilo de vestido...'
-              className='w-full px-5 py-3 rounded-full border border-stone-300 focus:outline-none focus:ring-2 focus:ring-calypso-500 focus:border-transparent text-sm bg-stone-50/50'
+              placeholder='Buscar por silueta, tono o colección...'
+              className='w-full px-5 py-3 border-b border-stone-400 focus:border-calypso-600 bg-transparent text-sm tracking-wide focus:outline-none placeholder-stone-400'
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === 'Escape') {
