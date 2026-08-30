@@ -109,12 +109,6 @@ export async function POST(req: NextRequest) {
           }
           discountAmount = Math.min(discountAmount, subtotalAmount); // No puede ser mayor al subtotal
           validCouponCode = upperCode;
-
-          // Registrar uso del cupón
-          await turso.execute({
-            sql: 'UPDATE coupons SET usage_count = COALESCE(usage_count, 0) + 1 WHERE code = ?',
-            args: [upperCode]
-          });
         }
       }
     }

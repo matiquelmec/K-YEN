@@ -13,7 +13,7 @@ Plataforma de e-commerce moderna y de alta costura para vestidos exclusivos, con
 - **Pasarela de Pago**: Mercado Pago SDK (preferencias atómicas y webhook con verificación de estado)
 - **Marketing & Crecimiento**: Sistema nativo de Cupones de Descuento y Tracking de Afiliadas / Embajadoras
 - **Estilos y Estética**: Tailwind CSS + Framer Motion (diseño "Boutique Dark", transiciones suaves y microinteracciones)
-- **Calidad & Testing**: Vitest (29 tests unitarios) + ESLint + Prettier + TypeScript estricto
+- **Calidad & Testing**: Vitest (34 tests unitarios) + ESLint + Prettier + TypeScript estricto
 
 ---
 
@@ -50,7 +50,7 @@ npm run dev
 | `npm run dev` | Servidor de desarrollo local con Turbopack |
 | `npm run build` | Compilación optimizada para producción + generación de sitemaps XML |
 | `npm run start` | Servidor de producción |
-| `npm test` | Ejecutar la suite completa de 29 pruebas unitarias con Vitest |
+| `npm test` | Ejecutar la suite completa de 34 pruebas unitarias con Vitest |
 | `npm run type-check` | Verificar tipos TypeScript (`tsc --noEmit`) |
 | `npm run lint` | Verificar código con ESLint |
 | `npm run lint:fix` | Corregir automáticamente problemas de linting |

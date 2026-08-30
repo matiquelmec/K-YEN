@@ -39,12 +39,14 @@ La sincronización se realiza atómicamente a través de `syncProductVariants(..
 ---
 
 ## 5. Testing Automatizado (Vitest)
-Se cuenta con 29 pruebas unitarias estructuradas en `tests/unit/`:
+Se cuenta con 34 pruebas unitarias estructuradas en `tests/unit/`:
 - `tests/unit/coupons.test.ts`: Validación de reglas de cupones y límites de uso.
 - `tests/unit/products-variants.test.ts`: Generación de SKUs y mapeo relacional.
 - `tests/unit/color-extractor.test.ts`: Algoritmo Canvas y matching perceptual.
 - `tests/unit/multi-image.test.ts`: Validaciones de subida múltiple.
 - `tests/unit/slug-resolution.test.ts`: Validación de slugs semánticos y fallback a UUID.
+- `tests/unit/payment-stock-deduction.test.ts`: Deducción atómica e idempotencia de inventario.
+- `tests/unit/order-whatsapp-generator.test.ts`: Generador dinámico de comprobantes WhatsApp.
 
 Para ejecutar las pruebas:
 ```bash

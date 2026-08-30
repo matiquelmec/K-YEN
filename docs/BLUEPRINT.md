@@ -204,13 +204,16 @@ erDiagram
 
 ## 6. 🧪 Estrategia de Testing y Métricas de Calidad
 
-- **Testing Unitario:** 29 pruebas automáticas en Vitest (`tests/unit/*.test.ts`) cubriendo:
+- **Testing Unitario:** 34 pruebas automáticas en Vitest (`tests/unit/*.test.ts`) cubriendo:
   - Cupones y reglas de descuento porcentual y fijo.
   - Sincronización de variantes y SKU generation.
   - Extracción y matching de color en Canvas.
   - Resolución de slugs semánticos y compatibilidad con UUIDs.
+  - Deducción atómica de stock en `products` y `product_variants`.
+  - Idempotencia en confirmación de Webhook de Mercado Pago.
+  - Generador de comprobantes interactivos de WhatsApp.
   - Tipado de productos y fallback seguro.
 - **Validación Continua:**
   - TypeScript: 100% libre de errores (`npm run type-check`).
   - ESLint: 0 errores y 0 warnings (`npm run lint`).
-  - Build de Producción: 28 páginas compiladas y sitemap XML autogenerado con slugs (`npm run build`).
+  - Build de Producción: 29 páginas compiladas y sitemap XML autogenerado con slugs (`npm run build`).

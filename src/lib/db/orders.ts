@@ -99,43 +99,72 @@ export async function dbUpdateOrderPayment(id: string, paymentId: string, paymen
 export async function dbConfirmOrderPaymentAndDeductStock(paymentId: string, paymentStatus: string, orderStatus: string): Promise<boolean> {
   const updated_at = new Date().toISOString();
   
-  // Buscar orden por payment_id
+  // Buscar orden por payment_id (o external_reference)
   const result = await turso.execute({
-    sql: 'SELECT * FROM orders WHERE payment_id = ? LIMIT 1',
-    args: [paymentId]
+    sql: 'SELECT * FROM orders WHERE payment_id = ? OR id = ? LIMIT 1',
+    args: [paymentId, paymentId]
   });
 
   if (result.rows.length === 0) return false;
   const row = result.rows[0] as any;
   const items: any[] = row.items ? JSON.parse(String(row.items)) : [];
+  const shippingAddress: any = row.shipping_address ? JSON.parse(String(row.shipping_address)) : {};
   const currentStatus = String(row.status);
+  const couponCode = row.coupon_code || shippingAddress.coupon_code;
 
   // Si ya fue marcada como 'paid', evitamos doble descuento de stock (idempotencia)
   if (currentStatus === 'paid') {
     await turso.execute({
-      sql: 'UPDATE orders SET payment_status = ?, updated_at = ? WHERE payment_id = ?',
-      args: [paymentStatus, updated_at, paymentId]
+      sql: 'UPDATE orders SET payment_status = ?, updated_at = ? WHERE id = ?',
+      args: [paymentStatus, updated_at, String(row.id)]
     });
     return true;
   }
 
   const statements: any[] = [
     {
-      sql: 'UPDATE orders SET payment_status = ?, status = ?, updated_at = ? WHERE payment_id = ?',
-      args: [paymentStatus, orderStatus, updated_at, paymentId]
+      sql: 'UPDATE orders SET payment_status = ?, status = ?, updated_at = ? WHERE id = ?',
+      args: [paymentStatus, orderStatus, updated_at, String(row.id)]
     }
   ];
 
-  // Si el pago es aprobado, descontar stock de cada producto atómicamente
+  // Si el pago es aprobado, descontar stock de cada producto y variante atómicamente
   if (orderStatus === 'paid') {
+    // 1. Incrementar uso del cupón si se aplicó
+    if (couponCode) {
+      statements.push({
+        sql: 'UPDATE coupons SET usage_count = COALESCE(usage_count, 0) + 1 WHERE code = ?',
+        args: [String(couponCode).toUpperCase().trim()]
+      });
+    }
+
+    // 2. Descontar stock general y variantes
     for (const item of items) {
       const prodId = item.product_id || item.product?.id;
       const qty = item.quantity || 1;
+      const size = item.size || item.selectedSize;
+      const color = item.color || item.selectedColor;
+
       if (prodId) {
+        // Descuento global en products
         statements.push({
           sql: 'UPDATE products SET stock = MAX(0, COALESCE(stock, 15) - ?) WHERE id = ?',
           args: [qty, String(prodId)]
         });
+
+        // Descuento en la matriz de product_variants
+        if (size && color) {
+          statements.push({
+            sql: `
+              UPDATE product_variants 
+              SET stock_quantity = MAX(0, COALESCE(stock_quantity, 10) - ?) 
+              WHERE product_id = ? 
+                AND size_id IN (SELECT id FROM sizes WHERE name = ?) 
+                AND color_id IN (SELECT id FROM colors WHERE name = ?)
+            `,
+            args: [qty, String(prodId), String(size), String(color)]
+          });
+        }
       }
     }
   }
