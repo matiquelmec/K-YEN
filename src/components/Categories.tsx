@@ -11,7 +11,7 @@ const chapters = [
     title: 'Brisa & Calipso',
     subtitle: 'COLECCIÓN VERANO & AIRE LIBRE',
     description:
-      'Linos nobles, cortes asimétricos y la frescura del azul egeo. Vestidos diseñados para caminar con soltura junto al mar y celebrar los días luminosos.',
+      'Linos nobles, cortes asimétricos y la frescura del azul egeo. Vestidos seleccionados para caminar con soltura junto al mar y celebrar los días luminosos.',
     accentColor: 'text-calypso-700',
     tag: 'Brisa Marina',
   },
@@ -21,7 +21,7 @@ const chapters = [
     title: 'Solsticio Dorado',
     subtitle: 'COLECCIÓN GALA & NOCHE',
     description:
-      'El resplandor del oro champagne y la sofisticación del crepúsculo. Caídas envolventes para eventos especiales donde la distinción es protagonista.',
+      'El resplandor del oro champagne y la sofisticación del crepúsculo. Siluetas elegidas para eventos especiales donde la distinción es protagonista.',
     accentColor: 'text-gold-700',
     tag: 'Gala & Fiesta',
   },
@@ -31,7 +31,7 @@ const chapters = [
     title: 'Rosa de Alba',
     subtitle: 'COLECCIÓN ROMÁNTICA & CÓCTEL',
     description:
-      'La delicadeza del rosa poudré y las siluetas etéreas. Diseños que abrazan la feminidad contemporánea con absoluta gracia y ligereza.',
+      'La delicadeza del rosa poudré y las caídas etéreas. Diseños curados para abrazar la feminidad contemporánea con absoluta gracia y ligereza.',
     accentColor: 'text-blush-700',
     tag: 'Seda & Romance',
   },

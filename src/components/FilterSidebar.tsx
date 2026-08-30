@@ -70,7 +70,7 @@ export default function FilterSidebar({
           className='font-serif text-lg text-[#181716] font-normal'
           style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
         >
-          Filtros de Atelier
+          Filtros de Selección
         </h3>
       </div>
 

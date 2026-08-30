@@ -12,7 +12,7 @@ export default function Hero() {
       <div className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-calypso-100/30 via-gold-100/20 to-blush-100/30 rounded-full blur-3xl pointer-events-none' />
 
       <div className='relative z-10 text-center max-w-4xl mx-auto'>
-        {/* Eyebrow de Atelier */}
+        {/* Eyebrow de Boutique Curada */}
         <motion.div
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -21,7 +21,7 @@ export default function Hero() {
         >
           <span className='w-6 h-[1px] bg-gold-400' />
           <span className='text-[10px] tracking-[0.4em] uppercase font-semibold text-stone-500'>
-            COLECCIÓN 2026 • ALTA COSTURA CHILENA
+            COLECCIÓN 2026 • CURADURÍA EXCLUSIVA
           </span>
           <span className='w-6 h-[1px] bg-gold-400' />
         </motion.div>
@@ -52,8 +52,8 @@ export default function Hero() {
           transition={{ duration: 0.9, delay: 0.2 }}
           className='text-stone-600 text-base sm:text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto leading-relaxed'
         >
-          Vestidos confeccionados para envolver y danzar con el viento.
-          Texturas nobles, destellos dorados y caídas fluidas que celebran cada silueta de la talla XS a la 6XL.
+          Vestidos rigurosamente seleccionados por su movimiento y suavidad.
+          Curaduría exclusiva de prendas livianas, destellos dorados y caídas fluidas que realzan toda silueta de la talla XS a la 6XL.
         </motion.p>
 
         {/* Botones de Acción - Corte Sastre */}

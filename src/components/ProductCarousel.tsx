@@ -20,16 +20,16 @@ export default function ProductCarousel() {
           className='text-center mb-16 sm:mb-20'
         >
           <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
-            PIEZAS EMBLEMÁTICAS
+            CURADURÍA DE TEMPORADA
           </span>
           <h2
             className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
-            Selección de Atelier
+            Selección Exclusiva
           </h2>
           <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Siluetas destacadas por su movimiento y la maestría en el patronaje para todas las curvas.
+            Vestidos elegidos meticulosamente por la nobleza de sus telas y la armonía de su calce en todas las curvas.
           </p>
         </motion.div>
 

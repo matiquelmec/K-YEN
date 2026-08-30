@@ -36,11 +36,11 @@ export default function Footer() {
               <CasaAiraLogo size='lg' variant='full' animated={true} theme='dark' />
             </div>
             <p className='text-stone-400 text-sm leading-relaxed font-light max-w-sm'>
-              Celebrando la libertad, elegancia y autenticidad femenina. Vestidos exclusivos de alta costura diseñados en Chile para abrazar todas las siluetas.
+              Celebrando la libertad, elegancia y autenticidad femenina. Vestidos seleccionados bajo rigurosos filtros de calidad y caída para abrazar todas las siluetas en Chile.
             </p>
             <div className='pt-2'>
               <span className='text-[10px] tracking-[0.3em] uppercase text-stone-500 block'>
-                TALLER & MAISON • CHILE
+                CURATED BOUTIQUE • CHILE
               </span>
             </div>
           </motion.div>
@@ -85,10 +85,10 @@ export default function Footer() {
             className='lg:col-span-5 space-y-6'
           >
             <h4 className='text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-300 mb-6'>
-              Club Privado de Atelier
+              Club Exclusivo Casa Aira
             </h4>
             <p className='text-stone-400 text-xs font-light leading-relaxed'>
-              Recibe avisos exclusivos de prelanzamiento de colecciones y atenciones personalizadas.
+              Recibe avisos exclusivos de prelanzamiento de nuevas selecciones y atenciones personalizadas.
             </p>
 
             {/* Newsletter Form */}

@@ -63,16 +63,16 @@ function CatalogoContent() {
           className='text-center mb-12 sm:mb-16'
         >
           <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
-            COLECCIÓN MAESTRA 2026
+            COLECCIÓN CURADA 2026
           </span>
           <h1
             className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
-            Catálogo de Atelier
+            Catálogo de Selección
           </h1>
           <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Piezas concebidas para envolver con sutileza, confeccionadas a mano con patronaje inclusivo de la talla XS a la 6XL.
+            Prendas meticulosamente filtradas por su calidad textil y caída favorecedora para todas las curvas (XS a 6XL).
           </p>
         </motion.div>
 

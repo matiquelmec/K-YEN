@@ -80,7 +80,7 @@ export default function Cart() {
                       Tu bolso está vacío
                     </h3>
                     <p className="text-stone-500 max-w-xs mx-auto text-xs font-light leading-relaxed mb-8">
-                      Aún no has seleccionado piezas de atelier para acompañar tus momentos especiales.
+                      Aún no has seleccionado prendas curadas para acompañar tus momentos especiales.
                     </p>
                     <button
                       onClick={() => {
