@@ -26,22 +26,58 @@ const dancing = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: 'KÜYEN - Donde la elegancia florece bajo la luna',
-  description:
-    'Descubre vestidos únicos que conectan con tu esencia femenina. Elegancia lunar, sensualidad natural, diseños que abrazan todas las tallas. KÜYEN - donde cada mujer encuentra su brillo.',
-  keywords:
-    'KÜYEN, vestidos elegantes, moda lunar, sensualidad femenina, tallas grandes, elegancia natural, vestidos nocturnos, moda inclusiva',
-  authors: [{ name: 'KÜYEN' }],
-  creator: 'KÜYEN - Donde la elegancia florece bajo la luna',
-  openGraph: {
-    title: 'KÜYEN - Elegancia que florece bajo la luna',
-    description:
-      'Vestidos que celebran la feminidad en todas sus formas, bajo el manto protector de la luna',
-    type: 'website',
+  metadataBase: new URL('https://kuyenchile.cl'),
+  title: {
+    default: 'Casa Aira - Boutique | Elegancia & Libertad en Vestidos',
+    template: '%s | Casa Aira',
   },
+  description:
+    'Boutique de vestidos exclusivos seleccionados con los más altos estándares de calidad y caída. Diseños fluidos que abrazan todas las tallas de XS a 6XL con despacho a todo Chile.',
+  keywords: [
+    'Casa Aira',
+    'vestidos boutique chile',
+    'vestidos elegantes chile',
+    'vestidos calipso',
+    'vestidos fiesta chile',
+    'vestidos tallas grandes',
+    'moda inclusiva chile',
+    'vestidos de gala y noche',
+  ],
+  authors: [{ name: 'Casa Aira' }],
+  creator: 'Casa Aira Boutique',
+  publisher: 'Casa Aira',
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'es_CL',
+    url: 'https://kuyenchile.cl',
+    siteName: 'Casa Aira',
+    title: 'Casa Aira - Boutique | Elegancia, Frescura y Libertad',
+    description:
+      'Descubre vestidos únicos de selección exclusiva diseñados para celebrar tu esencia en todas las tallas.',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Casa Aira - Boutique',
+    description: 'Vestidos de selección exclusiva con despacho a todo Chile.',
+  },
+  manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/favicon.svg',
-    apple: '/favicon.svg',
+    icon: [
+      { url: '/brand/casa-aira-icon.svg', type: 'image/svg+xml' },
+      { url: '/icon', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Casa Aira',
   },
 };
 
