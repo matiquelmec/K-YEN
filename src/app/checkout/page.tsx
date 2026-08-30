@@ -249,7 +249,9 @@ export default function CheckoutPage() {
                                             <div className="relative flex-1">
                                                 <Tag className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                                                 <input
+                                                    name="couponCode"
                                                     type="text"
+                                                    autoComplete="off"
                                                     placeholder="CÓDIGO DE DESCUENTO"
                                                     value={couponCode}
                                                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}

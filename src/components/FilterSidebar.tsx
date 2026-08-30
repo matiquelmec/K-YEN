@@ -181,8 +181,11 @@ export default function FilterSidebar({
 
           <div className='grid grid-cols-2 gap-3'>
             <div>
-              <label className='block text-xs text-gray-600 mb-1'>Mínimo</label>
+              <label htmlFor='min-price' className='block text-xs text-gray-600 mb-1'>Mínimo</label>
               <input
+                id='min-price'
+                name='minPrice'
+                autoComplete='off'
                 type='number'
                 min='0'
                 max={priceRange[1] ?? 150000}
@@ -197,8 +200,11 @@ export default function FilterSidebar({
               />
             </div>
             <div>
-              <label className='block text-xs text-gray-600 mb-1'>Máximo</label>
+              <label htmlFor='max-price' className='block text-xs text-gray-600 mb-1'>Máximo</label>
               <input
+                id='max-price'
+                name='maxPrice'
+                autoComplete='off'
                 type='number'
                 min={priceRange[0] ?? 0}
                 max='150000'

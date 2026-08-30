@@ -110,7 +110,9 @@ export default function Header() {
         >
           <div className='max-w-2xl mx-auto'>
             <input
+              name='search'
               type='text'
+              autoComplete='off'
               placeholder='Buscar por silueta, tono o colección...'
               className='w-full px-5 py-3 border-b border-stone-400 focus:border-calypso-600 bg-transparent text-sm tracking-wide focus:outline-none placeholder-stone-400'
               autoFocus

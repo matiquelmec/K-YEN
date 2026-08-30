@@ -55,6 +55,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="text"
                             name="firstName"
                             id="firstName"
+                            autoComplete="given-name"
                             required
                             className={inputClasses}
                             value={formData.firstName}
@@ -67,6 +68,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="text"
                             name="lastName"
                             id="lastName"
+                            autoComplete="family-name"
                             required
                             className={inputClasses}
                             value={formData.lastName}
@@ -79,6 +81,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="email"
                             name="email"
                             id="email"
+                            autoComplete="email"
                             required
                             className={inputClasses}
                             value={formData.email}
@@ -91,6 +94,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="tel"
                             name="phone"
                             id="phone"
+                            autoComplete="tel"
                             placeholder="+56 9 ..."
                             required
                             className={inputClasses}
@@ -109,6 +113,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                         <select
                             name="region"
                             id="region"
+                            autoComplete="address-level1"
                             required
                             className={inputClasses}
                             value={formData.region}
@@ -127,6 +132,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                         <select
                             name="commune"
                             id="commune"
+                            autoComplete="address-level2"
                             required
                             disabled={!formData.region}
                             className={`${inputClasses} disabled:opacity-50`}
@@ -147,6 +153,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="text"
                             name="address"
                             id="address"
+                            autoComplete="street-address"
                             placeholder="Ej: Av. Presidente Ibáñez"
                             required
                             className={inputClasses}
@@ -160,6 +167,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="text"
                             name="number"
                             id="number"
+                            autoComplete="address-line2"
                             placeholder="Ej: 1420"
                             required
                             className={inputClasses}
@@ -173,6 +181,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                             type="text"
                             name="dept"
                             id="dept"
+                            autoComplete="address-line3"
                             placeholder="Ej: Depto 402"
                             className={inputClasses}
                             value={formData.dept}

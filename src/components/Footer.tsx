@@ -99,29 +99,16 @@ export default function Footer() {
                 const emailInput = form.elements.namedItem('email') as HTMLInputElement;
                 const email = emailInput.value;
                 const btn = form.querySelector('button');
-
-                if (!email) return;
+                if (!emailInput || !emailInput.value) return;
 
                 try {
                   if (btn) btn.disabled = true;
-                  
                   const res = await fetch('/api/subscribers', {
                     method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email }),
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: emailInput.value }),
                   });
-
-                  if (!res.ok) {
-                    throw new Error('Error al registrar suscripción');
-                  }
-
-                  const data = await res.json();
-                  
-                  if (data.message === 'Ya suscrito') {
-                    alert('¡Ya eres parte del Club Casa Aira! Gracias por tu preferencia.');
-                  } else {
+                  if (res.ok) {
                     alert('¡Bienvenida al Club Casa Aira! Te avisaremos de nuestros próximos lanzamientos.');
                     emailInput.value = '';
                   }
@@ -137,6 +124,7 @@ export default function Footer() {
               <input
                 name='email'
                 type='email'
+                autoComplete='email'
                 required
                 placeholder='Tu correo electrónico...'
                 className='flex-1 px-4 py-3 bg-stone-900/80 border border-stone-700 text-stone-100 text-xs tracking-wider placeholder-stone-500 focus:outline-none focus:border-calypso-400'

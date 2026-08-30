@@ -128,7 +128,9 @@ function CatalogoContent() {
                 <div className='relative flex-1 max-w-md w-full'>
                   <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-earth-500 w-5 h-5' />
                   <input
+                    name='search'
                     type='text'
+                    autoComplete='off'
                     placeholder='Buscar vestidos...'
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
