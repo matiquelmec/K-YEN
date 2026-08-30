@@ -55,7 +55,7 @@ export default function Cart() {
                     className="font-serif text-xl sm:text-2xl text-[#181716] font-normal"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                   >
-                    Tu Bolso de Compras
+                    Tu Bolsa de Compras
                   </h2>
                 </div>
                 <button
@@ -70,17 +70,17 @@ export default function Cart() {
               <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-[#FAF8F5]">
                 {items.length === 0 ? (
                   <div className="text-center py-20 flex flex-col items-center">
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 text-stone-400 border border-stone-200">
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-6 text-stone-400 border border-stone-200 shadow-sm">
                       <ShoppingBag className="w-8 h-8 stroke-[1]" />
                     </div>
                     <h3
                       className="font-serif text-xl text-[#181716] font-normal mb-2"
                       style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
-                      Tu bolso está vacío
+                      Tu bolsa está vacía
                     </h3>
                     <p className="text-stone-500 max-w-xs mx-auto text-xs font-light leading-relaxed mb-8">
-                      Aún no has seleccionado prendas curadas para acompañar tus momentos especiales.
+                      Aún no has agregado vestidos a tu selección. Explora nuestras colecciones para encontrar tu modelo ideal.
                     </p>
                     <button
                       onClick={() => {
