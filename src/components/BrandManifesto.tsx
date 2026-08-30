@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 
 export default function BrandManifesto() {
@@ -56,7 +57,7 @@ export default function BrandManifesto() {
             </div>
           </motion.div>
 
-          {/* Columna Derecha: Tarjeta Editorial Visual */}
+          {/* Columna Derecha: Tarjeta Editorial con Fotografía de Curaduría (3:4) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -64,28 +65,43 @@ export default function BrandManifesto() {
             viewport={{ once: true }}
             className="lg:col-span-5"
           >
-            <div className="bg-white p-8 sm:p-10 border border-stone-200 shadow-sm relative">
-              <div className="w-8 h-[1px] bg-gold-500 mb-6" />
-              
-              <span className="text-[10px] tracking-[0.3em] uppercase text-stone-400 font-medium block mb-2">
-                BOUTIQUE & ASESORÍA
-              </span>
+            <div className="bg-white border border-stone-200 shadow-sm overflow-hidden group">
+              {/* Fotografía Editorial 3:4 */}
+              <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100">
+                <Image
+                  src="/brand/manifesto-editorial.webp"
+                  alt="Curaduría editorial y selección de vestidos Casa Aira"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-stone-200/60 text-[9px] uppercase tracking-[0.25em] font-semibold text-stone-800">
+                  ESTUDIO & SELECCIÓN
+                </div>
+              </div>
 
-              <h3 className="font-serif text-2xl text-[#181716] font-normal mb-4">
-                Curaduría con Ojo Experto
-              </h3>
+              {/* Contenido Editorial de la tarjeta */}
+              <div className="p-8">
+                <span className="text-[10px] tracking-[0.3em] uppercase text-stone-400 font-medium block mb-2">
+                  BOUTIQUE & ASESORÍA
+                </span>
 
-              <p className="text-sm text-stone-600 font-light leading-relaxed mb-8">
-                Cada prenda que llega a tu puerta ha superado nuestro riguroso estándar de inspección. Cuidamos el empaque, la presentación y te asesoramos personalmente vía WhatsApp para que elijas tu talla perfecta.
-              </p>
+                <h3 className="font-serif text-2xl text-[#181716] font-normal mb-3">
+                  Curaduría con Ojo Experto
+                </h3>
 
-              <Link
-                href="/catalogo"
-                className="inline-flex items-center gap-3 text-[11px] tracking-[0.25em] uppercase font-semibold text-[#181716] hover:text-calypso-700 transition-colors group"
-              >
-                <span>Explorar Selección Curada</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform" />
-              </Link>
+                <p className="text-xs text-stone-600 font-light leading-relaxed mb-6">
+                  Cada prenda que llega a tu puerta ha superado nuestro riguroso estándar de inspección. Cuidamos el empaque, la presentación y te asesoramos personalmente vía WhatsApp para que elijas tu talla perfecta.
+                </p>
+
+                <Link
+                  href="/catalogo"
+                  className="inline-flex items-center gap-3 text-[11px] tracking-[0.25em] uppercase font-semibold text-[#181716] hover:text-calypso-700 transition-colors group/link"
+                >
+                  <span>Explorar Selección Curada</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-1.5 transition-transform" />
+                </Link>
+              </div>
             </div>
           </motion.div>
 

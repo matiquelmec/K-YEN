@@ -7,9 +7,24 @@ import Link from 'next/link';
 
 export default function Hero() {
   return (
-    <section className='relative min-h-[92vh] flex items-center justify-center px-4 pt-32 pb-20 overflow-hidden bg-[#FAF8F5]'>
-      {/* Velo de Luz Orgánico Sutil */}
-      <div className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-calypso-100/30 via-gold-100/20 to-blush-100/30 rounded-full blur-3xl pointer-events-none' />
+    <section className='relative min-h-[94vh] flex items-center justify-center px-4 pt-32 pb-20 overflow-hidden bg-[#FAF8F5]'>
+      {/* Video Loop Cinemático de Fondo */}
+      <div className='absolute inset-0 w-full h-full overflow-hidden pointer-events-none'>
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload='auto'
+          className='w-full h-full object-cover object-center scale-105 opacity-25 sm:opacity-30 filter saturate-[0.85]'
+        >
+          <source src='/brand/hero-desktop.mp4' type='video/mp4' media='(min-width: 768px)' />
+          <source src='/brand/hero-mobile.mp4' type='video/mp4' />
+        </video>
+        {/* Velo de Seda y Luz Editorial para legibilidad perfecta */}
+        <div className='absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/90 via-[#FAF8F5]/70 to-[#FAF8F5]' />
+        <div className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gradient-to-tr from-calypso-100/40 via-gold-100/30 to-blush-100/40 rounded-full blur-3xl' />
+      </div>
 
       <div className='relative z-10 text-center max-w-4xl mx-auto'>
         {/* Eyebrow de Boutique Curada */}

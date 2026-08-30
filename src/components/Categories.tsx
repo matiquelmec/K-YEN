@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
@@ -10,6 +11,7 @@ const chapters = [
     number: '01',
     title: 'Brisa & Calipso',
     subtitle: 'COLECCIÓN VERANO & AIRE LIBRE',
+    image: '/brand/chapter-brisa-calipso.webp',
     description:
       'Linos nobles, cortes asimétricos y la frescura del azul egeo. Vestidos seleccionados para caminar con soltura junto al mar y celebrar los días luminosos.',
     accentColor: 'text-calypso-700',
@@ -20,6 +22,7 @@ const chapters = [
     number: '02',
     title: 'Solsticio Dorado',
     subtitle: 'COLECCIÓN GALA & NOCHE',
+    image: '/brand/chapter-solsticio-dorado.webp',
     description:
       'El resplandor del oro champagne y la sofisticación del crepúsculo. Siluetas elegidas para eventos especiales donde la distinción es protagonista.',
     accentColor: 'text-gold-700',
@@ -30,6 +33,7 @@ const chapters = [
     number: '03',
     title: 'Rosa de Alba',
     subtitle: 'COLECCIÓN ROMÁNTICA & CÓCTEL',
+    image: '/brand/chapter-rosa-alba.webp',
     description:
       'La delicadeza del rosa poudré y las caídas etéreas. Diseños curados para abrazar la feminidad contemporánea con absoluta gracia y ligereza.',
     accentColor: 'text-blush-700',
@@ -56,10 +60,10 @@ export default function Categories() {
             className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
-            Los Capítulos de Autor
+            Los Capítulos de Colección
           </h2>
           <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Tres visiones de diseño confeccionadas para acompañar cada momento con fluidez y distinción sin esfuerzo.
+            Tres visiones de diseño seleccionadas para acompañar cada momento con fluidez y distinción sin esfuerzo.
           </p>
         </motion.div>
 
@@ -76,36 +80,46 @@ export default function Categories() {
               className='h-full'
             >
               <Link href={`/catalogo?category=${chapter.id}`} className='block h-full'>
-                <div className='bg-white border border-stone-200/80 p-8 sm:p-10 h-full flex flex-col justify-between hover:border-stone-400/90 transition-all duration-500 shadow-sm hover:shadow-md group'>
+                <div className='bg-white border border-stone-200/80 overflow-hidden h-full flex flex-col justify-between hover:border-stone-400/90 transition-all duration-500 shadow-sm hover:shadow-md group'>
                   <div>
-                    {/* Header del Capítulo */}
-                    <div className='flex items-center justify-between pb-6 mb-6 border-b border-stone-100'>
-                      <span className='font-serif text-3xl font-normal text-stone-300 group-hover:text-stone-700 transition-colors'>
-                        {chapter.number}
-                      </span>
-                      <span className='text-[9px] font-semibold uppercase tracking-[0.25em] text-stone-500 bg-stone-50 px-2.5 py-1 border border-stone-200/60'>
+                    {/* Cover de Colección */}
+                    <div className='relative aspect-[4/3] w-full overflow-hidden bg-stone-100'>
+                      <Image
+                        src={chapter.image}
+                        alt={chapter.title}
+                        fill
+                        sizes='(max-width: 768px) 100vw, 33vw'
+                        className='object-cover object-center group-hover:scale-105 transition-transform duration-700'
+                      />
+                      <div className='absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-stone-200/60 text-[9px] uppercase tracking-[0.25em] font-semibold text-stone-800'>
+                        CAPÍTULO {chapter.number}
+                      </div>
+                      <div className='absolute top-4 right-4 bg-[#181716]/80 backdrop-blur-sm px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-semibold text-white'>
                         {chapter.tag}
-                      </span>
+                      </div>
                     </div>
 
-                    <span className='text-[10px] font-medium tracking-[0.25em] uppercase text-stone-400 block mb-2'>
-                      {chapter.subtitle}
-                    </span>
+                    {/* Contenido Editorial */}
+                    <div className='p-8'>
+                      <span className='text-[10px] font-medium tracking-[0.25em] uppercase text-stone-400 block mb-2'>
+                        {chapter.subtitle}
+                      </span>
 
-                    <h3
-                      className='font-serif text-2xl sm:text-3xl text-[#181716] group-hover:text-calypso-700 transition-colors mb-4 font-normal'
-                      style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    >
-                      {chapter.title}
-                    </h3>
+                      <h3
+                        className='font-serif text-2xl sm:text-3xl text-[#181716] group-hover:text-calypso-700 transition-colors mb-3 font-normal'
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                      >
+                        {chapter.title}
+                      </h3>
 
-                    <p className='text-stone-600 text-sm leading-relaxed mb-8 font-light'>
-                      {chapter.description}
-                    </p>
+                      <p className='text-stone-600 text-xs sm:text-sm leading-relaxed font-light line-clamp-3'>
+                        {chapter.description}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Enlace Editorial */}
-                  <div className='pt-6 border-t border-stone-100 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-[#181716] group-hover:text-calypso-700 transition-colors'>
+                  <div className='px-8 pb-8 pt-4 border-t border-stone-100 flex items-center justify-between text-[11px] font-semibold uppercase tracking-[0.2em] text-[#181716] group-hover:text-calypso-700 transition-colors'>
                     <span>Explorar Capítulo</span>
                     <ArrowRight className='w-3.5 h-3.5 group-hover:translate-x-1.5 transition-transform' />
                   </div>
