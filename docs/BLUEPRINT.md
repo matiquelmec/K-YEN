@@ -42,7 +42,7 @@ graph TD
 | **Almacenamiento Multimedia** | Cloudinary REST API | Hospedaje y entrega de imágenes WebP en alta resolución |
 | **Procesamiento de Pagos** | Mercado Pago SDK (`mercadopago`) | Creación de preferencias atómicas y Webhook con verificación de firmas |
 | **Seguridad & Auth** | Web Crypto API (JWT HMAC-SHA256) | Autenticación administrativa sin dependencias externas pesadas |
-| **Testing & Calidad** | Vitest + JSDOM + Testing Library | Suite de 26+ pruebas unitarias automatizadas |
+| **Testing & Calidad** | Vitest + JSDOM + Testing Library | Suite de 34 pruebas unitarias automatizadas |
 
 ---
 

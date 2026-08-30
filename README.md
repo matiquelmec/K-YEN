@@ -63,7 +63,7 @@ npm run dev
 
 ```
 src/
-├── app/                        # Next.js App Router (28 rutas)
+├── app/                        # Next.js App Router (29 rutas)
 │   ├── admin/                  # Panel de control protegido por JWT
 │   │   ├── coupons/            # Gestión de Cupones y Afiliadas
 │   │   ├── orders/             # Gestión y despacho de pedidos
@@ -75,9 +75,10 @@ src/
 │   │   ├── checkout/           # Creación atómica de órdenes Mercado Pago
 │   │   ├── coupons/            # Validación de cupones con rate limiting
 │   │   ├── products/           # CRUD de productos y subida a Cloudinary
+│   │   ├── revalidate/         # Revalidación On-Demand ISR de catálogo
 │   │   └── webhook/            # Webhook oficial de Mercado Pago
-│   ├── catalogo/               # Catálogo dinámico y ficha de producto [id]
-│   ├── checkout/               # Flujo de pago, cupones y confirmaciones
+│   ├── catalogo/               # Catálogo dinámico y ficha de producto [slug/id]
+│   ├── checkout/               # Flujo de pago, cupones y confirmaciones (success dinámico)
 │   └── politicas/              # Términos, condiciones y privacidad
 ├── components/                 # Componentes React modulares
 │   ├── admin/                  # MultiImageUpload, ProductForm, CouponForm, etc.

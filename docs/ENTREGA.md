@@ -1,4 +1,4 @@
-﻿# 🚀 Guía de Entrega y Administración - Tienda KÜYEN
+# 🚀 Guía de Entrega y Administración - Tienda KÜYEN
 
 Esta guía contiene la información necesaria para que el equipo de KÜYEN gestione la plataforma de forma autónoma, eficiente y profesional.
 
@@ -30,12 +30,14 @@ Esta guía contiene la información necesaria para que el equipo de KÜYEN gesti
 ### 📦 2.3. Control de Pedidos y Despachos (`/admin/orders`)
 - Listado de ventas en tiempo real con datos del cliente, dirección de entrega, desglose de productos (con talla y color exactos) y cupón aplicado.
 - Estados de orden: `pending`, `paid`, `shipped`, `delivered`, `cancelled`.
+- **Notificación por WhatsApp:** Tras pagar, el cliente recibe un botón directo en la pantalla de éxito para enviar su comprobante con 1 clic al WhatsApp del taller KÜYEN.
 
 ### 📧 2.4. Suscriptores y Boletín (`/admin/subscribers`)
 - Lista de correos de clientas suscritas para campañas de marketing.
 
 ---
 
-## 3. Pagos Automatizados (Mercado Pago)
-- Los clientes pagan con Webpay, tarjetas de débito/crédito o saldo Mercado Pago.
-- Al confirmarse el pago, la orden se actualiza automáticamente a `paid` y el stock se descuenta en la base de datos sin requerir intervención manual.
+## 3. Pagos Automatizados y Revalidación en Vivo
+- **Pasarela Mercado Pago:** Los clientes pagan con Webpay, tarjetas de débito/crédito o saldo Mercado Pago.
+- **Deducción de Inventario Granular:** Al confirmarse el pago, la orden se actualiza automáticamente a `paid` y el stock se descuenta en la base de datos (tanto general como por la talla y color específicos comprados) de forma 100% atómica.
+- **Revalidación Instantánea (ISR):** Cada vez que editas o creas un vestido en el Admin, el catálogo de la tienda se actualiza en vivo para todos los usuarios sin necesidad de reiniciar el servidor.
