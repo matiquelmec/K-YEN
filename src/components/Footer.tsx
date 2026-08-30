@@ -40,7 +40,7 @@ export default function Footer() {
             </p>
             <div className='pt-2'>
               <span className='text-[10px] tracking-[0.3em] uppercase text-stone-500 block'>
-                CURATED BOUTIQUE • CHILE
+                BOUTIQUE • CHILE
               </span>
             </div>
           </motion.div>

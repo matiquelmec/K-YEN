@@ -118,7 +118,7 @@ export default function CasaAiraLogo({
           isLight ? 'text-stone-500' : 'text-stone-400'
         } mt-1.5 leading-none`}
       >
-        CURATED BOUTIQUE • CHILE
+        BOUTIQUE • CHILE
       </span>
     </div>
   );
@@ -148,7 +148,7 @@ export default function CasaAiraLogo({
             isLight ? 'text-stone-500' : 'text-stone-400'
           } mt-0.5 leading-none`}
         >
-          CURATED BOUTIQUE
+          BOUTIQUE
         </span>
       </div>
     </div>
