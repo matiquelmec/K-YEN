@@ -76,7 +76,7 @@ export default function BrandManifesto() {
                   sizes="(max-width: 1024px) 100vw, 40vw"
                   className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-stone-200/60 text-[9px] uppercase tracking-[0.25em] font-semibold text-stone-800">
+                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3.5 py-1.5 border border-stone-200/70 text-[9px] uppercase tracking-[0.25em] font-semibold text-stone-800 shadow-sm">
                   SELECCIÓN EXCLUSIVA
                 </div>
               </div>
