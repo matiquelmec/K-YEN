@@ -26,12 +26,14 @@ export const getCategoryName = (category: string) => {
 
 export const PRODUCT_COLORS: { [key: string]: string } = {
     'Negro': 'bg-black',
+    'Blanco': 'bg-white border-stone-300',
+    'Calipso': 'bg-calypso-600',
+    'Dorado': 'bg-gold-500',
     'Borgoña': 'bg-red-900',
     'Azul Medianoche': 'bg-blue-900',
     'Rosa Suave': 'bg-pink-300',
     'Verde Menta': 'bg-green-300',
     'Lavanda': 'bg-purple-300',
-    'Dorado': 'bg-yellow-500',
     'Coral': 'bg-orange-400',
     'Turquesa': 'bg-teal-400',
     'Tierra': 'bg-amber-700',
@@ -50,6 +52,8 @@ export const PRODUCT_COLORS: { [key: string]: string } = {
 };
 
 export const AVAILABLE_COLORS = Object.keys(PRODUCT_COLORS);
+
+export const AVAILABLE_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
 
 export const getColorClass = (color: string) => {
     return PRODUCT_COLORS[color] || 'bg-gray-400';

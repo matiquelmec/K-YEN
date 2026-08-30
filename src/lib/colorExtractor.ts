@@ -1,9 +1,11 @@
-﻿'use client';
+'use client';
 
-// Mapeo RGB de la paleta oficial de KÜYEN para matching de color
-export const KUYEN_COLOR_MAP: Record<string, { r: number; g: number; b: number }> = {
+// Mapeo RGB de la paleta oficial de Casa Aira para matching de color
+export const CASA_AIRA_COLOR_MAP: Record<string, { r: number; g: number; b: number }> = {
   'Negro': { r: 15, g: 15, b: 15 },
   'Blanco': { r: 250, g: 250, b: 250 },
+  'Calipso': { r: 29, g: 112, b: 127 },
+  'Dorado': { r: 191, g: 161, b: 95 },
   'Borgoña': { r: 128, g: 0, b: 32 },
   'Rojo': { r: 220, g: 38, b: 38 },
   'Rosa Suave': { r: 255, g: 182, b: 193 },
@@ -17,7 +19,6 @@ export const KUYEN_COLOR_MAP: Record<string, { r: number; g: number; b: number }
   'Verde Terra': { r: 22, g: 163, b: 74 },
   'Verde Bosque': { r: 22, g: 101, b: 52 },
   'Verde Agua': { r: 34, g: 211, b: 238 },
-  'Dorado': { r: 245, g: 158, b: 11 },
   'Coral': { r: 251, g: 146, b: 60 },
   'Turquesa': { r: 45, g: 212, b: 191 },
   'Tierra': { r: 180, g: 83, b: 9 },
@@ -27,6 +28,8 @@ export const KUYEN_COLOR_MAP: Record<string, { r: number; g: number; b: number }
   'Plata': { r: 209, g: 213, b: 219 },
   'Marfil': { r: 255, g: 251, b: 235 }
 };
+
+export const KUYEN_COLOR_MAP = CASA_AIRA_COLOR_MAP;
 
 /**
  * Calcula la distancia euclidiana ponderada para percepción humana del color
@@ -40,13 +43,13 @@ function colorDistance(r1: number, g1: number, b1: number, r2: number, g2: numbe
 }
 
 /**
- * Encuentra el color KÜYEN más cercano para un píxel RGB
+ * Encuentra el color Casa Aira más cercano para un píxel RGB
  */
-export function findClosestKuyenColor(r: number, g: number, b: number): string {
+export function findClosestCasaAiraColor(r: number, g: number, b: number): string {
   let minDistance = Infinity;
   let closestColor = 'Negro';
 
-  for (const [colorName, rgb] of Object.entries(KUYEN_COLOR_MAP)) {
+  for (const [colorName, rgb] of Object.entries(CASA_AIRA_COLOR_MAP)) {
     const dist = colorDistance(r, g, b, rgb.r, rgb.g, rgb.b);
     if (dist < minDistance) {
       minDistance = dist;
@@ -56,6 +59,8 @@ export function findClosestKuyenColor(r: number, g: number, b: number): string {
 
   return closestColor;
 }
+
+export const findClosestKuyenColor = findClosestCasaAiraColor;
 
 /**
  * Extrae los colores dominantes de una imagen mediante HTML5 Canvas (100% Client-Side y Gratis)
