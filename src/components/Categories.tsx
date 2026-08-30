@@ -10,34 +10,34 @@ const chapters = [
     id: 'veraniego',
     number: '01',
     title: 'Brisa & Calipso',
-    subtitle: 'COLECCIÓN VERANO & AIRE LIBRE',
+    subtitle: 'LÍNEA VERANO & PLAYA',
     image: '/brand/chapter-brisa-calipso.webp',
     description:
-      'Linos nobles, cortes asimétricos y la frescura del azul egeo. Vestidos seleccionados para caminar con soltura junto al mar y celebrar los días luminosos.',
+      'Linos frescos, cortes sueltos y tonos calipso inspirados en el mar. Vestidos cómodos y livianos para disfrutar los días de sol y calor.',
     accentColor: 'text-calypso-700',
-    tag: 'Brisa Marina',
+    tag: 'Verano & Playa',
   },
   {
     id: 'gotico',
     number: '02',
     title: 'Solsticio Dorado',
-    subtitle: 'COLECCIÓN GALA & NOCHE',
+    subtitle: 'LÍNEA FIESTA & GALA',
     image: '/brand/chapter-solsticio-dorado.webp',
     description:
-      'El resplandor del oro champagne y la sofisticación del crepúsculo. Siluetas elegidas para eventos especiales donde la distinción es protagonista.',
+      'Destellos en oro champagne, elegancia y calce perfecto. Siluetas elegidas para matrimonios, graduaciones y celebraciones especiales.',
     accentColor: 'text-gold-700',
-    tag: 'Gala & Fiesta',
+    tag: 'Fiesta & Gala',
   },
   {
     id: 'primaveral',
     number: '03',
     title: 'Rosa de Alba',
-    subtitle: 'COLECCIÓN ROMÁNTICA & CÓCTEL',
+    subtitle: 'LÍNEA ROMANCE & CÓCTEL',
     image: '/brand/chapter-rosa-alba.webp',
     description:
-      'La delicadeza del rosa poudré y las caídas etéreas. Diseños curados para abrazar la feminidad contemporánea con absoluta gracia y ligereza.',
+      'Tonos rosa empolvado, telas suaves y caídas fluidas. Vestidos femeninos y versátiles ideales para salidas, cenas y eventos de día o tarde.',
     accentColor: 'text-blush-700',
-    tag: 'Seda & Romance',
+    tag: 'Romance & Cóctel',
   },
 ];
 
@@ -54,16 +54,16 @@ export default function Categories() {
           className='text-center mb-16 sm:mb-20'
         >
           <span className='text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-3'>
-            CURADURÍA DE TEMPORADA
+            ESTILOS DE TEMPORADA
           </span>
           <h2
             className='font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#181716] tracking-tight mb-4'
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
           >
-            Los Capítulos de Colección
+            Nuestras Colecciones
           </h2>
           <p className='text-stone-600 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
-            Tres visiones de diseño seleccionadas para acompañar cada momento con fluidez y distinción sin esfuerzo.
+            Tres estilos pensados para acompañarte en tus días de descanso, tus salidas y tus momentos más especiales.
           </p>
         </motion.div>
 
@@ -92,7 +92,7 @@ export default function Categories() {
                         className='object-cover object-center group-hover:scale-105 transition-transform duration-700'
                       />
                       <div className='absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 border border-stone-200/60 text-[9px] uppercase tracking-[0.25em] font-semibold text-stone-800'>
-                        CAPÍTULO {chapter.number}
+                        COLECCIÓN {chapter.number}
                       </div>
                       <div className='absolute top-4 right-4 bg-[#181716]/80 backdrop-blur-sm px-2.5 py-1 text-[9px] uppercase tracking-[0.2em] font-semibold text-white'>
                         {chapter.tag}

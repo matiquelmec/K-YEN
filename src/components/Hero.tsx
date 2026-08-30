@@ -44,11 +44,11 @@ export default function Hero() {
           transition={{ duration: 1, ease: 'easeOut' }}
           className='bg-white/85 sm:bg-white/80 backdrop-blur-md p-8 sm:p-14 border border-stone-200/80 shadow-2xl relative'
         >
-          {/* Eyebrow de Boutique Curada */}
+          {/* Eyebrow */}
           <div className='inline-flex items-center gap-3 mb-6'>
             <span className='w-6 h-[1px] bg-gold-400' />
             <span className='text-[10px] tracking-[0.4em] uppercase font-semibold text-stone-600'>
-              COLECCIÓN 2026 • CURADURÍA EXCLUSIVA
+              COLECCIÓN 2026 • VESTIDOS SELECCIONADOS
             </span>
             <span className='w-6 h-[1px] bg-gold-400' />
           </div>
@@ -67,24 +67,24 @@ export default function Hero() {
             </h1>
           </div>
 
-          {/* Subtítulo Poético y Narrativo */}
+          {/* Subtítulo Cálido y Cercano */}
           <p className='text-stone-600 text-sm sm:text-base md:text-lg font-light mb-10 max-w-2xl mx-auto leading-relaxed'>
-            Vestidos rigurosamente seleccionados por su movimiento y suavidad.
-            Curaduría exclusiva de prendas livianas, destellos dorados y caídas fluidas que realzan toda silueta de la talla XS a la 6XL.
+            Vestidos elegidos con dedicación por su frescura, comodidad y hermosa caída.
+            Diseños livianos y favorecedores que realzan tu figura en todas las tallas, desde la XS hasta la 6XL.
           </p>
 
-          {/* Botones de Acción - Corte Sastre */}
+          {/* Botones de Acción */}
           <div className='flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto'>
             <Link href='/catalogo' className='w-full sm:w-auto flex-1'>
               <button className='btn-couture-primary w-full py-4'>
-                <span>Explorar Catálogo</span>
+                <span>Ver Catálogo</span>
                 <ArrowRight className='w-3.5 h-3.5 ml-1' />
               </button>
             </Link>
 
-            <Link href='/#manifiesto' className='w-full sm:w-auto flex-1'>
+            <Link href='/#historia' className='w-full sm:w-auto flex-1'>
               <button className='btn-couture-outline w-full py-3.5'>
-                <span>El Manifiesto</span>
+                <span>Nuestra Historia</span>
               </button>
             </Link>
           </div>

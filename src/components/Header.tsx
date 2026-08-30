@@ -18,7 +18,7 @@ export default function Header() {
     { name: 'Brisa & Calipso', href: '/catalogo?category=veraniego' },
     { name: 'Solsticio Dorado', href: '/catalogo?category=gotico' },
     { name: 'Rosa de Alba', href: '/catalogo?category=primaveral' },
-    { name: 'El Manifiesto', href: '/#manifiesto' },
+    { name: 'Nuestra Historia', href: '/#historia' },
   ];
 
   return (

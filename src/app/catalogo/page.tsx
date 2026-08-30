@@ -81,9 +81,9 @@ function CatalogoContent() {
           <div className="flex gap-2.5 px-1 min-w-max">
             {[
               { id: 'all', label: 'Todo el Catálogo', icon: Grid },
-              { id: 'veraniego', label: 'Cap. I: Brisa & Calipso', icon: Sun },
-              { id: 'gotico', label: 'Cap. II: Solsticio Dorado', icon: Moon },
-              { id: 'primaveral', label: 'Cap. III: Rosa de Alba', icon: Leaf },
+              { id: 'veraniego', label: 'Brisa & Calipso', icon: Sun },
+              { id: 'gotico', label: 'Solsticio Dorado', icon: Moon },
+              { id: 'primaveral', label: 'Rosa de Alba', icon: Leaf },
             ].map((cat) => (
               <button
                 key={cat.id}
@@ -121,20 +121,20 @@ function CatalogoContent() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className='bg-gradient-to-r from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl p-4 md:p-6 mb-8'
+              className='bg-white border border-stone-200 shadow-sm p-4 md:p-6 mb-8'
             >
               <div className='flex flex-col md:flex-row gap-4 items-center justify-between'>
                 {/* Search */}
                 <div className='relative flex-1 max-w-md w-full'>
-                  <Search className='absolute left-3 top-1/2 transform -translate-y-1/2 text-earth-500 w-5 h-5' />
+                  <Search className='absolute left-3.5 top-1/2 transform -translate-y-1/2 text-stone-400 w-4 h-4' />
                   <input
                     name='search'
                     type='text'
                     autoComplete='off'
-                    placeholder='Buscar vestidos...'
+                    placeholder='Buscar vestidos por nombre, color...'
                     value={searchTerm}
                     onChange={e => setSearchTerm(e.target.value)}
-                    className='w-full pl-10 pr-4 py-3 rounded-full border border-earth-300 focus:outline-none focus:ring-2 focus:ring-sensual-400 bg-white'
+                    className='w-full pl-10 pr-4 py-2.5 text-sm border border-stone-200 focus:outline-none focus:ring-1 focus:ring-calypso-700 focus:border-calypso-700 bg-stone-50/50 text-[#181716] placeholder:text-stone-400'
                   />
                 </div>
 
@@ -142,10 +142,10 @@ function CatalogoContent() {
                   {/* Mobile Filter Toggle */}
                   <button
                     onClick={() => setShowFilters(!showFilters)}
-                    className='lg:hidden flex items-center gap-2 px-4 py-2 bg-earth-600/90 text-white rounded-full hover:bg-earth-700 transition-colors text-sm'
+                    className='lg:hidden flex items-center gap-2 px-4 py-2.5 bg-[#181716] text-white hover:bg-stone-800 transition-colors text-xs uppercase tracking-wider font-semibold'
                   >
-                    <SlidersHorizontal className='w-4 h-4' />
-                    Filtros
+                    <SlidersHorizontal className='w-3.5 h-3.5' />
+                    <span>Filtros</span>
                   </button>
 
                   {/* Sort */}

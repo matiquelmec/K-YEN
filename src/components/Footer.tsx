@@ -54,15 +54,15 @@ export default function Footer() {
             className='lg:col-span-3'
           >
             <h4 className='text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-300 mb-8'>
-              Los Capítulos
+              Colecciones
             </h4>
             <ul className='space-y-4 text-xs tracking-wider uppercase font-light'>
               {[
-                { label: 'Capítulo I: Brisa & Calipso', href: '/catalogo?category=veraniego' },
-                { label: 'Capítulo II: Solsticio Dorado', href: '/catalogo?category=gotico' },
-                { label: 'Capítulo III: Rosa de Alba', href: '/catalogo?category=primaveral' },
-                { label: 'Ver Todo el Catálogo', href: '/catalogo' },
-                { label: 'El Manifiesto de Marca', href: '/#manifiesto' },
+                { label: 'Brisa & Calipso (Verano)', href: '/catalogo?category=veraniego' },
+                { label: 'Solsticio Dorado (Gala)', href: '/catalogo?category=gotico' },
+                { label: 'Rosa de Alba (Cóctel)', href: '/catalogo?category=primaveral' },
+                { label: 'Todo el Catálogo', href: '/catalogo' },
+                { label: 'Nuestra Historia', href: '/#historia' },
               ].map((item, index) => (
                 <li key={index}>
                   <Link

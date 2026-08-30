@@ -19,7 +19,7 @@ describe('Procedimientos de Seguridad e Integridad de Datos', () => {
           '"': '&quot;',
           "'": '&#039;',
         };
-        return text.replace(/[&<>"']/g, (m) => map[m]);
+        return text.replace(/[&<>"']/g, (m) => map[m] ?? m);
       };
 
       const input = '<img src=x onerror=alert(1)> "Vestido Seda"';

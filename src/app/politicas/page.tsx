@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import { ShieldCheck, FileText, RefreshCw, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -26,12 +27,22 @@ function PoliticasContent() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-earth-900 via-earth-800 to-gothic-900 text-bone-100 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-[#FAF8F5] text-[#181716] pt-32 pb-20 px-4 sm:px-6 lg:px-8">
             <Header />
             <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-bone-100">Información Legal</h1>
-                    <p className="text-terra-400 font-cursive text-lg mt-2">Transparencia y políticas de nuestra boutique KÜYEN</p>
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.35em] text-stone-500 block mb-2">
+                        TRANSPARENCIA & COMPROMISO
+                    </span>
+                    <h1
+                        className="text-3xl sm:text-4xl md:text-5xl font-serif text-[#181716] font-normal"
+                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                    >
+                        Políticas y Términos
+                    </h1>
+                    <p className="text-stone-600 font-light text-sm sm:text-base mt-2">
+                        Información clara sobre compras, despachos y garantías en Casa Aira
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -44,24 +55,24 @@ function PoliticasContent() {
                                 <button
                                     key={tab.id}
                                     onClick={() => setActiveTab(tab.id)}
-                                    className={`flex items-center justify-between p-3.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                                    className={`flex items-center justify-between p-3.5 border transition-all duration-300 text-xs uppercase tracking-wider font-medium ${
                                         isActive
-                                            ? 'bg-gradient-to-r from-sensual-600 to-sensual-700 text-white shadow-lg shadow-sensual-600/10'
-                                            : 'bg-white/5 hover:bg-white/10 text-bone-300 hover:text-white border border-white/5'
+                                            ? 'bg-[#181716] text-white border-[#181716] shadow-sm'
+                                            : 'bg-white hover:bg-stone-50 text-stone-700 hover:text-[#181716] border-stone-200'
                                     }`}
                                 >
                                     <div className="flex items-center gap-2.5">
-                                        <Icon className="w-4 h-4 flex-shrink-0" />
+                                        <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-calypso-300' : 'text-stone-500'}`} />
                                         <span className="text-left leading-tight">{tab.label}</span>
                                     </div>
-                                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? 'rotate-90' : 'opacity-50'}`} />
+                                    <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-300 ${isActive ? 'rotate-90 text-white' : 'opacity-40'}`} />
                                 </button>
                             );
                         })}
                     </div>
 
                     {/* Content Area */}
-                    <div className="md:col-span-3 bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-white/10 shadow-xl space-y-6">
+                    <div className="md:col-span-3 bg-white p-8 sm:p-10 border border-stone-200 shadow-sm space-y-6">
                         <AnimatePresence mode="wait">
                             {activeTab === 'privacidad' && (
                                 <motion.div
@@ -72,29 +83,32 @@ function PoliticasContent() {
                                     transition={{ duration: 0.3 }}
                                     className="space-y-4"
                                 >
-                                    <h2 className="text-2xl font-display font-bold text-bone-100 flex items-center gap-2 border-b border-white/10 pb-3">
-                                        <ShieldCheck className="text-terra-400" />
+                                    <h2
+                                        className="text-xl sm:text-2xl font-serif text-[#181716] flex items-center gap-2 border-b border-stone-200 pb-3 font-normal"
+                                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                    >
+                                        <ShieldCheck className="text-calypso-700 w-5 h-5" />
                                         Política de Privacidad
                                     </h2>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        En **KÜYEN** nos tomamos muy en serio la seguridad y privacidad de tus datos personales. De acuerdo con la legislación vigente en Chile (Ley Nº 19.628 sobre protección de la vida privada), te informamos sobre el tratamiento de tus datos:
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        En **Casa Aira** cuidamos y respetamos tu información personal. En cumplimiento con la legislación chilena (Ley Nº 19.628 sobre protección de la vida privada), te explicamos de forma transparente cómo tratamos tus datos:
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">1. Recolección de Información</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Recopilamos información personal necesaria para procesar tus compras (como tu nombre, RUT, correo electrónico, número telefónico, dirección de envío y facturación). En ningún caso almacenamos detalles bancarios ni números de tarjetas de crédito.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">1. Recolección de Información</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Recopilamos únicamente los datos indispensables para procesar tu pedido (nombre, RUT, correo, teléfono y dirección de envío). Por tu seguridad, los pagos con tarjeta se procesan en pasarelas cifradas externas y nunca guardamos datos bancarios.
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">2. Uso de los Datos</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Tus datos serán utilizados única y exclusivamente para:
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">2. Uso de tus Datos</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Utilizamos tu información exclusivamente para:
                                     </p>
-                                    <ul className="list-disc pl-5 text-sm text-bone-300 space-y-2">
-                                        <li>Procesar tus transacciones e iniciar el envío a domicilio.</li>
-                                        <li>Enviarte actualizaciones del estado de tu pedido.</li>
-                                        <li>Suscripciones voluntarias a nuestro boletín de novedades y colecciones exclusivas.</li>
+                                    <ul className="list-disc pl-5 text-sm text-stone-600 space-y-1.5 font-light">
+                                        <li>Procesar tu compra y coordinar el despacho a tu domicilio o sucursal.</li>
+                                        <li>Enviarte el número de seguimiento de Starken o Chilexpress por WhatsApp o email.</li>
+                                        <li>Informarte de nuevas llegadas o promociones del Club Casa Aira si te has suscrito.</li>
                                     </ul>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">3. Compartir con Terceros</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        No vendemos, alquilamos ni divulgamos tu información personal a terceros. Compartimos únicamente la información indispensable de dirección y contacto con las empresas de logística asociadas (Starken y Chilexpress) para garantizar la entrega de tu pedido.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">3. Envíos y Terceros</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        No vendemos ni compartimos tus datos con terceros para publicidad. Solo entregamos los datos de entrega indispensables al servicio de mensajería para que tu paquete llegue a destino sin problemas.
                                     </p>
                                 </motion.div>
                             )}
@@ -108,24 +122,23 @@ function PoliticasContent() {
                                     transition={{ duration: 0.3 }}
                                     className="space-y-4"
                                 >
-                                    <h2 className="text-2xl font-display font-bold text-bone-100 flex items-center gap-2 border-b border-white/10 pb-3">
-                                        <FileText className="text-terra-400" />
+                                    <h2
+                                        className="text-xl sm:text-2xl font-serif text-[#181716] flex items-center gap-2 border-b border-stone-200 pb-3 font-normal"
+                                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                    >
+                                        <FileText className="text-calypso-700 w-5 h-5" />
                                         Términos y Condiciones
                                     </h2>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Bienvenida a **KÜYEN**. Al utilizar nuestro sitio web, aceptas cumplir y estar sujeta a los siguientes términos y condiciones de uso:
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Bienvenida a **Casa Aira Boutique**. Al comprar en nuestra tienda en línea, aceptas las siguientes condiciones sencillas:
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">1. Propiedad Intelectual</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Todo el contenido que ves en este sitio web (incluidos textos, imágenes, fotografías de vestidos, logotipos y diseños) es propiedad exclusiva de KÜYEN o se utiliza con las licencias correspondientes. Queda prohibida la reproducción parcial o total sin autorización previa por escrito.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">1. Disponibilidad y Stock</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Mantenemos un stock seleccionado con pocas unidades por diseño. En el caso improbable de que una prenda quede sin stock simultáneo, nos comunicaremos contigo de inmediato por WhatsApp para ofrecerte una alternativa de tu agrado o la devolución total de tu dinero.
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">2. Stock e Información de Productos</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Nos esforzamos por mantener nuestro inventario actualizado. Sin embargo, en ocasiones el stock real de vestidos o accesorios podría presentar discrepancias mínimos. En caso de no contar con el stock de una orden pagada, te contactaremos de inmediato para ofrecerte un cambio o el reembolso íntegro.
-                                    </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">3. Métodos de Envío</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Los despachos son enviados a través de Starken o Chilexpress bajo la modalidad de Envío &quot;Por Pagar&quot;, donde el cliente debe abonar el costo del envío al momento de retirar en sucursal o recibir en su domicilio. Los plazos de entrega estimados comienzan a regir desde que el paquete es entregado al transporte.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">2. Despachos y Plazos</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Los envíos se realizan a todo Chile a través de Starken o Chilexpress. Te proporcionamos tu comprobante de seguimiento para que puedas monitorear el paquete hasta que lo recibas.
                                     </p>
                                 </motion.div>
                             )}
@@ -139,34 +152,36 @@ function PoliticasContent() {
                                     transition={{ duration: 0.3 }}
                                     className="space-y-4"
                                 >
-                                    <h2 className="text-2xl font-display font-bold text-bone-100 flex items-center gap-2 border-b border-white/10 pb-3">
-                                        <RefreshCw className="text-terra-400" />
+                                    <h2
+                                        className="text-xl sm:text-2xl font-serif text-[#181716] flex items-center gap-2 border-b border-stone-200 pb-3 font-normal"
+                                        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                                    >
+                                        <RefreshCw className="text-calypso-700 w-5 h-5" />
                                         Cambios y Devoluciones
                                     </h2>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        En **KÜYEN** queremos que te sientas completamente satisfecha y empoderada con tu vestido. Si necesitas realizar un cambio o devolución, te ofrecemos las siguientes facilidades:
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Queremos que ames cómo te queda tu vestido. Si necesitas cambiar la talla, el color o el modelo, te damos todas las facilidades:
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">1. Plazos</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Tienes un plazo de **30 días de corrido** a contar de la fecha de entrega del producto para realizar cambios de talla, color o modelo. Para devoluciones de dinero por insatisfacción, el plazo es de **10 días**.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">1. Plazos para Cambios</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Tienes un plazo de **30 días corridos** desde que recibes el pedido para solicitar un cambio de talla o modelo. Para devoluciones de dinero por insatisfacción, el plazo es de **10 días**.
                                     </p>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">2. Condiciones del Producto</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Para que podamos procesar el cambio o devolución, el artículo debe cumplir las siguientes condiciones:
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">2. Estado de la Prenda</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        La prenda debe estar sin uso, con sus etiquetas puestas y en perfectas condiciones higiénicas.
                                     </p>
-                                    <ul className="list-disc pl-5 text-sm text-bone-300 space-y-2">
-                                        <li>Estar en perfectas condiciones, limpio, sin uso, perfume ni alteraciones de costura.</li>
-                                        <li>Mantener sus etiquetas originales puestas.</li>
-                                    </ul>
-                                    <h3 className="text-base font-semibold text-bone-200 mt-4">3. Proceso y Costos de Envío</h3>
-                                    <p className="text-sm text-bone-300 leading-relaxed">
-                                        Los envíos asociados a cambios o devoluciones son de cargo del cliente, a menos que el cambio se deba a una falla de confección o error de despacho por nuestra parte. Escríbenos a nuestro contacto oficial para guiarte en el proceso.
+                                    <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">3. ¿Cómo Solicitarlo?</h3>
+                                    <p className="text-sm text-stone-600 leading-relaxed font-light">
+                                        Solo escríbenos a nuestro WhatsApp oficial con tu número de pedido y te guiaremos paso a paso de forma rápida y personalizada.
                                     </p>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
                 </div>
+            </div>
+            <div className="mt-20">
+                <Footer />
             </div>
         </div>
     );
@@ -175,11 +190,12 @@ function PoliticasContent() {
 export default function PoliticasPage() {
     return (
         <Suspense fallback={
-            <div className="min-h-screen bg-earth-900 flex items-center justify-center">
-                <div className="animate-pulse text-earth-200">Cargando...</div>
+            <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
+                <div className="animate-pulse text-stone-400 font-serif text-lg">Cargando Casa Aira...</div>
             </div>
         }>
             <PoliticasContent />
         </Suspense>
     );
 }
+

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
@@ -42,7 +42,7 @@ export default function UnboxingExperience() {
           >
             <div className="inline-block">
               <span className="text-[10px] tracking-[0.35em] uppercase font-semibold text-calypso-700 bg-calypso-50/80 px-3 py-1 border border-calypso-200/60">
-                EL RITUAL DEL DESEMPAQUE
+                UN DETALLE ESPECIAL
               </span>
             </div>
 
@@ -50,13 +50,12 @@ export default function UnboxingExperience() {
               className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#181716] leading-tight font-normal"
               style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
             >
-              Unboxing pensado para <br className="hidden sm:block" />
-              <span className="italic text-calypso-700">enamorar tus sentidos.</span>
+              La emoción de recibir <br className="hidden sm:block" />
+              <span className="italic text-calypso-700">tu nuevo vestido.</span>
             </h2>
 
             <p className="text-stone-600 text-base sm:text-lg font-light leading-relaxed">
-              El placer de una compra en Casa Aira comienza antes de probarte tu vestido. 
-              Cada paquete es preparado como un regalo especial: papel de seda protector, fragancia de atelier, sellos de autenticidad y nuestra bolsa boutique emblemática.
+              Queremos que abrir tu paquete sea un momento lindo para ti. Cada pedido se prepara con cariño: envuelto en papel de seda, con un aroma suave y protegido para que llegue impecable a tus manos.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-stone-200">
@@ -65,8 +64,8 @@ export default function UnboxingExperience() {
                   <Sparkles className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Aroma & Seda</h4>
-                  <p className="text-xs text-stone-500 font-light mt-1">Prendas perfumadas con notas sutiles de la brisa.</p>
+                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Aroma Delicado</h4>
+                  <p className="text-xs text-stone-500 font-light mt-1">Un toque de fragancia suave y fresca al abrirlo.</p>
                 </div>
               </div>
 
@@ -75,8 +74,8 @@ export default function UnboxingExperience() {
                   <ShieldCheck className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Protección Total</h4>
-                  <p className="text-xs text-stone-500 font-light mt-1">Empaque reforzado que cuerva y protege cada tejido.</p>
+                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Empaque Seguro</h4>
+                  <p className="text-xs text-stone-500 font-light mt-1">Protegido para viajar por Starken o Chilexpress.</p>
                 </div>
               </div>
 
@@ -86,7 +85,7 @@ export default function UnboxingExperience() {
                 </div>
                 <div>
                   <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Bolsa Boutique</h4>
-                  <p className="text-xs text-stone-500 font-light mt-1">Diseño exclusivo ideal para regalar o conservar.</p>
+                  <p className="text-xs text-stone-500 font-light mt-1">Práctica y bonita para guardar o regalar.</p>
                 </div>
               </div>
 
@@ -95,8 +94,8 @@ export default function UnboxingExperience() {
                   <HeartHandshake className="w-4 h-4 stroke-[1.5]" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Atención Directa</h4>
-                  <p className="text-xs text-stone-500 font-light mt-1">Soporte postventa y seguimiento de envío 1 a 1.</p>
+                  <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900">Acompañamiento 1 a 1</h4>
+                  <p className="text-xs text-stone-500 font-light mt-1">Te avisamos del envío y te ayudamos si necesitas cambio.</p>
                 </div>
               </div>
             </div>
