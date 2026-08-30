@@ -9,10 +9,7 @@ export default function ProductCarousel() {
   const { products, loading } = useProducts({ limit: 4 });
 
   return (
-    <section className='py-20 px-4 relative overflow-hidden'>
-      {/* Background Elements */}
-
-
+    <section className='py-16 md:py-24 px-4 relative overflow-hidden'>
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Section Header */}
         <motion.div
@@ -22,32 +19,32 @@ export default function ProductCarousel() {
           viewport={{ once: true }}
           className='text-center mb-16'
         >
-          <h2 className='font-display text-4xl md:text-6xl font-bold mb-6'>
-            <span className='text-gradient-earth'>Vestidos</span>
-            <br />
-            <span className='text-gradient-sensual'>Destacados</span>
+          <span className='text-xs font-bold uppercase tracking-[0.25em] text-gold-600 block mb-3'>
+            Selección Exclusiva
+          </span>
+          <h2 className='font-display text-3xl sm:text-5xl font-extrabold text-stone-900 mb-4 tracking-tight'>
+            Vestidos Destacados
           </h2>
-          <p className='text-earth-200 text-lg md:text-xl max-w-3xl mx-auto'>
-            Descubre piezas únicas que cuentan tu historia y abrazan tu esencia
-            natural.
+          <p className='text-stone-600 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
+            Piezas que celebran tu autenticidad y libertad con caídas envolventes y confección de atelier.
           </p>
         </motion.div>
 
         {/* Products Grid */}
         {loading ? (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
             {[...Array(4)].map((_, index) => (
-              <div key={index} className='bg-white/10 rounded-xl h-96 animate-pulse' />
+              <div key={index} className='card-aira h-96 animate-pulse bg-stone-100/60' />
             ))}
           </div>
         ) : (
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8'>
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
+                transition={{ duration: 0.7, delay: index * 0.1 }}
                 viewport={{ once: true }}
                 className='h-full'
               >
@@ -61,20 +58,20 @@ export default function ProductCarousel() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className='text-center mt-16'
+          className='text-center mt-14'
         >
-          <Link href='/catalogo' className='btn-earth inline-block'>
-            <span className='flex items-center gap-2'>
-              Ver Toda la Colección
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
+          <Link href='/catalogo' className='inline-block'>
+            <button className='btn-calypso px-9 py-4 text-sm font-semibold shadow-md shadow-calypso-500/20'>
+              <span>Ver Toda la Colección Casa Aira</span>
+              <motion.span
+                animate={{ x: [0, 4, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
                 →
-              </motion.div>
-            </span>
+              </motion.span>
+            </button>
           </Link>
         </motion.div>
       </div>

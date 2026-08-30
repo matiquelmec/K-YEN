@@ -4,14 +4,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Heart,
-  Moon,
   Mail,
   Phone,
   MapPin,
   Instagram,
   Facebook,
 } from 'lucide-react';
-import KuyenLogo from '@/components/ui/KuyenLogo';
+import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 import { APP_CONFIG } from '@/lib/config';
 
 const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
@@ -24,11 +23,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className='relative py-12 md:py-20 px-4 mt-12 md:mt-20'>
-      {/* Background - coherente con el resto */}
-      <div className='absolute inset-0 alchemical-texture opacity-30' />
-      <div className='absolute inset-0 bg-gradient-to-t from-ink-950/90 to-terra-950/80' />
-
+    <footer className='relative py-12 md:py-20 px-4 mt-16 md:mt-24 border-t border-stone-200/80 bg-stone-900 text-stone-300'>
       <div className='max-w-7xl mx-auto relative z-10'>
         {/* Main Footer Content */}
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-12 md:mb-16'>
@@ -40,9 +35,12 @@ export default function Footer() {
             viewport={{ once: true }}
             className='md:col-span-2 lg:col-span-1'
           >
-            <div className='mb-8'>
-              <KuyenLogo size='lg' variant='full' animated={true} />
+            <div className='mb-6'>
+              <CasaAiraLogo size='lg' variant='full' animated={true} theme='dark' />
             </div>
+            <p className='text-stone-400 text-sm leading-relaxed max-w-sm'>
+              Celebrando tu libertad, elegancia y autenticidad. Vestidos exclusivos diseñados para fluir con tu esencia.
+            </p>
           </motion.div>
 
           {/* Quick Links */}
@@ -52,19 +50,20 @@ export default function Footer() {
             transition={{ duration: 0.8, delay: 0.1 }}
             viewport={{ once: true }}
           >
-            <h4 className='font-display text-xl font-bold text-gradient-lunar mb-6'>
+            <h4 className='font-display text-lg font-bold text-white mb-6 uppercase tracking-wider'>
               Colecciones
             </h4>
-            <ul className='space-y-3'>
+            <ul className='space-y-3 text-sm'>
               {[
-                { label: 'Luna Nueva', href: '/catalogo?category=gotico' },
-                { label: 'Eclipse Floral', href: '/catalogo?category=primaveral' },
-                { label: 'Solsticio', href: '/catalogo?category=veraniego' },
+                { label: 'Brisa Calipso (Verano & Fiesta)', href: '/catalogo?category=veraniego' },
+                { label: 'Dorado Solar (Gala & Noche)', href: '/catalogo?category=gotico' },
+                { label: 'Rosa Amanecer (Cóctel & Romántico)', href: '/catalogo?category=primaveral' },
+                { label: 'Ver Todo el Catálogo', href: '/catalogo' },
               ].map((item, index) => (
                 <motion.li
                   key={index}
-                  whileHover={{ x: 5 }}
-                  className='text-bone-200 hover:text-terra-300 transition-colors cursor-pointer'
+                  whileHover={{ x: 4 }}
+                  className='text-stone-400 hover:text-calypso-400 transition-colors cursor-pointer'
                 >
                   <Link href={item.href}>
                     {item.label}
@@ -81,45 +80,45 @@ export default function Footer() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <h4 className='font-display text-xl font-bold text-gradient-lunar mb-6'>
-              Contacto
+            <h4 className='font-display text-lg font-bold text-white mb-6 uppercase tracking-wider'>
+              Atención & Taller
             </h4>
-            <div className='space-y-4'>
-              <div className='flex items-center gap-3 text-bone-200'>
-                <Mail className='w-5 h-5 flex-shrink-0 text-terra-400' />
-                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-terra-300 transition-colors'>
+            <div className='space-y-3.5 text-sm'>
+              <div className='flex items-center gap-3 text-stone-300'>
+                <Mail className='w-4 h-4 flex-shrink-0 text-calypso-400' />
+                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-calypso-400 transition-colors'>
                   {APP_CONFIG.contact.email}
                 </a>
               </div>
-              <div className='flex items-center gap-3 text-bone-200'>
-                <Phone className='w-5 h-5 flex-shrink-0 text-terra-400' />
-                <a href={`tel:${APP_CONFIG.contact.phone.replace(/\s+/g, '')}`} className='hover:text-terra-300 transition-colors'>
+              <div className='flex items-center gap-3 text-stone-300'>
+                <Phone className='w-4 h-4 flex-shrink-0 text-calypso-400' />
+                <a href={`tel:${APP_CONFIG.contact.phone.replace(/\s+/g, '')}`} className='hover:text-calypso-400 transition-colors'>
                   {APP_CONFIG.contact.phone}
                 </a>
               </div>
-              <div className='flex items-center gap-3 text-bone-200'>
-                <MapPin className='w-5 h-5 flex-shrink-0 text-terra-400' />
-                <span>Ñuble, Chile</span>
+              <div className='flex items-center gap-3 text-stone-300'>
+                <MapPin className='w-4 h-4 flex-shrink-0 text-calypso-400' />
+                <span>Envíos a todo Chile vía Starken & Chilexpress</span>
               </div>
             </div>
 
             {/* Social Media */}
             <div className='mt-6'>
-              <h5 className='font-semibold text-gradient-lunar mb-4'>Síguenos</h5>
-              <div className='flex gap-4'>
+              <h5 className='text-xs uppercase tracking-widest text-stone-400 mb-3'>Síguenos</h5>
+              <div className='flex gap-3'>
                 {[
-                  { icon: Instagram, href: APP_CONFIG.social.instagram, color: 'hover:text-mystic-400' },
-                  { icon: Facebook, href: APP_CONFIG.social.facebook, color: 'hover:text-terra-400' },
-                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok, color: 'hover:text-lunar-400' },
+                  { icon: Instagram, href: APP_CONFIG.social.instagram, color: 'hover:text-pink-400' },
+                  { icon: Facebook, href: APP_CONFIG.social.facebook, color: 'hover:text-calypso-400' },
+                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok, color: 'hover:text-gold-400' },
                 ].map((social, index) => (
                   <motion.a
                     key={index}
                     href={social.href}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className={`w-10 h-10 rounded-full bg-gradient-to-br from-terra-50/10 to-mystic-50/10 backdrop-blur-sm border border-terra-200/20 flex items-center justify-center text-bone-300 ${social.color} transition-all duration-300`}
+                    className={`w-9 h-9 rounded-full bg-stone-800 border border-stone-700 flex items-center justify-center text-stone-300 ${social.color} transition-all duration-300`}
                   >
-                    <social.icon className='w-5 h-5' />
+                    <social.icon className='w-4 h-4' />
                   </motion.a>
                 ))}
               </div>
@@ -133,16 +132,16 @@ export default function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className='bg-gradient-to-br from-terra-50/10 to-mystic-50/10 backdrop-blur-sm border border-terra-200/20 rounded-2xl p-8 mb-12'
+          className='bg-stone-800/80 border border-stone-700/80 rounded-3xl p-8 mb-12'
         >
           <div className='text-center max-w-2xl mx-auto'>
-            <h4 className='font-display text-2xl md:text-3xl font-bold text-gradient-lunar mb-4'>
-              Únete a KÜYEN
+            <h4 className='font-display text-2xl md:text-3xl font-bold text-white mb-2'>
+              Club Exclusivo Casa Aira
             </h4>
-            <p className='text-bone-200 mb-6'>
-              Recibe nuestras nuevas colecciones y ofertas especiales
+            <p className='text-stone-400 text-sm mb-6'>
+              Recibe lanzamientos de temporada, invitaciones a preventas y beneficios especiales.
             </p>
-            <div className='flex flex-col md:flex-row gap-4 max-w-md mx-auto'>
+            <div className='flex flex-col md:flex-row gap-3 max-w-md mx-auto'>
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -171,9 +170,9 @@ export default function Footer() {
                     const data = await res.json();
                     
                     if (data.message === 'Ya suscrito') {
-                      alert('¡Ya estás suscrita! Gracias por tu interés.');
+                      alert('¡Ya eres parte del Club Casa Aira! Gracias por tu preferencia.');
                     } else {
-                      alert('¡Gracias por suscribirte! Te avisaremos de nuestras novedades.');
+                      alert('¡Bienvenida a Casa Aira! Te avisaremos de nuestras próximas colecciones.');
                       emailInput.value = '';
                     }
                   } catch (err) {
@@ -190,17 +189,17 @@ export default function Footer() {
                   type='email'
                   required
                   placeholder='Tu correo electrónico'
-                  className='flex-1 px-4 py-3 rounded-full bg-bone-50/90 backdrop-blur-sm text-ink-800 placeholder-ink-500 focus:outline-none focus:ring-2 focus:ring-mystic-400'
+                  className='flex-1 px-5 py-3 rounded-full bg-stone-900 border border-stone-700 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-calypso-400 text-sm'
                 />
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   type='submit'
-                  className='btn-terra whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed'
+                  className='btn-calypso whitespace-nowrap disabled:opacity-50 text-sm'
                 >
                   <span className='flex items-center gap-2'>
                     <Heart className='w-4 h-4' />
-                    Suscribirse
+                    Unirme al Club
                   </span>
                 </motion.button>
               </form>
@@ -209,49 +208,22 @@ export default function Footer() {
         </motion.div>
 
         {/* Bottom Bar */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className='border-t border-ink-700 pt-8'
-        >
-          <div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-            <div className='text-bone-300 text-sm'>
-              © {currentYear} KÜYEN. Todos los derechos reservados.
-            </div>
-
-            <div className='flex items-center gap-6 text-bone-300 text-sm'>
-              <Link href='/politicas?tab=privacidad' className='hover:text-terra-300 transition-colors'>
-                Política de Privacidad
-              </Link>
-              <Link href='/politicas?tab=terminos' className='hover:text-terra-300 transition-colors'>
-                Términos y Condiciones
-              </Link>
-              <Link href='/politicas?tab=devoluciones' className='hover:text-terra-300 transition-colors'>
-                Cambios y Devoluciones
-              </Link>
-            </div>
+        <div className='border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-stone-500'>
+          <div>
+            © {currentYear} Casa Aira. Todos los derechos reservados.
           </div>
-        </motion.div>
 
-        {/* Decorative Elements - reposicionados */}
-        <div className='absolute top-1/3 right-4 opacity-10 hidden lg:block'>
-          <motion.div
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          >
-            <Moon className='text-lunar-400 w-12 h-12' />
-          </motion.div>
-        </div>
-
-        <div className='absolute bottom-1/3 left-4 opacity-10 hidden lg:block'>
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          >
-            <Heart className='text-blood-400 w-8 h-8 fill-current' />
-          </motion.div>
+          <div className='flex items-center gap-6'>
+            <Link href='/politicas?tab=privacidad' className='hover:text-calypso-400 transition-colors'>
+              Privacidad
+            </Link>
+            <Link href='/politicas?tab=terminos' className='hover:text-calypso-400 transition-colors'>
+              Términos
+            </Link>
+            <Link href='/politicas?tab=devoluciones' className='hover:text-calypso-400 transition-colors'>
+              Cambios y Devoluciones
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

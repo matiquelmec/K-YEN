@@ -1,22 +1,23 @@
-# 🏛️ BLUEPRINT ARQUITECTÓNICO MAESTRO - KÜYEN E-COMMERCE
+# 🏛️ BLUEPRINT ARQUITECTÓNICO MAESTRO - CASA AIRA E-COMMERCE
 
-> **Versión del Sistema:** 2.4.0  
+> **Versión del Sistema:** 3.0.0 (Casa Aira Edition)  
 > **Última Actualización:** Agosto 2026  
 > **Estado:** Producción / Alta Disponibilidad  
-> **Propósito:** Documento de diseño técnico y referencia arquitectónica integral de la plataforma KÜYEN.
+> **Propósito:** Documento de diseño técnico y referencia arquitectónica integral de la plataforma de alta costura Casa Aira.
 
 ---
 
 ## 1. 🌟 Visión General y Objetivos del Sistema
 
-KÜYEN es una plataforma de comercio electrónico de alta costura y vestidos exclusivos diseñada bajo los principios de **velocidad extrema (Edge-First), estética inmersiva (Boutique Dark) y resiliencia transaccional**.
+**Casa Aira** es una plataforma de comercio electrónico de alta costura y vestidos exclusivos diseñada bajo los principios de **velocidad extrema (Edge-First), dirección de arte editorial y minimalismo emocional (Calipso, Dorado Champagne, Rosa Pastel y Marfil) y resiliencia transaccional**.
 
 ### Pilares Arquitectónicos:
 1. **Cero Latencia en Catálogo:** Páginas prerenderizadas y optimizadas con Next.js Turbopack y SQLite distribuido en el Edge (Turso DB).
-2. **Subida y Optimización Autónoma de Activos:** Pre-compresión WebP en el navegador y CDN Cloudinary con nombres semánticos SEO.
-3. **Persistencia Atómica Relacional:** Matriz de variantes ($Talla \times Color$) con stock granular y consistencia referencial.
-4. **Marketing y Crecimiento:** Módulo nativo de Cupones de Descuento y Tracking de Afiliadas/Embajadoras.
-5. **Seguridad y Anti-Fraude:** Validación de precios en el servidor, autenticación JWT Web Crypto en cookies `httpOnly`, CSP estricto y rate limiting.
+2. **Dirección de Arte de Clase Mundial:** Paleta etérea y luminosa (Calipso Egeo, Dorado Champagne, Rosa Amanecer y Marfil), tipografía editorial y microinteracciones de alta gama.
+3. **Subida y Optimización Autónoma de Activos:** Pre-compresión WebP en el navegador y CDN Cloudinary con nombres semánticos SEO.
+4. **Persistencia Atómica Relacional:** Matriz de variantes ($Talla \times Color$) con stock granular y conciliación post-pago idempotente.
+5. **Marketing y Crecimiento:** Módulo nativo de Cupones de Descuento y Tracking de Afiliadas/Embajadoras.
+6. **Seguridad y Anti-Fraude:** Validación de precios en el servidor, autenticación JWT Web Crypto en cookies `httpOnly`, CSP estricto y rate limiting.
 
 ---
 
@@ -24,7 +25,7 @@ KÜYEN es una plataforma de comercio electrónico de alta costura y vestidos exc
 
 ```mermaid
 graph TD
-    Client[Cliente / Navegador] -->|Next.js 16 App Router| Frontend[Frontend React 19 + Tailwind CSS]
+    Client[Cliente / Navegador] -->|Next.js 16 App Router| Frontend[Frontend React 19 + Tailwind CSS Casa Aira Theme]
     Frontend -->|Auto-Detección de Color| Canvas[HTML5 Canvas Client-Side Engine]
     Frontend -->|Pre-compresión WebP| BrowserBlob[Compresión Local WebP]
     BrowserBlob -->|Upload API| Cloudinary[Cloudinary Media CDN]
@@ -37,7 +38,7 @@ graph TD
 | :--- | :--- | :--- |
 | **Framework Base** | Next.js 16.0.9 (App Router) + Turbopack | Renderizado híbrido (SSR, ISR, Server Components, Route Handlers) |
 | **Biblioteca UI** | React 19 + TypeScript 5.9 | Componentes desacoplados con tipado estricto |
-| **Estilos & Animaciones** | Tailwind CSS + Framer Motion + Lucide React | Diseño "Boutique Dark", transiciones suaves y microinteracciones |
+| **Estilos & Animaciones** | Tailwind CSS + Framer Motion + Lucide React | Identidad visual luminosa Casa Aira, transiciones fluidas y microinteracciones |
 | **Motor de Base de Datos** | Turso DB (`@libsql/client`) | SQLite relacional descentralizado en AWS us-east-1 con replicación |
 | **Almacenamiento Multimedia** | Cloudinary REST API | Hospedaje y entrega de imágenes WebP en alta resolución |
 | **Procesamiento de Pagos** | Mercado Pago SDK (`mercadopago`) | Creación de preferencias atómicas y Webhook con verificación de firmas |

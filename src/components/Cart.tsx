@@ -38,120 +38,121 @@ export default function Cart() {
             className="fixed inset-0 bg-black/70 z-[60] backdrop-blur-md"
           />
 
-          {/* Sidebar - Dark Boutique Theme */}
+          {/* Sidebar - Casa Aira Boutique Theme */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-earth-950/98 backdrop-blur-md z-[70] shadow-[0_0_50px_rgba(0,0,0,0.8)] border-l border-earth-800 text-bone-50"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-white/98 backdrop-blur-md z-[70] shadow-[0_0_50px_rgba(0,0,0,0.15)] border-l border-stone-200 text-stone-800"
           >
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between p-6 border-b border-earth-800 bg-earth-950">
-                <h2 className="font-display text-2xl font-bold text-bone-100 flex items-center gap-2">
-                  <ShoppingBag className="w-6 h-6 text-terra-400" />
-                  Tu Bolso
+              <div className="flex items-center justify-between p-6 border-b border-stone-200 bg-stone-50/50">
+                <h2 className="font-display text-2xl font-bold text-stone-900 flex items-center gap-2.5">
+                  <ShoppingBag className="w-5 h-5 text-calypso-600" />
+                  Tu Bolsa Casa Aira
                 </h2>
                 <button
                   onClick={() => setCartOpen(false)}
-                  className="p-2 rounded-full hover:bg-white/10 transition-colors text-bone-300 hover:text-white"
+                  className="p-2 rounded-full hover:bg-stone-200/60 transition-colors text-stone-500 hover:text-stone-900"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Cart Items */}
-              <div className="flex-1 overflow-y-auto p-6 bg-earth-900/30">
+              <div className="flex-1 overflow-y-auto p-6 bg-stone-50/30">
                 {items.length === 0 ? (
                   <div className="text-center py-20 flex flex-col items-center">
-                    <div className="w-20 h-20 bg-earth-900 rounded-full flex items-center justify-center mb-6 text-earth-300 border border-white/5">
-                      <ShoppingBag className="w-10 h-10 text-terra-400" />
+                    <div className="w-20 h-20 bg-calypso-50 rounded-full flex items-center justify-center mb-6 text-calypso-500 border border-calypso-100">
+                      <ShoppingBag className="w-10 h-10 text-calypso-600" />
                     </div>
-                    <h3 className="text-xl font-semibold text-bone-100 mb-2">Tu bolso está vacío</h3>
-                    <p className="text-bone-400 max-w-xs mx-auto text-sm">
-                      Parece que aún no has seleccionado el vestido perfecto para tu colección.
+                    <h3 className="text-xl font-semibold text-stone-900 mb-2">Tu bolsa está vacía</h3>
+                    <p className="text-stone-500 max-w-xs mx-auto text-sm font-light">
+                      Aún no has agregado vestidos para acompañar tus momentos especiales.
                     </p>
                     <button
                       onClick={() => {
                         setCartOpen(false);
                         window.location.href = '/catalogo';
                       }}
-                      className='mt-8 px-6 py-3 bg-sensual-600 text-white rounded-full font-medium hover:bg-sensual-500 transition-all duration-300 shadow-lg shadow-sensual-600/20 active:scale-95'
+                      className='mt-8 btn-calypso'
                     >
                       Explorar Catálogo
                     </button>
                   </div>
                 ) : (
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {items.map((item) => (
                       <motion.div
                         key={item.id}
                         layout
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, x: -100 }}
-                        className="flex gap-4 p-4 bg-earth-900/50 rounded-2xl border border-white/5 hover:border-white/10 transition-all duration-300 shadow-md"
+                        exit={{ opacity: 0, x: -50 }}
+                        className="flex gap-4 p-4 bg-white rounded-2xl border border-stone-200/80 shadow-sm hover:shadow-md transition-all duration-300"
                       >
                         {/* Product Image */}
-                        <div className="w-24 h-32 relative rounded-xl overflow-hidden bg-earth-800/50 flex-shrink-0 border border-white/5">
+                        <div className="w-20 h-28 relative rounded-xl overflow-hidden bg-stone-100 flex-shrink-0 border border-stone-200">
                           {item.product?.images?.[0] ? (
                             <Image
                               src={item.product.images[0]}
                               alt={item.product.name || ''}
                               fill
-                              className="object-cover"
+                              className="object-cover object-top"
                             />
                           ) : (
-                            <div className="flex items-center justify-center h-full text-earth-400">
-                              <ShoppingBag className="w-8 h-8" />
+                            <div className="flex items-center justify-center h-full text-stone-400">
+                              <ShoppingBag className="w-6 h-6" />
                             </div>
                           )}
                         </div>
 
                         {/* Product Details */}
-                        <div className="flex-1 flex flex-col justify-between py-1">
+                        <div className="flex-1 flex flex-col justify-between py-0.5">
                           <div>
                             <div className="flex justify-between items-start">
-                              <h3 className="font-semibold text-bone-100 text-lg leading-tight line-clamp-2">
-                                {item.product?.name || 'Producto'}
+                              <h3 className="font-semibold text-stone-900 text-sm leading-tight line-clamp-2">
+                                {item.product?.name || 'Vestido'}
                               </h3>
                               <button
                                 onClick={() => removeItem(item.id)}
-                                className="text-bone-400 hover:text-red-400 transition-colors p-1 -mr-2 -mt-2"
+                                className="text-stone-400 hover:text-rose-500 transition-colors p-1 -mr-1 -mt-1"
+                                title="Eliminar prenda"
                               >
-                                <Trash2 className="w-5 h-5" />
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </div>
 
-                            <div className="flex items-center gap-3 mt-2 text-sm text-bone-400">
-                              <span className='bg-white/10 px-2 py-1 rounded-md text-bone-200 font-medium text-xs'>
-                                {item.selectedSize}
+                            <div className="flex items-center gap-2.5 mt-1.5 text-xs text-stone-500">
+                              <span className='bg-stone-100 px-2 py-0.5 rounded-md text-stone-700 font-medium'>
+                                Talla {item.selectedSize}
                               </span>
-                              <div className="flex items-center gap-1.5">
-                                <div className={`w-3.5 h-3.5 rounded-full border border-white/10 shadow-sm ${getColorClass(item.selectedColor)}`} />
-                                <span className="text-xs">{item.selectedColor}</span>
+                              <div className="flex items-center gap-1">
+                                <div className={`w-3 h-3 rounded-full border border-stone-300 ${getColorClass(item.selectedColor)}`} />
+                                <span>{item.selectedColor}</span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex items-end justify-between mt-4">
-                            <div className="flex items-center gap-3 bg-white/5 border border-white/5 rounded-lg p-1">
+                          <div className="flex items-end justify-between mt-3">
+                            <div className="flex items-center gap-2 bg-stone-100 rounded-lg p-0.5">
                               <button
                                 onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
-                                className="w-7 h-7 flex items-center justify-center rounded-md bg-earth-800 text-bone-200 hover:text-white hover:bg-earth-700 active:scale-95 transition-all"
+                                className="w-6 h-6 flex items-center justify-center rounded-md bg-white text-stone-700 hover:bg-stone-200 active:scale-95 transition-all shadow-xs"
                               >
-                                <Minus className="w-4 h-4" />
+                                <Minus className="w-3 h-3" />
                               </button>
-                              <span className="w-4 text-center font-medium text-bone-100">{item.quantity}</span>
+                              <span className="w-4 text-center font-semibold text-xs text-stone-800">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                className="w-7 h-7 flex items-center justify-center rounded-md bg-earth-800 text-bone-200 hover:text-white hover:bg-earth-700 active:scale-95 transition-all"
+                                className="w-6 h-6 flex items-center justify-center rounded-md bg-white text-stone-700 hover:bg-stone-200 active:scale-95 transition-all shadow-xs"
                               >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-3 h-3" />
                               </button>
                             </div>
-                            <p className="font-display font-bold text-xl text-terra-400">
+                            <p className="font-display font-bold text-base text-stone-900">
                               {formatPrice(item.product?.price || 0)}
                             </p>
                           </div>
@@ -164,19 +165,19 @@ export default function Cart() {
 
               {/* Footer */}
               {items.length > 0 && (
-                <div className="border-t border-earth-800 p-6 bg-earth-950 shadow-[0_-5px_20px_rgba(0,0,0,0.4)]">
-                  <div className="space-y-3 mb-6">
-                    <div className="flex items-center justify-between text-bone-400 text-sm">
+                <div className="border-t border-stone-200 p-6 bg-white shadow-lg">
+                  <div className="space-y-2 mb-5">
+                    <div className="flex items-center justify-between text-stone-500 text-sm">
                       <span>Subtotal</span>
-                      <span className="text-bone-200">{formatPrice(total)}</span>
+                      <span className="text-stone-900 font-medium">{formatPrice(total)}</span>
                     </div>
-                    <div className="flex items-center justify-between text-bone-400 text-sm">
-                      <span>Envío</span>
-                      <span className="text-spring-400 font-medium">Por Pagar</span>
+                    <div className="flex items-center justify-between text-stone-500 text-sm">
+                      <span>Despacho</span>
+                      <span className="text-calypso-600 font-medium">Por Pagar (Starken / Chilexpress)</span>
                     </div>
-                    <div className="flex items-center justify-between pt-3 border-t border-dashed border-earth-800">
-                      <span className="font-display text-xl font-bold text-bone-100">Total</span>
-                      <span className="font-display text-2xl font-bold text-terra-400">
+                    <div className="flex items-center justify-between pt-3 border-t border-stone-200">
+                      <span className="font-display text-lg font-bold text-stone-900">Total</span>
+                      <span className="font-display text-2xl font-bold text-calypso-700">
                         {formatPrice(total)}
                       </span>
                     </div>
@@ -187,10 +188,10 @@ export default function Cart() {
                       setCartOpen(false);
                       window.location.href = '/checkout';
                     }}
-                    className="w-full py-4 bg-gradient-to-r from-sensual-600 to-sensual-700 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-sensual-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-2"
+                    className="w-full btn-calypso py-4 font-bold text-sm tracking-wide shadow-md shadow-calypso-500/25"
                   >
-                    <ShoppingBag className="w-5 h-5" />
-                    Checkout Seguro
+                    <ShoppingBag className="w-4 h-4" />
+                    Continuar al Pago Seguro
                   </button>
                 </div>
               )}
@@ -205,11 +206,12 @@ export default function Cart() {
     <>
       <button
         onClick={() => setCartOpen(true)}
-        className="relative p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors group animate-in fade-in duration-300"
+        className="relative p-2.5 rounded-full bg-stone-100/80 hover:bg-calypso-50 text-stone-700 hover:text-calypso-600 transition-colors group"
+        title="Abrir bolsa de compras"
       >
-        <ShoppingBag className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+        <ShoppingBag className="w-5 h-5 group-hover:scale-105 transition-transform" />
         {itemCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-sensual-500 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-lg animate-bounce">
+          <span className="absolute -top-1 -right-1 w-5 h-5 bg-calypso-500 text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-md animate-bounce">
             {itemCount}
           </span>
         )}

@@ -9,7 +9,56 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // RÚSTICO/ELEGANTE - Colores Centrales 
+        // PALETA OFICIAL CASA AIRA
+        calypso: {
+          50: '#f0fdfa',
+          100: '#ccfbf1',
+          200: '#99f6e4',
+          300: '#5eead4',
+          400: '#2dd4bf',
+          500: '#06b6d4', // Calipso Egeo Principal
+          600: '#0891b2',
+          700: '#0e7490',
+          800: '#155e75',
+          900: '#164e63',
+        },
+        gold: {
+          50: '#fffbeb',
+          100: '#fef3c7',
+          200: '#fde68a',
+          300: '#fcd34d',
+          400: '#fbbf24',
+          500: '#d4af37', // Dorado Champagne
+          600: '#d97706',
+          700: '#b45309',
+          800: '#92400e',
+          900: '#78350f',
+        },
+        blush: {
+          50: '#fdf2f8',
+          100: '#fce7f3',
+          200: '#fbcfe8',
+          300: '#f9a8d4',
+          400: '#f472b6',
+          500: '#ec4899',
+          600: '#db2777',
+          700: '#be185d',
+          800: '#9d174d',
+          900: '#831843',
+        },
+        sand: {
+          50: '#fdfbf7',
+          100: '#faf7f0',
+          200: '#f4ede1',
+          300: '#e9ddc7',
+          400: '#d8c5a4',
+          500: '#c5ad82',
+          600: '#a78e63',
+          700: '#836d4a',
+          800: '#645339',
+          900: '#463a28',
+        },
+        // RÚSTICO/ELEGANTE - Compatibilidad
         ink: {
           50: '#f8fafc',
           100: '#f1f5f9',
@@ -20,10 +69,10 @@ module.exports = {
           600: '#475569',
           700: '#334155',
           800: '#1e293b',
-          900: '#0a0a0a', // Negro Tinta
+          900: '#0a0a0a',
         },
         bone: {
-          50: '#fefefe', // Blanco Hueso
+          50: '#fefefe',
           100: '#fdfdfd',
           200: '#faf9f7',
           300: '#f5f4f2',
@@ -40,19 +89,18 @@ module.exports = {
           200: '#f1d9c0',
           300: '#e7bf95',
           400: '#d49d68',
-          500: '#c68047', // Terracota
+          500: '#c68047',
           600: '#a0623a',
           700: '#7d4a2f',
           800: '#5c3426',
           900: '#3d1f16',
         },
-        // LUNAR/EXPRESIVO - Colores Místicos
         lunar: {
           50: '#f8fafc',
           100: '#f0f4f8',
           200: '#e2e8f0',
           300: '#cbd5e1',
-          400: '#94a3b8', // Plata Lunar
+          400: '#94a3b8',
           500: '#64748b',
           600: '#475569',
           700: '#334155',
@@ -65,7 +113,7 @@ module.exports = {
           200: '#e9d5ff',
           300: '#d8b4fe',
           400: '#c084fc',
-          500: '#a855f7', // Púrpura Místico
+          500: '#a855f7',
           600: '#9333ea',
           700: '#7c2d12',
           800: '#581c87',
@@ -78,12 +126,11 @@ module.exports = {
           300: '#fca5a5',
           400: '#f87171',
           500: '#ef4444',
-          600: '#dc2626', // Rojo Sangre/Vino
+          600: '#dc2626',
           700: '#b91c1c',
           800: '#991b1b',
           900: '#7f1d1d',
         },
-        // Verde natural para elementos tierra
         earth: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -102,7 +149,7 @@ module.exports = {
           200: '#fbcfe8',
           300: '#f9a8d4',
           400: '#f472b6',
-          500: '#ec4899', // Pink/Magenta Floral
+          500: '#ec4899',
           600: '#db2777',
           700: '#be185d',
           800: '#9d174d',

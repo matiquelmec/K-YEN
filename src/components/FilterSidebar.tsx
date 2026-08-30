@@ -18,26 +18,26 @@ const categories = [
   {
     id: 'all',
     name: 'Todos los Estilos',
-    icon: Heart,
-    color: 'from-sensual-500 to-earth-500',
-  },
-  {
-    id: 'gotico',
-    name: 'Luna Nueva',
-    icon: Moon,
-    color: 'from-gothic-600 to-sensual-600',
-  },
-  {
-    id: 'primaveral',
-    name: 'Eclipse Floral',
-    icon: Leaf,
-    color: 'from-spring-500 to-earth-500',
+    icon: Filter,
+    color: 'from-calypso-500 to-teal-500',
   },
   {
     id: 'veraniego',
-    name: 'Solsticio',
+    name: 'Brisa Calipso',
     icon: Sun,
-    color: 'from-earth-500 to-sensual-500',
+    color: 'from-calypso-500 to-teal-400',
+  },
+  {
+    id: 'gotico',
+    name: 'Dorado Solar',
+    icon: Moon,
+    color: 'from-gold-500 to-amber-500',
+  },
+  {
+    id: 'primaveral',
+    name: 'Rosa Amanecer',
+    icon: Leaf,
+    color: 'from-pink-500 to-rose-400',
   },
 ];
 
@@ -65,15 +65,15 @@ export default function FilterSidebar({
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className='bg-gradient-to-br from-earth-50 to-sensual-50 backdrop-blur-sm border border-earth-200 rounded-xl p-6 sticky top-4'
+      className='card-aira p-6 sticky top-24 shadow-sm'
     >
       {/* Header */}
       <div className='flex items-center gap-3 mb-6'>
-        <div className='w-8 h-8 rounded-full bg-gradient-to-br from-earth-500 to-sensual-500 flex items-center justify-center'>
-          <Filter className='w-4 h-4 text-white' />
+        <div className='w-8 h-8 rounded-full bg-calypso-50 flex items-center justify-center text-calypso-600'>
+          <Filter className='w-4 h-4' />
         </div>
-        <h3 className='font-display text-xl font-bold text-gradient-earth'>
-          Filtros
+        <h3 className='font-display text-xl font-bold text-stone-900'>
+          Filtros de Búsqueda
         </h3>
       </div>
 

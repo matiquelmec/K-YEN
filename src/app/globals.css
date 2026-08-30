@@ -14,81 +14,85 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-ink-900 via-terra-900 to-mystic-900 min-h-screen font-body antialiased;
-    background-size: 400% 400%;
-    animation: gradientShift 20s ease infinite;
+    @apply bg-gradient-to-br from-sand-50 via-white to-blush-50 min-h-screen font-body antialiased text-stone-800;
   }
 }
 
 @layer components {
-
-  /* ELEGANTE/RÚSTICO - Botones Estructurados */
-  .btn-ink {
-    @apply bg-gradient-to-r from-ink-800 to-ink-700 hover:from-ink-900 hover:to-ink-800 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+  /* CASA AIRA - Botones de Alta Costura */
+  .btn-calypso {
+    @apply bg-gradient-to-r from-calypso-500 to-teal-500 hover:from-calypso-600 hover:to-teal-600 text-white font-medium py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-cyan-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
   }
 
+  .btn-gold {
+    @apply bg-gradient-to-r from-gold-500 via-amber-400 to-yellow-500 hover:from-gold-600 hover:to-yellow-600 text-stone-900 font-semibold py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-amber-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
+  }
+
+  .btn-blush {
+    @apply bg-gradient-to-r from-blush-400 to-pink-500 hover:from-blush-500 hover:to-pink-600 text-white font-medium py-3.5 px-7 rounded-full transition-all duration-300 shadow-md hover:shadow-pink-500/25 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2;
+  }
+
+  .btn-outline-aira {
+    @apply bg-transparent border-2 border-calypso-500 text-calypso-600 hover:bg-calypso-50 font-medium py-3 px-7 rounded-full transition-all duration-300 flex items-center justify-center gap-2;
+  }
+
+  /* Tarjetas de Vestidos Casa Aira */
+  .card-aira {
+    @apply bg-white/95 backdrop-blur-md border border-stone-200/70 rounded-3xl shadow-sm hover:shadow-xl hover:border-calypso-300/60 transition-all duration-500;
+  }
+
+  /* Gradientes de Texto Casa Aira */
+  .text-gradient-aira {
+    @apply bg-gradient-to-r from-calypso-600 via-teal-600 to-gold-600 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-gold-600 via-amber-500 to-yellow-600 bg-clip-text text-transparent;
+  }
+
+  .text-gradient-blush {
+    @apply bg-gradient-to-r from-pink-600 via-rose-500 to-calypso-500 bg-clip-text text-transparent;
+  }
+
+  /* Compatibilidad y Fallbacks */
   .btn-terra {
-    @apply bg-gradient-to-r from-terra-600 to-terra-500 hover:from-terra-700 hover:to-terra-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply btn-calypso;
   }
 
-  /* EXPRESIVO/LUNAR - Botones Místicos */
+  .btn-ink {
+    @apply btn-gold;
+  }
+
   .btn-mystic {
-    @apply bg-gradient-to-r from-mystic-600 to-mystic-500 hover:from-mystic-700 hover:to-mystic-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
-  }
-
-  .btn-blood {
-    @apply bg-gradient-to-r from-blood-600 to-blood-500 hover:from-blood-700 hover:to-blood-600 text-bone-50 font-semibold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105;
+    @apply btn-blush;
   }
 
   .btn-spring {
-    @apply bg-gradient-to-r from-spring-600 to-earth-500 hover:from-spring-700 hover:to-earth-600 text-bone-50 font-semibold py-4 px-8 sm:py-3 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 min-h-[48px] w-full sm:w-auto;
+    @apply btn-calypso;
   }
 
-  /* Cards con Elegancia Cruda */
-  .card-raw {
-    @apply bg-gradient-to-br from-bone-50 to-bone-100 backdrop-blur-sm border border-terra-200 rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105;
+  .btn-blood {
+    @apply btn-blush;
   }
 
-  /* Gradientes de Texto - Alquímicos */
   .text-gradient-earth-lunar {
-    @apply bg-gradient-to-r from-terra-600 to-lunar-500 bg-clip-text text-transparent;
-  }
-
-  .text-gradient-mystic-blood {
-    @apply bg-gradient-to-r from-mystic-500 to-blood-500 bg-clip-text text-transparent;
-  }
-
-  .text-gradient-ink-terra {
-    @apply bg-gradient-to-r from-ink-700 to-terra-600 bg-clip-text text-transparent;
-  }
-
-  /* Backward Compatibility */
-  .btn-lunar {
-    @apply btn-ink;
-  }
-
-  .btn-moonrose {
-    @apply btn-mystic;
-  }
-
-  .btn-stardust {
-    @apply btn-terra;
-  }
-
-  .card-lunar {
-    @apply card-raw;
+    @apply text-gradient-aira;
   }
 
   .text-gradient-lunar {
-    @apply text-gradient-earth-lunar;
-  }
-
-  .text-gradient-moonrose {
-    @apply text-gradient-mystic-blood;
+    @apply text-gradient-aira;
   }
 
   .text-gradient-stardust {
-    @apply text-gradient-ink-terra;
+    @apply text-gradient-gold;
+  }
+
+  .text-gradient-moonrose {
+    @apply text-gradient-blush;
+  }
+
+  .card-raw {
+    @apply card-aira;
   }
 }
 

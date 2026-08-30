@@ -2,47 +2,47 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Moon, Sun, Leaf } from 'lucide-react';
+import { Wind, Sparkles, Heart, ArrowRight } from 'lucide-react';
 
 const collections = [
   {
-    id: 'gotico', // Internal key for "Luna Nueva"
-    title: 'Luna Nueva',
-    subtitle: 'Gótico Sensual',
+    id: 'veraniego',
+    title: 'Brisa Calipso',
+    subtitle: 'Frescura & Libertad',
     description:
-      'Donde el misterio abraza la sensualidad. Vestidos oscuros con terciopelos, encajes y transparencias. Elegancia cruda para mujeres que celebran su poder nocturno.',
-    icon: Moon,
-    gradient: 'from-ink-700 to-blood-600',
-    bgGradient: 'from-ink-950/40 to-blood-900/20',
-    textGradient: 'from-bone-50 to-blood-400',
+      'Telas livianas, caídas fluidas y la sensación envolvente de la brisa marina. Diseños creados para caminar con soltura y alegría.',
+    icon: Wind,
+    color: 'from-calypso-500 to-teal-400',
+    borderHover: 'hover:border-calypso-400/80',
+    badge: 'bg-calypso-50 text-calypso-700 border-calypso-200',
   },
   {
-    id: 'primaveral', // Internal key for "Eclipse Floral"
-    title: 'Eclipse Floral',
-    subtitle: 'Primaveral Fresco',
+    id: 'gotico',
+    title: 'Dorado Solar',
+    subtitle: 'Gala & Distinción',
     description:
-      'El renacer de la naturaleza bajo la luz de la luna. Estampados florales oscuros, telas fluidas y cortes románticos. La belleza de la primavera con un toque de misterio.',
-    icon: Leaf,
-    gradient: 'from-spring-500 to-earth-500',
-    bgGradient: 'from-spring-950/40 to-earth-900/20',
-    textGradient: 'from-spring-200 to-earth-200',
+      'El resplandor del oro champagne y la sofisticación de la noche. Vestidos elegantes con detalles de alta costura para momentos inolvidables.',
+    icon: Sparkles,
+    color: 'from-gold-500 to-amber-400',
+    borderHover: 'hover:border-gold-400/80',
+    badge: 'bg-gold-50 text-gold-800 border-gold-200',
   },
   {
-    id: 'veraniego', // Internal key for "Solsticio"
-    title: 'Solsticio',
-    subtitle: 'Veraniego Sensual',
+    id: 'primaveral',
+    title: 'Rosa Amanecer',
+    subtitle: 'Romance & Delicadeza',
     description:
-      'El punto donde el sol toca la tierra. Vestidos ligeros con linos, sedas y texturas orgánicas. Sensualidad natural que florece bajo el sol.',
-    icon: Sun,
-    gradient: 'from-terra-500 to-lunar-400',
-    bgGradient: 'from-terra-950/40 to-lunar-900/20',
-    textGradient: 'from-terra-200 to-lunar-200',
+      'La suavidad del rosa pastel y los cortes etéreos. Siluetas románticas y femeninas que celebran la belleza natural en todas sus formas.',
+    icon: Heart,
+    color: 'from-pink-500 to-rose-400',
+    borderHover: 'hover:border-pink-400/80',
+    badge: 'bg-pink-50 text-pink-700 border-pink-200',
   },
 ];
 
 export default function Categories() {
   return (
-    <section id='categories' className='py-20 px-4 relative'>
+    <section id='categories' className='py-16 md:py-24 px-4 relative'>
       <div className='max-w-7xl mx-auto'>
         {/* Section Header */}
         <motion.div
@@ -52,95 +52,60 @@ export default function Categories() {
           viewport={{ once: true }}
           className='text-center mb-16'
         >
-          <h2 className='font-display text-4xl md:text-6xl font-bold mb-6'>
-            <span className='bg-gradient-to-r from-terra-500 to-mystic-500 bg-clip-text text-transparent'>
-              Colecciones
-            </span>
-            <br />
-            <span className='bg-gradient-to-r from-ink-700 to-lunar-400 bg-clip-text text-transparent'>
-              y Estaciones
-            </span>
+          <span className='text-xs font-bold uppercase tracking-[0.25em] text-calypso-600 block mb-3'>
+            Curaduría de Temporada
+          </span>
+          <h2 className='font-display text-3xl sm:text-5xl font-extrabold text-stone-900 mb-4 tracking-tight'>
+            Nuestras Colecciones
           </h2>
-          <p className='text-bone-200 text-lg md:text-xl max-w-3xl mx-auto font-cursive'>
-            Tres fases. Tres almas. Una misma alquimia.
-            <br />
-            <span className='text-terra-300'>
-              Elegancia cruda para toda mujer. Incluimos tallas extragrandes.
-            </span>
+          <p className='text-stone-600 text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed'>
+            Tres universos de diseño confeccionados para acompañar tu estilo con gracia, confort y distinción.
           </p>
         </motion.div>
 
         {/* Collections Grid */}
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-7xl mx-auto px-4 md:px-0'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8'>
           {collections.map((collection, index) => (
             <motion.div
               key={collection.id}
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
+              transition={{ duration: 0.7, delay: index * 0.15 }}
               viewport={{ once: true }}
-              whileHover={{ scale: 1.03 }}
-              className='group h-full'
+              whileHover={{ y: -6 }}
+              className='h-full'
             >
-              {/* Wrapped in Link for navigation */}
-              <Link href={`/catalogo?category=${collection.id}`} className="block h-full">
+              <Link href={`/catalogo?category=${collection.id}`} className='block h-full'>
                 <div
-                  className={`bg-gradient-to-br ${collection.bgGradient} backdrop-blur-sm border border-bone-100/10 rounded-2xl p-6 h-full relative overflow-hidden text-center`}
+                  className={`card-aira p-8 h-full flex flex-col justify-between text-left transition-all duration-300 ${collection.borderHover} group`}
                 >
-                  {/* Background Pattern */}
-                  <div className='absolute inset-0 opacity-5'>
-                    <div
-                      className={`w-full h-full bg-gradient-to-br ${collection.gradient}`}
-                    />
-                  </div>
+                  <div>
+                    {/* Icon & Badge */}
+                    <div className='flex items-center justify-between mb-6'>
+                      <div
+                        className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${collection.color} flex items-center justify-center text-white shadow-md shadow-cyan-500/10 group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <collection.icon className='w-6 h-6' />
+                      </div>
+                      <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${collection.badge}`}>
+                        {collection.subtitle}
+                      </span>
+                    </div>
 
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{ rotate: 360, scale: 1.1 }}
-                    transition={{ duration: 0.6 }}
-                    className={`w-12 h-12 rounded-full bg-gradient-to-br ${collection.gradient} flex items-center justify-center mb-4 relative z-10 mx-auto`}
-                  >
-                    <collection.icon className='text-bone-50 w-6 h-6' />
-                  </motion.div>
-
-                  {/* Content */}
-                  <div className='relative z-10'>
-                    <h3
-                      className={`font-display text-xl md:text-2xl font-bold mb-2 bg-gradient-to-r ${collection.textGradient} bg-clip-text text-transparent`}
-                    >
+                    <h3 className='font-display text-2xl font-bold text-stone-900 group-hover:text-calypso-700 transition-colors mb-3'>
                       {collection.title}
                     </h3>
 
-                    <p className='text-bone-300 text-sm mb-3 font-light uppercase tracking-wider'>
-                      {collection.subtitle}
-                    </p>
-
-                    <p className='text-bone-200 mb-4 leading-relaxed text-sm'>
+                    <p className='text-stone-600 text-sm leading-relaxed mb-6 font-light'>
                       {collection.description}
                     </p>
-
-                    {/* CTA */}
-                    <motion.button
-                      whileHover={{ x: 3 }}
-                      className={`inline-flex items-center gap-2 text-sm md:text-sm font-semibold bg-gradient-to-r ${collection.textGradient} bg-clip-text text-transparent py-3 px-4 rounded-full border border-transparent hover:border-current/20 min-h-[44px]`}
-                    >
-                      Ver Catálogo
-                      <motion.span
-                        animate={{ x: [0, 3, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        →
-                      </motion.span>
-                    </motion.button>
                   </div>
 
-                  {/* Hover Effects */}
-                  <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    whileHover={{ scale: 1, opacity: 0.05 }}
-                    transition={{ duration: 0.3 }}
-                    className={`absolute inset-0 bg-gradient-to-br ${collection.gradient} rounded-2xl`}
-                  />
+                  {/* Action link */}
+                  <div className='pt-4 border-t border-stone-100 flex items-center justify-between text-sm font-semibold text-calypso-600 group-hover:text-calypso-700'>
+                    <span>Explorar Vestidos</span>
+                    <ArrowRight className='w-4 h-4 group-hover:translate-x-1 transition-transform' />
+                  </div>
                 </div>
               </Link>
             </motion.div>

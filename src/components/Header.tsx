@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cart from './Cart';
-import KuyenLogo from './ui/KuyenLogo';
+import CasaAiraLogo from './ui/CasaAiraLogo';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,19 +15,19 @@ export default function Header() {
 
   const navigation = [
     { name: 'Catálogo', href: '/catalogo' },
-    { name: 'Luna Nueva', href: '/catalogo?category=gotico' },
-    { name: 'Eclipse Floral', href: '/catalogo?category=primaveral' },
-    { name: 'Solsticio', href: '/catalogo?category=veraniego' },
+    { name: 'Brisa Calipso', href: '/catalogo?category=veraniego' },
+    { name: 'Dorado Solar', href: '/catalogo?category=gotico' },
+    { name: 'Rosa Amanecer', href: '/catalogo?category=primaveral' },
   ];
 
   return (
-    <header className='fixed top-0 left-0 right-0 z-40 bg-black/20 backdrop-blur-md border-b border-white/10'>
+    <header className='fixed top-0 left-0 right-0 z-40 bg-white/85 backdrop-blur-md border-b border-stone-200/70 shadow-sm transition-all duration-300'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex items-center justify-between h-16'>
+        <div className='flex items-center justify-between h-18 py-2'>
           {/* Logo */}
           <div className='flex-shrink-0'>
             <Link href='/' className='flex items-center'>
-              <KuyenLogo size='sm' variant='icon' />
+              <CasaAiraLogo size='md' variant='full' />
             </Link>
           </div>
 
@@ -37,10 +37,10 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className='text-white/90 hover:text-white font-medium transition-colors duration-300 relative group'
+                className='text-stone-700 hover:text-calypso-600 font-medium text-sm transition-colors duration-300 relative group py-1'
               >
                 {item.name}
-                <span className='absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-sensual-400 to-earth-400 group-hover:w-full transition-all duration-300' />
+                <span className='absolute -bottom-0.5 left-0 w-0 h-0.5 bg-gradient-to-r from-calypso-500 to-gold-400 group-hover:w-full transition-all duration-300 rounded-full' />
               </Link>
             ))}
           </nav>
@@ -50,12 +50,11 @@ export default function Header() {
             {/* Search */}
             <button
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className='p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors'
+              className='p-2.5 rounded-full bg-stone-100/80 hover:bg-calypso-50 text-stone-600 hover:text-calypso-600 transition-colors'
+              title='Buscar vestidos'
             >
-              <Search className='w-5 h-5 text-white' />
+              <Search className='w-4 h-4' />
             </button>
-
-
 
             {/* Cart */}
             <Cart />
@@ -66,12 +65,12 @@ export default function Header() {
             <Cart />
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className='p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors'
+              className='p-2 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200 transition-colors'
             >
               {isMenuOpen ? (
-                <X className='w-6 h-6 text-white' />
+                <X className='w-5 h-5' />
               ) : (
-                <Menu className='w-6 h-6 text-white' />
+                <Menu className='w-5 h-5' />
               )}
             </button>
           </div>
@@ -85,20 +84,19 @@ export default function Header() {
           height: isMenuOpen ? 'auto' : 0,
           opacity: isMenuOpen ? 1 : 0,
         }}
-        className='md:hidden bg-black/30 backdrop-blur-md border-t border-white/10 overflow-hidden'
+        className='md:hidden bg-white/95 backdrop-blur-md border-t border-stone-200/70 overflow-hidden'
       >
-        <div className='px-4 pt-2 pb-3 space-y-1'>
+        <div className='px-4 pt-3 pb-4 space-y-1'>
           {navigation.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className='block px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors'
+              className='block px-4 py-2.5 text-stone-700 hover:text-calypso-600 hover:bg-calypso-50/50 rounded-xl text-sm font-medium transition-colors'
               onClick={() => setIsMenuOpen(false)}
             >
               {item.name}
             </Link>
           ))}
-
         </div>
       </motion.div>
 
@@ -107,13 +105,13 @@ export default function Header() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className='absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-200 p-4'
+          className='absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md shadow-lg border-t border-stone-200/80 p-4'
         >
           <div className='max-w-2xl mx-auto'>
             <input
               type='text'
-              placeholder='Buscar vestidos...'
-              className='w-full px-4 py-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-sensual-500 focus:border-transparent'
+              placeholder='Buscar por nombre, color o estilo de vestido...'
+              className='w-full px-5 py-3 rounded-full border border-stone-300 focus:outline-none focus:ring-2 focus:ring-calypso-500 focus:border-transparent text-sm bg-stone-50/50'
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === 'Escape') {
@@ -121,7 +119,7 @@ export default function Header() {
                 } else if (e.key === 'Enter') {
                   const query = (e.target as HTMLInputElement).value;
                   if (query.trim()) {
-                    setIsMenuOpen(false); // Close mobile menu if open
+                    setIsMenuOpen(false);
                     setIsSearchOpen(false);
                     router.push(`/catalogo?search=${encodeURIComponent(query)}`);
                   }

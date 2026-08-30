@@ -1,18 +1,18 @@
-# 🌙 KÜYEN - Donde la elegancia florece bajo la luna
+# 🌬️ CASA AIRA - Elegancia, Frescura y Libertad
 
-Plataforma de e-commerce moderna y de alta costura para vestidos exclusivos, construida con Next.js 16, React 19, TypeScript, base de datos SQLite distribuida en Turso y pasarela de pago Mercado Pago.
+Plataforma de e-commerce de alta costura para vestidos exclusivos, construida con Next.js 16, React 19, TypeScript, base de datos SQLite distribuida en Turso y pasarela de pago Mercado Pago con conciliación atómica de stock.
 
 ---
 
 ## 🚀 Stack Tecnológico
 
 - **Frontend & Routing**: Next.js 16 (App Router con Turbopack) + React 19 + TypeScript 5.9
+- **Dirección de Arte**: Paleta luminosa Casa Aira (Calipso Egeo, Dorado Champagne, Rosa Amanecer y Marfil) con tipografía editorial y microinteracciones de alta gama
 - **Base de Datos**: Turso DB (`@libsql/client` SQLite distribuido a nivel edge, ultra-rápido y con 9 tablas relacionales)
 - **Auto-Detección de Colores**: Algoritmo Canvas Client-Side y Distancia Euclidiana RGB (100% Gratis, sin APIs externas)
 - **Gestión Multimedia**: Cloudinary Media CDN (con pre-compresión WebP en el navegador y nombres semánticos SEO)
-- **Pasarela de Pago**: Mercado Pago SDK (preferencias atómicas y webhook con verificación de estado)
+- **Pasarela de Pago**: Mercado Pago SDK (preferencias atómicas, conciliación post-pago de variantes $Talla \times Color$ y webhook con verificación de estado)
 - **Marketing & Crecimiento**: Sistema nativo de Cupones de Descuento y Tracking de Afiliadas / Embajadoras
-- **Estilos y Estética**: Tailwind CSS + Framer Motion (diseño "Boutique Dark", transiciones suaves y microinteracciones)
 - **Calidad & Testing**: Vitest (34 tests unitarios) + ESLint + Prettier + TypeScript estricto
 
 ---

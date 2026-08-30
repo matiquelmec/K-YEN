@@ -1,12 +1,12 @@
 export const APP_CONFIG = {
-  name: 'KÜYEN',
-  description: 'Donde la elegancia florece bajo la luna',
-  version: '1.0.0',
+  name: 'Casa Aira',
+  description: 'Elegancia, frescura y libertad en vestidos exclusivos de alta costura',
+  version: '2.0.0',
 
   // URLs and endpoints
   urls: {
-    base: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    api: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
+    base: process.env.NEXT_PUBLIC_APP_URL || 'https://kuyenchile.cl',
+    api: process.env.NEXT_PUBLIC_API_URL || 'https://kuyenchile.cl/api',
   },
 
   // Database / Turso settings are loaded in src/lib/db/turso.ts
@@ -21,7 +21,7 @@ export const APP_CONFIG = {
 
   // Feature flags
   features: {
-    darkMode: true,
+    darkMode: false,
     wishlist: true,
     reviews: true,
     socialLogin: false,
@@ -30,12 +30,12 @@ export const APP_CONFIG = {
 
   // SEO
   seo: {
-    defaultTitle: 'KÜYEN - Elegancia que florece bajo la luna',
-    titleTemplate: '%s | KÜYEN',
+    defaultTitle: 'Casa Aira - Elegancia, Frescura y Libertad',
+    titleTemplate: '%s | Casa Aira',
     defaultDescription:
-      'Descubre vestidos únicos que conectan con tu esencia femenina. Elegancia lunar, sensualidad natural, diseños que abrazan todas las tallas.',
-    siteUrl: 'https://kuyen.cl',
-    twitterHandle: '@kuyen_oficial',
+      'Descubre vestidos únicos diseñados para celebrar tu libertad y elegancia. Diseños fluidos, paletas de calipso, dorado y rosa pastel que abrazan todas las tallas.',
+    siteUrl: 'https://kuyenchile.cl',
+    twitterHandle: '@casa_aira',
   },
 
   // Analytics
@@ -54,10 +54,10 @@ export const APP_CONFIG = {
 
   // Social media
   social: {
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/kuyen_oficial',
-    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/kuyen.oficial',
-    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || 'https://tiktok.com/@kuyen_oficial',
-    pinterest: process.env.NEXT_PUBLIC_PINTEREST_URL || 'https://pinterest.com/kuyen_oficial',
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/casaaira_oficial',
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/casaaira.oficial',
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || 'https://tiktok.com/@casaaira_oficial',
+    pinterest: process.env.NEXT_PUBLIC_PINTEREST_URL || 'https://pinterest.com/casaaira_oficial',
   },
 
   // Cache and performance
