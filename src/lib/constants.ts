@@ -1,28 +1,19 @@
 export const SITE_CONFIG = {
-  name: 'KÜYEN',
-  description: 'Donde la elegancia florece bajo la luna',
-  url: 'https://kuyen.cl',
+  name: 'Casa Aira',
+  description: 'Elegancia, frescura y libertad en vestidos de selección exclusiva',
+  url: 'https://kuyenchile.cl',
   ogImage: '/og-image.png',
   links: {
-    instagram: 'https://instagram.com/kuyen',
-    facebook: 'https://facebook.com/kuyen',
+    instagram: 'https://instagram.com/casaairaboutique',
+    facebook: 'https://facebook.com/casaairaboutique',
     whatsapp: 'https://wa.me/56912345678',
   },
 } as const;
 
 export const PRODUCT_CATEGORIES = [
-  { id: 'vestidos-noche', name: 'Vestidos de Noche', slug: 'vestidos-noche' },
-  { id: 'vestidos-casual', name: 'Vestidos Casuales', slug: 'vestidos-casual' },
-  {
-    id: 'vestidos-fiesta',
-    name: 'Vestidos de Fiesta',
-    slug: 'vestidos-fiesta',
-  },
-  {
-    id: 'vestidos-trabajo',
-    name: 'Vestidos de Trabajo',
-    slug: 'vestidos-trabajo',
-  },
+  { id: 'veraniego', name: 'Brisa & Calipso', slug: 'veraniego', tag: 'Verano & Playa' },
+  { id: 'gotico', name: 'Solsticio Dorado', slug: 'gotico', tag: 'Fiesta & Gala' },
+  { id: 'primaveral', name: 'Rosa de Alba', slug: 'primaveral', tag: 'Romance & Cóctel' },
 ] as const;
 
 export const PRODUCT_SIZES = [
