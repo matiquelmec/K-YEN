@@ -1,26 +1,71 @@
+export const CASA_AIRA_CATEGORIES = [
+    {
+        id: 'veraniego',
+        aliases: ['brisa-calipso', 'verano', 'playa'],
+        name: 'Brisa & Calipso',
+        subtitle: 'LÍNEA VERANO & PLAYA',
+        tag: 'Verano & Playa',
+        color: 'from-calypso-600 to-teal-700',
+        badgeColor: 'bg-calypso-600',
+    },
+    {
+        id: 'gotico',
+        aliases: ['solsticio-dorado', 'fiesta', 'gala'],
+        name: 'Solsticio Dorado',
+        subtitle: 'LÍNEA FIESTA & GALA',
+        tag: 'Fiesta & Gala',
+        color: 'from-gold-600 to-amber-700',
+        badgeColor: 'bg-gold-500',
+    },
+    {
+        id: 'primaveral',
+        aliases: ['rosa-alba', 'romance', 'coctel', 'cocktail'],
+        name: 'Rosa de Alba',
+        subtitle: 'LÍNEA ROMANCE & CÓCTEL',
+        tag: 'Romance & Cóctel',
+        color: 'from-rose-500 to-pink-600',
+        badgeColor: 'bg-rose-400',
+    },
+];
+
+export const normalizeCategorySlug = (category?: string | null): string => {
+    if (!category) return 'all';
+    const clean = category.toLowerCase().trim();
+    for (const cat of CASA_AIRA_CATEGORIES) {
+        if (cat.id === clean || cat.aliases.includes(clean)) {
+            return cat.id;
+        }
+    }
+    return clean;
+};
+
 export const getCategoryColor = (category: string) => {
-    switch (category) {
-        case 'gotico':
-            return 'from-gothic-600 to-sensual-600';
-        case 'primaveral':
-            return 'from-spring-500 to-earth-500';
+    const normalized = normalizeCategorySlug(category);
+    switch (normalized) {
         case 'veraniego':
-            return 'from-earth-500 to-sensual-500';
+            return 'from-calypso-600 to-teal-700';
+        case 'gotico':
+            return 'from-gold-600 to-amber-700';
+        case 'primaveral':
+            return 'from-rose-500 to-pink-600';
         default:
-            return 'from-earth-600 to-sensual-600';
+            return 'from-stone-800 to-stone-900';
     }
 };
 
 export const getCategoryName = (category: string) => {
-    switch (category) {
-        case 'gotico':
-            return 'Luna Nueva';
-        case 'primaveral':
-            return 'Eclipse Floral';
+    const normalized = normalizeCategorySlug(category);
+    switch (normalized) {
         case 'veraniego':
-            return 'Solsticio';
+            return 'Brisa & Calipso';
+        case 'gotico':
+            return 'Solsticio Dorado';
+        case 'primaveral':
+            return 'Rosa de Alba';
+        case 'all':
+            return 'Todas las Colecciones';
         default:
-            return category;
+            return category || 'Colección Especial';
     }
 };
 

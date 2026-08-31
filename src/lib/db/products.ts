@@ -1,4 +1,5 @@
 import { turso } from './turso';
+import { normalizeCategorySlug, CASA_AIRA_CATEGORIES } from '@/lib/product-utils';
 
 export interface ProductRow {
   id: string;
@@ -247,8 +248,13 @@ export async function dbGetProducts(options: {
   const params: any[] = [];
 
   if (options.category && options.category !== 'all') {
-    query += ` AND cat.slug = ?`;
-    params.push(options.category);
+    const normalized = normalizeCategorySlug(options.category);
+    const catConfig = CASA_AIRA_CATEGORIES.find(c => c.id === normalized);
+    const validSlugs = catConfig ? [catConfig.id, ...catConfig.aliases, options.category] : [options.category];
+    const uniqueSlugs = Array.from(new Set(validSlugs));
+    const placeholders = uniqueSlugs.map(() => '?').join(', ');
+    query += ` AND cat.slug IN (${placeholders})`;
+    params.push(...uniqueSlugs);
   }
 
   if (options.search) {

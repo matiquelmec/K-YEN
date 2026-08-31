@@ -64,3 +64,42 @@ describe('Collections API Security & Validation Logic', () => {
     expect(allowedMimeTypes.includes('application/javascript')).toBe(false);
   });
 });
+
+import { normalizeCategorySlug, getCategoryName, getCategoryColor, CASA_AIRA_CATEGORIES } from '@/lib/product-utils';
+
+describe('Category Normalization & Aliases Audit Tests', () => {
+  it('normaliza slugs y aliases correctamente a los IDs oficiales', () => {
+    expect(normalizeCategorySlug('veraniego')).toBe('veraniego');
+    expect(normalizeCategorySlug('brisa-calipso')).toBe('veraniego');
+    expect(normalizeCategorySlug('verano')).toBe('veraniego');
+
+    expect(normalizeCategorySlug('gotico')).toBe('gotico');
+    expect(normalizeCategorySlug('solsticio-dorado')).toBe('gotico');
+    expect(normalizeCategorySlug('fiesta')).toBe('gotico');
+
+    expect(normalizeCategorySlug('primaveral')).toBe('primaveral');
+    expect(normalizeCategorySlug('rosa-alba')).toBe('primaveral');
+    expect(normalizeCategorySlug('romance')).toBe('primaveral');
+  });
+
+  it('obtiene los nombres oficiales de marca Casa Aira para cualquier alias', () => {
+    expect(getCategoryName('veraniego')).toBe('Brisa & Calipso');
+    expect(getCategoryName('brisa-calipso')).toBe('Brisa & Calipso');
+    expect(getCategoryName('gotico')).toBe('Solsticio Dorado');
+    expect(getCategoryName('solsticio-dorado')).toBe('Solsticio Dorado');
+    expect(getCategoryName('primaveral')).toBe('Rosa de Alba');
+    expect(getCategoryName('rosa-alba')).toBe('Rosa de Alba');
+  });
+
+  it('garantiza que cada categoría tenga paleta de color y etiqueta', () => {
+    CASA_AIRA_CATEGORIES.forEach((cat) => {
+      expect(cat.id).toBeDefined();
+      expect(cat.name).toBeTruthy();
+      expect(cat.subtitle).toBeTruthy();
+      expect(cat.tag).toBeTruthy();
+      expect(cat.color).toBeTruthy();
+      expect(cat.badgeColor).toBeTruthy();
+    });
+  });
+});
+

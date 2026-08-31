@@ -10,12 +10,9 @@ import { MultiImageUpload } from '@/components/admin/MultiImageUpload';
 import { extractDominantColorsFromImage } from '@/lib/colorExtractor';
 
 const CATEGORIES = [
-    { id: 'brisa-calipso', label: 'Brisa & Calipso (Lino y Seda)', color: 'bg-calypso-600' },
-    { id: 'solsticio-dorado', label: 'Solsticio Dorado (Gala & Ocasión)', color: 'bg-gold-500' },
-    { id: 'rosa-alba', label: 'Rosa de Alba (Couture & Cocktail)', color: 'bg-rose-400' },
-    { id: 'gotico', label: 'Luna Nueva (Gótico)', color: 'bg-stone-900' },
-    { id: 'primaveral', label: 'Eclipse Floral (Primaveral)', color: 'bg-rose-500' },
-    { id: 'veraniego', label: 'Solsticio (Veraniego)', color: 'bg-amber-500' },
+    { id: 'veraniego', label: 'Brisa & Calipso (Verano & Playa)', color: 'bg-calypso-600' },
+    { id: 'gotico', label: 'Solsticio Dorado (Fiesta & Gala)', color: 'bg-gold-500' },
+    { id: 'primaveral', label: 'Rosa de Alba (Romance & Cóctel)', color: 'bg-rose-400' },
 ];
 
 const SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'];
