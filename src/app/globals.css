@@ -54,7 +54,7 @@
     @apply text-blush-600;
   }
 
-  /* Compatibilidad y Fallbacks */
+  /* Compatibilidad Casa Aira */
   .btn-calypso {
     @apply btn-couture-calypso;
   }
@@ -72,46 +72,6 @@
   }
 
   .card-aira {
-    @apply card-couture;
-  }
-
-  .btn-terra {
-    @apply btn-couture-primary;
-  }
-
-  .btn-ink {
-    @apply btn-couture-primary;
-  }
-
-  .btn-mystic {
-    @apply btn-couture-primary;
-  }
-
-  .btn-spring {
-    @apply btn-couture-calypso;
-  }
-
-  .btn-blood {
-    @apply btn-couture-primary;
-  }
-
-  .text-gradient-earth-lunar {
-    @apply text-[#181716];
-  }
-
-  .text-gradient-lunar {
-    @apply text-[#181716];
-  }
-
-  .text-gradient-stardust {
-    @apply text-gold-600;
-  }
-
-  .text-gradient-moonrose {
-    @apply text-blush-600;
-  }
-
-  .card-raw {
     @apply card-couture;
   }
 }

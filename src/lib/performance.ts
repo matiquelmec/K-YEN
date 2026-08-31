@@ -133,7 +133,7 @@ export const optimizeBundle = {
   preloadCritical: () => {
     // Preload critical route chunks
     import('@/components/ProductCard');
-    import('@/components/ui/KuyenLogo');
+    import('@/components/ui/CasaAiraLogo');
   },
 };
 

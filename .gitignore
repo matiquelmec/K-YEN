@@ -65,3 +65,7 @@ logs
 
 # Environment files
 .env.production
+
+# Local Databases
+*.db
+local.db
