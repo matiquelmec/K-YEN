@@ -85,7 +85,7 @@ export default function Footer() {
             className='lg:col-span-5 space-y-6'
           >
             <h4 className='text-[11px] uppercase tracking-[0.3em] font-semibold text-stone-300 mb-6'>
-              Club Exclusivo Casa Aira
+              Club Exclusivo <span className="font-serif italic font-normal text-gold-300">Casa Aira</span>
             </h4>
             <p className='text-stone-400 text-xs font-light leading-relaxed'>
               Recibe avisos exclusivos de prelanzamiento de nuevas selecciones y atenciones personalizadas.
@@ -164,10 +164,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className='border-t border-stone-800/80 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.25em] text-stone-500 font-light'>
-          <div>
-            © {currentYear} Casa Aira Atelier. Todos los derechos reservados.
-          </div>
+        <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-500 text-xs font-light">
+          <p className="tracking-wide">
+            © {currentYear} <span className="font-serif font-medium text-stone-300">Casa Aira</span> Boutique. Todos los derechos reservados.
+          </p>
 
           <div className='flex items-center gap-8'>
             <Link href='/politicas?tab=privacidad' className='hover:text-white transition-colors'>

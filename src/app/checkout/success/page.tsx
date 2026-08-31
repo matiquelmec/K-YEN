@@ -126,7 +126,7 @@ function SuccessContent() {
                 </div>
             ) : (
                 <p className="text-xs text-stone-600 font-light leading-relaxed">
-                    Muchas gracias por elegir Casa Aira. Cuidamos cada detalle de empaque, aroma y presentación para que disfrutes tu vestido al recibirlo.
+                    Muchas gracias por elegir <span className="font-serif font-medium text-[#181716]">Casa Aira</span>. Cuidamos cada detalle de empaque, aroma y presentación para que disfrutes tu vestido al recibirlo.
                 </p>
             )}
 

@@ -67,7 +67,7 @@ export default function ProductCarousel() {
         >
           <Link href='/catalogo' className='inline-block'>
             <button className='btn-couture-primary px-10 py-4'>
-              <span>Ver Todo el Catálogo Casa Aira</span>
+              <span>Ver Todo el Catálogo <span className="font-serif italic font-normal">Casa Aira</span></span>
               <span className='ml-2'>→</span>
             </button>
           </Link>

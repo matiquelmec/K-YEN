@@ -91,7 +91,7 @@ function PoliticasContent() {
                                         Política de Privacidad
                                     </h2>
                                     <p className="text-sm text-stone-600 leading-relaxed font-light">
-                                        En **Casa Aira** cuidamos y respetamos tu información personal. En cumplimiento con la legislación chilena (Ley Nº 19.628 sobre protección de la vida privada), te explicamos de forma transparente cómo tratamos tus datos:
+                                        En <strong className="font-serif font-semibold text-stone-900">Casa Aira</strong> cuidamos y respetamos tu información personal. En cumplimiento con la legislación chilena (Ley Nº 19.628 sobre protección de la vida privada), te explicamos de forma transparente cómo tratamos tus datos:
                                     </p>
                                     <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">1. Recolección de Información</h3>
                                     <p className="text-sm text-stone-600 leading-relaxed font-light">
@@ -104,7 +104,7 @@ function PoliticasContent() {
                                     <ul className="list-disc pl-5 text-sm text-stone-600 space-y-1.5 font-light">
                                         <li>Procesar tu compra y coordinar el despacho a tu domicilio o sucursal.</li>
                                         <li>Enviarte el número de seguimiento de Starken o Chilexpress por WhatsApp o email.</li>
-                                        <li>Informarte de nuevas llegadas o promociones del Club Casa Aira si te has suscrito.</li>
+                                        <li>Informarte de nuevas llegadas o promociones del <span className="font-serif italic font-normal text-stone-800">Club Casa Aira</span> si te has suscrito.</li>
                                     </ul>
                                     <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">3. Envíos y Terceros</h3>
                                     <p className="text-sm text-stone-600 leading-relaxed font-light">
@@ -130,7 +130,7 @@ function PoliticasContent() {
                                         Términos y Condiciones
                                     </h2>
                                     <p className="text-sm text-stone-600 leading-relaxed font-light">
-                                        Bienvenida a **Casa Aira Boutique**. Al comprar en nuestra tienda en línea, aceptas las siguientes condiciones sencillas:
+                                        Bienvenida a <strong className="font-serif font-semibold text-stone-900">Casa Aira Boutique</strong>. Al comprar en nuestra tienda en línea, aceptas las siguientes condiciones sencillas:
                                     </p>
                                     <h3 className="text-sm font-semibold uppercase tracking-wider text-stone-900 mt-5">1. Disponibilidad y Stock</h3>
                                     <p className="text-sm text-stone-600 leading-relaxed font-light">

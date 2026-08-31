@@ -33,8 +33,8 @@ export default function BrandManifesto() {
               <span className="italic text-calypso-700">elegimos cada vestido pensando en ti.</span>
             </h2>
 
-            <p className="text-stone-600 text-base sm:text-lg font-light leading-relaxed">
-              En Casa Aira buscamos, tocamos y probamos vestidos de distintos talleres para traerte solo lo mejor: telas suaves, caídas hermosas y calce favorecedor desde la talla XS hasta la 6XL. Hacemos el trabajo de selección por ti para que solo te preocupes de lucir increíble.
+            <p className="text-stone-600 text-sm sm:text-base font-light leading-relaxed">
+              En <span className="font-serif font-medium text-[#181716]">Casa Aira</span> buscamos, tocamos y probamos vestidos de distintos talleres para traerte solo lo mejor: telas suaves, caídas hermosas y calce favorecedor desde la talla XS hasta la 6XL. Hacemos el trabajo de selección por ti para que solo te preocupes de lucir increíble.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-6 border-t border-stone-300/60">
