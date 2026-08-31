@@ -102,53 +102,28 @@
   }
 }
 
-/* Scrollbar personalizado */
+/* Scrollbar personalizado Casa Aira - Calipso Egeo de Alta Costura */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #1D707F #FAF8F5;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-ink-900;
+  background: #FAF8F5;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gradient-to-b from-terra-600 to-mystic-500 rounded-full;
+  background: #1D707F;
+  border-radius: 9999px;
+  border: 1.5px solid #FAF8F5;
+  transition: background-color 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply from-terra-700 to-mystic-600;
-}
-
-/* Efectos especiales para tallas grandes - Elegancia Cruda */
-.plus-size-highlight {
-  @apply ring-2 ring-blood-400 bg-gradient-to-r from-bone-50 to-terra-50;
-}
-
-/* Animaciones para elementos expresivos/crudos */
-.raw-hover {
-  @apply transition-all duration-500 hover:transform hover:scale-110 hover:rotate-1;
-}
-
-/* Backward compatibility */
-.moonrose-hover {
-  @apply raw-hover;
-}
-
-/* Efectos de tierra y alquimia */
-.alchemical-texture {
-  background-image:
-    radial-gradient(circle at 20% 50%,
-      rgba(198, 128, 71, 0.2) 0%,
-      transparent 50%),
-    radial-gradient(circle at 80% 20%,
-      rgba(168, 85, 247, 0.15) 0%,
-      transparent 50%),
-    radial-gradient(circle at 40% 80%,
-      rgba(10, 10, 10, 0.3) 0%,
-      transparent 50%);
-}
-
-/* Backward compatibility */
-.lunar-texture {
-  @apply alchemical-texture;
+  background: #134E5A;
 }
