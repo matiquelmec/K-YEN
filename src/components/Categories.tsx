@@ -1,47 +1,32 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-
-const chapters = [
-  {
-    id: 'veraniego',
-    number: '01',
-    title: 'Brisa & Calipso',
-    subtitle: 'LÍNEA VERANO & PLAYA',
-    image: '/brand/chapter-brisa-calipso.webp',
-    description:
-      'Linos frescos, cortes sueltos y tonos calipso inspirados en el mar. Vestidos cómodos y livianos para disfrutar los días de sol y calor.',
-    accentColor: 'text-calypso-700',
-    tag: 'Verano & Playa',
-  },
-  {
-    id: 'gotico',
-    number: '02',
-    title: 'Solsticio Dorado',
-    subtitle: 'LÍNEA FIESTA & GALA',
-    image: '/brand/chapter-solsticio-dorado.webp',
-    description:
-      'Destellos en oro champagne, elegancia y calce perfecto. Siluetas elegidas para matrimonios, graduaciones y celebraciones especiales.',
-    accentColor: 'text-gold-700',
-    tag: 'Fiesta & Gala',
-  },
-  {
-    id: 'primaveral',
-    number: '03',
-    title: 'Rosa de Alba',
-    subtitle: 'LÍNEA ROMANCE & CÓCTEL',
-    image: '/brand/chapter-rosa-alba.webp',
-    description:
-      'Tonos rosa empolvado, telas suaves y caídas fluidas. Vestidos femeninos y versátiles ideales para salidas, cenas y eventos de día o tarde.',
-    accentColor: 'text-blush-700',
-    tag: 'Romance & Cóctel',
-  },
-];
+import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/lib/db/collections';
 
 export default function Categories() {
+  const [chapters, setChapters] = useState<CollectionItem[]>(DEFAULT_COLLECTIONS);
+
+  useEffect(() => {
+    async function loadDynamicCollections() {
+      try {
+        const res = await fetch('/api/collections');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.collections && data.collections.length > 0) {
+            setChapters(data.collections);
+          }
+        }
+      } catch (err) {
+        console.warn('Usando colecciones por defecto:', err);
+      }
+    }
+
+    loadDynamicCollections();
+  }, []);
   return (
     <section id='categories' className='py-24 sm:py-32 px-4 sm:px-6 bg-[#FAF8F5] relative'>
       <div className='max-w-7xl mx-auto'>

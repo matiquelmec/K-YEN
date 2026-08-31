@@ -13,7 +13,8 @@ import {
     Package,
     Tag,
     Bell,
-    ExternalLink
+    ExternalLink,
+    Sparkles
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 
@@ -48,6 +49,7 @@ export default function AdminLayout({
     const navItems = [
         { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { name: 'Catálogo & Vestidos', href: '/admin/products', icon: Package },
+        { name: 'Colecciones Portada', href: '/admin/collections', icon: Sparkles },
         { name: 'Pedidos Boutique', href: '/admin/orders', icon: ShoppingBag },
         { name: 'Cupones & Cortesías', href: '/admin/coupons', icon: Tag },
         { name: 'Club Casa Aira', href: '/admin/subscribers', icon: Users },
