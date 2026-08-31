@@ -45,13 +45,14 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value: [
-              "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://sdk.mercadopago.com https://http2.mlstatic.com",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: https: res.cloudinary.com images.unsplash.com https://http2.mlstatic.com",
-              "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https: wss: *.turso.io https://api.mercadopago.com",
-              "frame-src 'self' https://sdk.mercadopago.com https://www.mercadopago.cl",
+              "default-src 'self' https://*.vercel.app",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://sdk.mercadopago.com https://http2.mlstatic.com https://*.vercel.app https://vercel.live",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.vercel.app https://vercel.live",
+              "img-src 'self' data: blob: https: res.cloudinary.com images.unsplash.com https://http2.mlstatic.com https://*.vercel.app",
+              "font-src 'self' data: https://fonts.gstatic.com https://*.vercel.app https://vercel.live",
+              "connect-src 'self' https: wss: *.turso.io https://api.mercadopago.com https://*.vercel.app https://vercel.live https://vercel.com",
+              "frame-src 'self' https://sdk.mercadopago.com https://www.mercadopago.cl https://*.vercel.app https://vercel.live",
+              "manifest-src 'self' https: https://*.vercel.app https://vercel.com blob: data:",
               "object-src 'none'",
               "base-uri 'self'"
             ].join('; ')

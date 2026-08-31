@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/lib/db/collections';
+import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/types/collections';
 
 describe('Collections Database & Module Quality Tests', () => {
   it('contiene exactamente las 3 colecciones por defecto de Casa Aira', () => {

@@ -16,7 +16,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { compressImage } from '@/lib/imageUtils';
-import type { CollectionItem } from '@/lib/db/collections';
+import type { CollectionItem } from '@/types/collections';
 
 export default function AdminCollectionsPage() {
   const [collections, setCollections] = useState<CollectionItem[]>([]);

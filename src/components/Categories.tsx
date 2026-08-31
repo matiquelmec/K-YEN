@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/lib/db/collections';
+import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/types/collections';
 
 export default function Categories() {
   const [chapters, setChapters] = useState<CollectionItem[]>(DEFAULT_COLLECTIONS);

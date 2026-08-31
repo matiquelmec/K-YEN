@@ -71,3 +71,6 @@ export interface Order {
   created_at: string;
   is_guest: boolean;
 }
+
+export * from './collections';
+

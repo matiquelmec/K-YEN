@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Tag, Users, TrendingUp, Plus, Trash2, Edit, CheckCircle2, XCircle, Search, DollarSign } from 'lucide-react';
-import { CouponRow } from '@/lib/db/coupons';
+import type { CouponRow } from '@/lib/db/coupons';
 
 export default function AdminCouponsPage() {
   const [coupons, setCoupons] = useState<CouponRow[]>([]);
