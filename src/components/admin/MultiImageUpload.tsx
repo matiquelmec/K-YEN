@@ -127,15 +127,15 @@ export function MultiImageUpload({
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 <div>
-                    <span className="text-sm font-bold text-gray-700">Fotos del Producto ({images.length}/{maxImages})</span>
-                    <p className="text-xs text-gray-400">La primera imagen será la portada principal del vestido.</p>
+                    <span className="text-sm font-bold text-stone-800">Fotos del Producto ({images.length}/{maxImages})</span>
+                    <p className="text-xs text-stone-500">La primera imagen será la portada principal del vestido.</p>
                 </div>
                 {images.length < maxImages && (
                     <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={disabled || uploading}
-                        className="px-4 py-2 bg-earth-800 text-white rounded-xl text-xs font-bold hover:bg-earth-900 transition-colors flex items-center gap-2 disabled:opacity-50"
+                        className="px-4 py-2 bg-[#181716] text-white rounded-xl text-xs font-semibold hover:bg-stone-800 transition-colors flex items-center gap-2 disabled:opacity-50"
                     >
                         {uploading ? (
                             <>
@@ -162,13 +162,12 @@ export function MultiImageUpload({
                 disabled={disabled || uploading}
             />
 
-            {/* Grid de imágenes */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 {images.map((url, idx) => (
                     <div
                         key={idx}
                         className={`relative aspect-[3/4] rounded-2xl overflow-hidden group ring-2 transition-all shadow-sm ${
-                            idx === 0 ? 'ring-earth-600 shadow-md' : 'ring-gray-100 hover:ring-earth-300'
+                            idx === 0 ? 'ring-calypso-700 shadow-md' : 'ring-stone-200 hover:ring-calypso-400'
                         }`}
                     >
                         <img
@@ -177,9 +176,8 @@ export function MultiImageUpload({
                             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
 
-                        {/* Badge de Portada */}
                         {idx === 0 && (
-                            <div className="absolute top-2 left-2 bg-earth-800/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                            <div className="absolute top-2 left-2 bg-[#181716]/90 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
                                 <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                                 Portada
                             </div>
@@ -214,7 +212,7 @@ export function MultiImageUpload({
                                     type="button"
                                     disabled={idx === 0}
                                     onClick={() => handleMove(idx, 'left')}
-                                    className="p-1.5 bg-white/90 hover:bg-white text-gray-800 rounded-lg disabled:opacity-30 transition-colors shadow-md"
+                                    className="p-1.5 bg-white/90 hover:bg-white text-stone-800 rounded-lg disabled:opacity-30 transition-colors shadow-md"
                                     title="Mover a la izquierda"
                                 >
                                     <ArrowLeft className="w-3.5 h-3.5" />
@@ -224,7 +222,7 @@ export function MultiImageUpload({
                                     type="button"
                                     disabled={idx === images.length - 1}
                                     onClick={() => handleMove(idx, 'right')}
-                                    className="p-1.5 bg-white/90 hover:bg-white text-gray-800 rounded-lg disabled:opacity-30 transition-colors shadow-md"
+                                    className="p-1.5 bg-white/90 hover:bg-white text-stone-800 rounded-lg disabled:opacity-30 transition-colors shadow-md"
                                     title="Mover a la derecha"
                                 >
                                     <ArrowRight className="w-3.5 h-3.5" />
@@ -234,27 +232,26 @@ export function MultiImageUpload({
                     </div>
                 ))}
 
-                {/* Botón para añadir si está vacío o quedan slots */}
                 {images.length < maxImages && (
                     <div
                         onClick={() => !uploading && fileInputRef.current?.click()}
-                        className={`aspect-[3/4] border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-earth-500 hover:bg-earth-50/40 transition-all group ${
+                        className={`aspect-[3/4] border-2 border-dashed border-stone-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-calypso-500 hover:bg-stone-50 transition-all group ${
                             uploading ? 'pointer-events-none opacity-60' : ''
                         }`}
                     >
                         {uploading ? (
                             <div className="flex flex-col items-center gap-2 text-center p-4">
-                                <Loader2 className="w-8 h-8 text-earth-600 animate-spin" />
-                                <span className="text-xs font-bold text-earth-700">Subiendo fotos...</span>
-                                <span className="text-[10px] text-gray-400">({uploadProgress.current} de {uploadProgress.total})</span>
+                                <Loader2 className="w-8 h-8 text-calypso-700 animate-spin" />
+                                <span className="text-xs font-bold text-calypso-800">Subiendo fotos...</span>
+                                <span className="text-[10px] text-stone-500">({uploadProgress.current} de {uploadProgress.total})</span>
                             </div>
                         ) : (
                             <div className="flex flex-col items-center text-center p-4">
-                                <div className="w-10 h-10 bg-earth-50 rounded-xl flex items-center justify-center text-earth-600 group-hover:bg-earth-100 transition-colors mb-2">
+                                <div className="w-10 h-10 bg-stone-100 rounded-xl flex items-center justify-center text-calypso-700 group-hover:bg-calypso-50 transition-colors mb-2">
                                     <ImageIcon className="w-5 h-5" />
                                 </div>
-                                <span className="text-xs font-bold text-gray-700 group-hover:text-earth-800">Añadir Fotos</span>
-                                <span className="text-[10px] text-gray-400 mt-1">Selecciona 1 o varias</span>
+                                <span className="text-xs font-bold text-stone-800 group-hover:text-calypso-800">Añadir Fotos</span>
+                                <span className="text-[10px] text-stone-500 mt-1">Selecciona 1 o varias</span>
                             </div>
                         )}
                     </div>

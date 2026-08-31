@@ -152,25 +152,26 @@ function CatalogoContent() {
                   <select
                     value={sortBy}
                     onChange={e => setSortBy(e.target.value as any)}
-                    className='flex-1 md:flex-none px-4 py-2 rounded-full border border-earth-300 bg-white text-earth-700 focus:outline-none focus:ring-2 focus:ring-sensual-400 text-sm'
+                    className='flex-1 md:flex-none px-4 py-2.5 border border-stone-300 bg-white text-stone-900 focus:outline-none focus:border-stone-900 text-xs uppercase tracking-wider font-medium'
                   >
-                    <option value='newest'>Nuevos</option>
-                    <option value='price_asc'>$-$$$</option>
-                    <option value='price_desc'>$$$-$</option>
-
+                    <option value='newest'>Novedades</option>
+                    <option value='price_asc'>Precio: Menor a Mayor</option>
+                    <option value='price_desc'>Precio: Mayor a Menor</option>
                   </select>
 
                   {/* View Mode */}
-                  <div className='hidden md:flex rounded-full border border-earth-300 bg-white overflow-hidden'>
+                  <div className='hidden md:flex border border-stone-300 bg-white overflow-hidden'>
                     <button
                       onClick={() => setViewMode('grid')}
-                      className={`p-2 ${viewMode === 'grid' ? 'bg-sensual-500 text-white' : 'text-earth-600'}`}
+                      className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-[#181716] text-white' : 'text-stone-500 hover:text-stone-900'}`}
+                      title="Vista en Cuadrícula"
                     >
                       <Grid className='w-4 h-4' />
                     </button>
                     <button
                       onClick={() => setViewMode('list')}
-                      className={`p-2 ${viewMode === 'list' ? 'bg-sensual-500 text-white' : 'text-earth-600'}`}
+                      className={`p-2.5 transition-colors ${viewMode === 'list' ? 'bg-[#181716] text-white' : 'text-stone-500 hover:text-stone-900'}`}
+                      title="Vista en Lista"
                     >
                       <List className='w-4 h-4' />
                     </button>
@@ -179,10 +180,10 @@ function CatalogoContent() {
               </div>
 
               {/* Results count */}
-              <div className='mt-4 text-earth-600 text-sm text-center md:text-left'>
-                {loading ? 'Cargando...' : (
+              <div className='mt-4 text-stone-600 text-xs tracking-wider uppercase font-light text-center md:text-left'>
+                {loading ? 'Cargando selección...' : (
                   <>
-                    {filteredProducts.length} vestido{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
+                    {filteredProducts.length} diseño{filteredProducts.length !== 1 ? 's' : ''} disponible{filteredProducts.length !== 1 ? 's' : ''}
                   </>
                 )}
               </div>
@@ -211,8 +212,8 @@ function CatalogoContent() {
 
             {/* Error State */}
             {error && (
-              <div className='text-center py-8 text-red-400'>
-                Error al cargar productos. Por favor, intenta nuevamente.
+              <div className='text-center py-12 bg-white border border-rose-200 text-rose-700 p-6 text-sm font-light'>
+                Hubo un inconveniente al cargar los vestidos. Por favor, intenta recargar la página.
               </div>
             )}
 
@@ -220,7 +221,7 @@ function CatalogoContent() {
             {loading && (
               <div className='grid grid-cols-2 md:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6'>
                 {[...Array(6)].map((_, i) => (
-                  <div key={i} className='bg-white/10 rounded-xl h-64 md:h-96 animate-pulse' />
+                  <div key={i} className='bg-white border border-stone-200/60 h-72 md:h-96 animate-pulse' />
                 ))}
               </div>
             )}
@@ -254,16 +255,19 @@ function CatalogoContent() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className='text-center py-16'
+                className='text-center py-16 bg-white border border-stone-200 p-8 shadow-sm'
               >
-                <div className='w-24 h-24 rounded-full bg-gradient-to-br from-earth-400 to-sensual-400 flex items-center justify-center mx-auto mb-6 opacity-50'>
-                  <Search className='w-12 h-12 text-white' />
+                <div className='w-20 h-20 rounded-full bg-[#FAF8F5] border border-stone-200 flex items-center justify-center mx-auto mb-6 text-stone-400'>
+                  <Search className='w-8 h-8 stroke-[1.5]' />
                 </div>
-                <h3 className='font-display text-2xl font-bold text-earth-300 mb-4'>
-                  No encontramos vestidos
+                <h3
+                  className='font-serif text-2xl text-[#181716] font-normal mb-3'
+                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                >
+                  No encontramos vestidos con ese criterio
                 </h3>
-                <p className='text-earth-400 mb-6'>
-                  Intenta ajustar tus filtros o buscar con otros términos
+                <p className='text-stone-500 text-sm font-light mb-8 max-w-sm mx-auto leading-relaxed'>
+                  Intenta ajustar tus filtros o buscar con otros términos para explorar nuestra colección.
                 </p>
                 <button
                   onClick={() => {
@@ -272,7 +276,7 @@ function CatalogoContent() {
                     setSelectedSizes([]);
                     setShowPlusSize(false);
                   }}
-                  className='btn-earth'
+                  className='btn-couture-primary'
                 >
                   Limpiar Filtros
                 </button>
@@ -287,7 +291,7 @@ function CatalogoContent() {
 
 export default function CatalogoPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-earth-900 flex items-center justify-center text-white">Cargando catálogo...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center text-stone-600 font-serif text-lg">Cargando catálogo Casa Aira...</div>}>
       <CatalogoContent />
     </Suspense>
   );
