@@ -1,5 +1,5 @@
-﻿/**
- * 🛡️ Env Validator - Tienda KÜYEN
+/**
+ * 🛡️ Env Validator - Casa Aira Boutique
  * 
  * Valida que todas las variables de entorno críticas estén presentes.
  * En build/producción emite advertencias para no romper la compilación estática si aún no se configuran las variables en el hosting.
@@ -19,8 +19,14 @@ export function validateEnv(): boolean {
   const missingVars = REQUIRED_ENV_VARS.filter((key) => !process.env[key]);
 
   if (missingVars.length > 0) {
-    const errorMsg = `❌ [ENV_VALIDATOR] Falta(n) variable(s) de entorno crítica(s): ${missingVars.join(', ')}`;
-    console.error(errorMsg);
+    const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build' || process.env.CI;
+    const msg = `⚠️ [ENV_VALIDATOR] Variable(s) pendientes de configurar en Vercel: ${missingVars.join(', ')}`;
+    
+    if (isBuildPhase) {
+      console.warn(msg);
+    } else {
+      console.warn(msg);
+    }
   }
 
   return true;
@@ -29,3 +35,4 @@ export function validateEnv(): boolean {
 if (typeof window === 'undefined') {
   validateEnv();
 }
+
