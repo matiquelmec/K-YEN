@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface CasaAiraLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
@@ -36,69 +37,51 @@ export default function CasaAiraLogo({
   };
 
   const iconSizes = {
-    sm: 'w-5 h-5',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
-    xl: 'w-12 h-12',
-    '2xl': 'w-16 h-16',
+    sm: 'w-6 h-6',
+    md: 'w-7 h-7 sm:w-8 sm:h-8',
+    lg: 'w-10 h-10',
+    xl: 'w-14 h-14',
+    '2xl': 'w-20 h-20',
   };
 
-  // Emblema Lineal Fino - Onda de Seda y Brisa
+  const pixelDimensions = {
+    sm: 28,
+    md: 36,
+    lg: 48,
+    xl: 64,
+    '2xl': 96,
+  };
+
+  // Isotipo Oficial Casa Aira
   const IconComponent = () => (
     <div className={`relative flex items-center justify-center ${iconSizes[size]} ${className}`}>
       {animated ? (
-        <motion.svg
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
+        <motion.div
+          className="relative w-full h-full flex items-center justify-center"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ scale: 1.06 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
         >
-          {/* Círculo sutil exterior */}
-          <circle
-            cx="20"
-            cy="20"
-            r="18.5"
-            stroke={isLight ? '#E5D8CE' : '#3A3735'}
-            strokeWidth="0.75"
+          <Image
+            src="/brand/casa-aira-isotipo.webp"
+            alt="Isotipo Casa Aira"
+            width={pixelDimensions[size]}
+            height={pixelDimensions[size]}
+            className="w-full h-full object-contain"
+            priority
           />
-          {/* Línea de brisa continua (Seda) */}
-          <motion.path
-            d="M10 21C13 14 17 14 20 20C23 26 27 26 30 19"
-            stroke={isLight ? '#1D707F' : '#93CAD3'}
-            strokeWidth="1.2"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 1.8, ease: 'easeInOut' }}
-          />
-          {/* Punto de luz dorado */}
-          <circle cx="20" cy="11.5" r="1.5" fill={isLight ? '#BFA15F' : '#D8C69C'} />
-        </motion.svg>
+        </motion.div>
       ) : (
-        <svg
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full"
-        >
-          <circle
-            cx="20"
-            cy="20"
-            r="18.5"
-            stroke={isLight ? '#E5D8CE' : '#3A3735'}
-            strokeWidth="0.75"
+        <div className="relative w-full h-full flex items-center justify-center">
+          <Image
+            src="/brand/casa-aira-isotipo.webp"
+            alt="Isotipo Casa Aira"
+            width={pixelDimensions[size]}
+            height={pixelDimensions[size]}
+            className="w-full h-full object-contain"
           />
-          <path
-            d="M10 21C13 14 17 14 20 20C23 26 27 26 30 19"
-            stroke={isLight ? '#1D707F' : '#93CAD3'}
-            strokeWidth="1.2"
-            strokeLinecap="round"
-          />
-          <circle cx="20" cy="11.5" r="1.5" fill={isLight ? '#BFA15F' : '#D8C69C'} />
-        </svg>
+        </div>
       )}
     </div>
   );
@@ -154,3 +137,4 @@ export default function CasaAiraLogo({
     </div>
   );
 }
+

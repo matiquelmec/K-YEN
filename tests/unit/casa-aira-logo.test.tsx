@@ -11,11 +11,12 @@ describe('CasaAiraLogo Component', () => {
     expect(screen.getByText('BOUTIQUE')).toBeDefined();
   });
 
-  it('renderiza la variante icon con accesibilidad y presencia de SVG', () => {
+  it('renderiza la variante icon con accesibilidad y presencia de imagen del isotipo', () => {
     const { container } = render(<CasaAiraLogo variant="icon" size="lg" theme="light" />);
     
-    const svg = container.querySelector('svg');
-    expect(svg).not.toBeNull();
+    const img = container.querySelector('img');
+    expect(img).not.toBeNull();
+    expect(img?.getAttribute('alt')).toBe('Isotipo Casa Aira');
   });
 
   it('renderiza la variante text con tipografía editorial Playfair', () => {
