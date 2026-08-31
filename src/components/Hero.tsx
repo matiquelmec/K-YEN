@@ -53,10 +53,10 @@ export default function Hero() {
             <span className='w-4 h-[1px] bg-gold-400' />
           </div>
 
-          {/* Emblema Sutil (Solo en Desktop) */}
-          <div className='hidden sm:flex justify-center'>
-            <div className='p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/20'>
-              <CasaAiraLogo size='md' variant='icon' theme='dark' animated={true} />
+          {/* Emblema Central Notorio */}
+          <div className='flex justify-center'>
+            <div className='p-2 sm:p-2.5 rounded-full bg-black/25 backdrop-blur-md border border-white/20 shadow-xl'>
+              <CasaAiraLogo size='lg' variant='icon' theme='dark' animated={true} />
             </div>
           </div>
 

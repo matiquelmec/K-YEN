@@ -37,19 +37,19 @@ export default function CasaAiraLogo({
   };
 
   const iconSizes = {
-    sm: 'w-6 h-6',
-    md: 'w-7 h-7 sm:w-8 sm:h-8',
-    lg: 'w-10 h-10',
-    xl: 'w-14 h-14',
-    '2xl': 'w-20 h-20',
+    sm: 'w-8 h-8',
+    md: 'w-10 h-10 sm:w-12 sm:h-12',
+    lg: 'w-14 h-14 sm:w-16 sm:h-16',
+    xl: 'w-20 h-20 sm:w-24 sm:h-24',
+    '2xl': 'w-28 h-28 sm:w-36 sm:h-36',
   };
 
   const pixelDimensions = {
-    sm: 28,
-    md: 36,
-    lg: 48,
-    xl: 64,
-    '2xl': 96,
+    sm: 36,
+    md: 48,
+    lg: 64,
+    xl: 96,
+    '2xl': 144,
   };
 
   // Isotipo Oficial Casa Aira
