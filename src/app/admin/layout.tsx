@@ -15,7 +15,8 @@ import {
     Bell,
     ExternalLink,
     Sparkles,
-    HeartHandshake
+    HeartHandshake,
+    Gift
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 
@@ -52,6 +53,7 @@ export default function AdminLayout({
         { name: 'Catálogo & Vestidos', href: '/admin/products', icon: Package },
         { name: 'Colecciones Portada', href: '/admin/collections', icon: Sparkles },
         { name: 'Compromiso & Asesoría', href: '/admin/manifesto', icon: HeartHandshake },
+        { name: 'Experiencia de Empaque', href: '/admin/unboxing', icon: Gift },
         { name: 'Pedidos Boutique', href: '/admin/orders', icon: ShoppingBag },
         { name: 'Cupones & Cortesías', href: '/admin/coupons', icon: Tag },
         { name: 'Club Casa Aira', href: '/admin/subscribers', icon: Users },
