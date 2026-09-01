@@ -180,8 +180,15 @@ export default function OrderDetailPage() {
                         </h2>
                         <div className="space-y-4 text-xs">
                             <div>
-                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Nombre</span>
-                                <p className="font-medium text-[#181716]">{address.full_name}</p>
+                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Clienta / Destinataria</span>
+                                <p className="font-medium text-[#181716]">
+                                    {address.firstName || address.lastName ? `${address.firstName || ''} ${address.lastName || ''}`.trim() : (address.full_name || 'Clienta')}
+                                </p>
+                                {address.rut && (
+                                    <p className="text-[11px] font-mono text-stone-600 font-medium mt-0.5">
+                                        RUT: <span className="text-stone-900">{address.rut}</span>
+                                    </p>
+                                )}
                             </div>
                             <div>
                                 <label className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Contacto</label>
@@ -195,12 +202,16 @@ export default function OrderDetailPage() {
                                 )}
                             </div>
                             <div className="pt-3 border-t border-stone-100">
-                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Dirección de Despacho</span>
+                                <span className="block text-[10px] font-semibold text-stone-400 uppercase tracking-widest mb-1">Dirección de Despacho (Starken / Chilexpress)</span>
                                 <div className="flex items-start gap-2 text-stone-800">
                                     <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0 text-calypso-600" />
                                     <div>
-                                        <p className="font-medium">{address.address}</p>
-                                        <p className="text-stone-500 font-light">{address.city}, {address.postal_code}</p>
+                                        <p className="font-medium">
+                                            {address.address} {address.number ? `#${address.number}` : ''} {address.dept ? `(${address.dept})` : ''}
+                                        </p>
+                                        <p className="text-stone-500 font-light">
+                                            {address.commune ? `${address.commune}, ` : ''}{address.region || address.city || 'Chile'}
+                                        </p>
                                     </div>
                                 </div>
                             </div>

@@ -95,8 +95,7 @@ export default function CheckoutPage() {
                 throw new Error(checkoutData.error || 'Error al iniciar checkout');
             }
 
-            // 2. Éxito: Limpiar carrito y redirigir inmediatamente a Mercado Pago
-            clearCart();
+            // 2. Redirigir a Mercado Pago (el carrito se limpiará únicamente al confirmar en success)
             window.location.href = checkoutData.checkoutUrl;
 
         } catch (error: any) {

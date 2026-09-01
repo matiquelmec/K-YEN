@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { regionesYComunas } from '@/lib/chile-data';
-import { User, MapPin } from 'lucide-react';
+import { formatRut, validateRut } from '@/lib/rut-validator';
+import { User, MapPin, AlertCircle } from 'lucide-react';
 
 interface AddressFormProps {
     onSubmit: (_data: any) => void;
@@ -12,6 +13,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        rut: '',
         email: '',
         phone: '',
         region: '',
@@ -21,6 +23,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
         dept: '',
     });
 
+    const [rutError, setRutError] = useState<string | null>(null);
     const [availableCommunes, setAvailableCommunes] = useState<string[]>([]);
 
     useEffect(() => {
@@ -35,11 +38,31 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        
+        if (name === 'rut') {
+            const formatted = formatRut(value);
+            setFormData((prev) => ({ ...prev, rut: formatted }));
+            if (formatted.length >= 8) {
+                if (!validateRut(formatted)) {
+                    setRutError('RUT inválido. Verifica el número y dígito verificador.');
+                } else {
+                    setRutError(null);
+                }
+            } else {
+                setRutError(null);
+            }
+            return;
+        }
+
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        if (formData.rut && !validateRut(formData.rut)) {
+            setRutError('Por favor ingresa un RUT válido para el despacho.');
+            return;
+        }
         onSubmit(formData);
     };
 
@@ -55,7 +78,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                         className="text-lg sm:text-xl font-serif text-[#181716] font-normal"
                         style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
-                        1. Datos de Contacto
+                        1. Datos de Contacto & Destinatario
                     </h3>
                 </div>
 
@@ -93,6 +116,28 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                         />
                     </div>
                     <div className="md:col-span-2">
+                        <label htmlFor="rut" className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
+                            RUT del Destinatario (Requerido por Starken / Chilexpress) *
+                        </label>
+                        <input
+                            type="text"
+                            name="rut"
+                            id="rut"
+                            required
+                            placeholder="12.345.678-9"
+                            maxLength={12}
+                            className={`${inputClasses} ${rutError ? 'border-red-500 focus:border-red-500' : ''}`}
+                            value={formData.rut}
+                            onChange={handleChange}
+                        />
+                        {rutError && (
+                            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-light">
+                                <AlertCircle className="w-3.5 h-3.5" />
+                                <span>{rutError}</span>
+                            </p>
+                        )}
+                    </div>
+                    <div className="md:col-span-2">
                         <label htmlFor="email" className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
                             Correo Electrónico (para confirmación y boleta) *
                         </label>
@@ -110,7 +155,7 @@ export default function AddressForm({ onSubmit }: AddressFormProps) {
                     </div>
                     <div className="md:col-span-2">
                         <label htmlFor="phone" className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5">
-                            Teléfono / WhatsApp (para seguimiento de Starken/Chilexpress) *
+                            Teléfono / WhatsApp (para seguimiento del despacho) *
                         </label>
                         <input
                             type="tel"

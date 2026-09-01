@@ -7,6 +7,7 @@ import { CheckCircle2, ShoppingBag, MessageCircle, Loader2 } from 'lucide-react'
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import { APP_CONFIG } from '@/lib/config';
+import { useCart } from '@/hooks/useCart';
 
 interface OrderDetail {
   id: string;
@@ -30,8 +31,12 @@ function SuccessContent() {
   const orderId = searchParams.get('order_id');
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(Boolean(orderId));
+  const { clearCart } = useCart();
 
   useEffect(() => {
+    // Vaciar el carrito de forma segura al confirmar la compra
+    clearCart();
+
     if (!orderId) return;
 
     const fetchOrder = async () => {
