@@ -29,6 +29,7 @@ export default function AdminSettingsPage() {
   const [formData, setFormData] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [activeTab, setActiveTab] = useState<'contact' | 'social' | 'general'>('contact');
 
@@ -339,26 +340,145 @@ export default function AdminSettingsPage() {
                   className="text-xl font-serif text-[#181716] font-normal"
                   style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 >
-                  Información Institucional
+                  Información Institucional & Geográfica
                 </h2>
               </div>
 
-              <div>
-                <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5 flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-stone-600" />
-                  <span>Ubicación / Ciudad</span>
-                </label>
+              {/* Ubicación Inteligente */}
+              <div className="space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label className="text-[11px] uppercase tracking-wider font-semibold text-stone-700 flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-calypso-700" />
+                    <span>Ubicación / Ciudad de la Boutique</span>
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      setDetectingLocation(true);
+                      setStatusMessage(null);
+                      try {
+                        if ('geolocation' in navigator) {
+                          navigator.geolocation.getCurrentPosition(
+                            async (position) => {
+                              try {
+                                const { latitude, longitude } = position.coords;
+                                const geoRes = await fetch(
+                                  `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                                );
+                                if (geoRes.ok) {
+                                  const geoData = await geoRes.json();
+                                  const city =
+                                    geoData.address.city ||
+                                    geoData.address.town ||
+                                    geoData.address.village ||
+                                    geoData.address.state_district ||
+                                    'Punta Arenas';
+                                  const state = geoData.address.state || 'Magallanes';
+                                  const formatted = `${city} • ${state}, Chile`;
+                                  setFormData((prev) => ({ ...prev, address: formatted }));
+                                  setStatusMessage({
+                                    type: 'success',
+                                    text: `📍 ¡Ubicación detectada con éxito!: ${formatted}`,
+                                  });
+                                } else {
+                                  setFormData((prev) => ({ ...prev, address: 'Punta Arenas • Magallanes, Chile' }));
+                                }
+                              } catch {
+                                setFormData((prev) => ({ ...prev, address: 'Punta Arenas • Magallanes, Chile' }));
+                              } finally {
+                                setDetectingLocation(false);
+                              }
+                            },
+                            () => {
+                              // Fallback directo por IP o default chileno
+                              setFormData((prev) => ({ ...prev, address: 'Punta Arenas • Magallanes, Chile' }));
+                              setStatusMessage({
+                                type: 'success',
+                                text: '📍 Ubicación establecida por defecto: Punta Arenas • Magallanes, Chile',
+                              });
+                              setDetectingLocation(false);
+                            },
+                            { timeout: 8000 }
+                          );
+                        } else {
+                          setFormData((prev) => ({ ...prev, address: 'Punta Arenas • Magallanes, Chile' }));
+                          setDetectingLocation(false);
+                        }
+                      } catch {
+                        setFormData((prev) => ({ ...prev, address: 'Punta Arenas • Magallanes, Chile' }));
+                        setDetectingLocation(false);
+                      }
+                    }}
+                    disabled={detectingLocation}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-calypso-50 border border-calypso-200 text-calypso-800 hover:bg-calypso-100 text-[10px] uppercase tracking-wider font-semibold transition-colors disabled:opacity-50 self-start sm:self-auto"
+                  >
+                    {detectingLocation ? (
+                      <Loader2 className="w-3 h-3 animate-spin text-calypso-700" />
+                    ) : (
+                      <MapPin className="w-3 h-3 text-calypso-700" />
+                    )}
+                    <span>{detectingLocation ? 'Detectando GPS...' : '📍 Auto-Detectar Mi Ubicación'}</span>
+                  </button>
+                </div>
+
                 <input
                   type="text"
                   name="address"
+                  list="chilean-locations"
                   value={formData.address || ''}
                   onChange={handleInputChange}
-                  className="w-full bg-[#FAF8F5] border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:border-stone-900 outline-none"
-                  placeholder="ej: Santiago & Punta Arenas, Chile"
+                  className="w-full bg-[#FAF8F5] border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:border-stone-900 outline-none font-light"
+                  placeholder="ej: Punta Arenas • Magallanes, Chile"
                 />
+
+                <datalist id="chilean-locations">
+                  <option value="Punta Arenas • Región de Magallanes, Chile" />
+                  <option value="Santiago • Región Metropolitana, Chile" />
+                  <option value="Viña del Mar & Valparaíso • Chile" />
+                  <option value="Concepción • Región del Biobío, Chile" />
+                  <option value="La Serena & Coquimbo • Chile" />
+                  <option value="Antofagasta • Chile" />
+                  <option value="Puerto Montt & Chiloé • Región de Los Lagos, Chile" />
+                  <option value="Temuco • Región de La Araucanía, Chile" />
+                  <option value="Iquique • Región de Tarapacá, Chile" />
+                  <option value="Arica • Región de Arica y Parinacota, Chile" />
+                  <option value="Coyhaique • Región de Aysén, Chile" />
+                </datalist>
+
+                {/* Presets Inteligentes de 1 Clic */}
+                <div className="space-y-1.5 pt-1">
+                  <span className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold block">
+                    ✨ Presets Editoriales Rápidos (1 Clic):
+                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      'Punta Arenas • Magallanes, Chile',
+                      'Atelier en Punta Arenas • Envíos a todo Chile',
+                      'Santiago & Punta Arenas • Chile',
+                      'Boutique Online • Cobertura Nacional en Chile',
+                      'Viña del Mar & Valparaíso • Chile',
+                      'Concepción & Biobío • Chile',
+                    ].map((preset, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, address: preset }))}
+                        className={`text-[10px] px-2.5 py-1 border transition-all ${
+                          formData.address === preset
+                            ? 'bg-[#181716] text-white border-[#181716]'
+                            : 'bg-white text-stone-700 border-stone-200 hover:border-calypso-500 hover:text-calypso-700'
+                        }`}
+                      >
+                        {preset}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div>
+              {/* Anuncios */}
+              <div className="pt-4 border-t border-stone-100">
                 <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5 flex items-center gap-1.5">
                   <Megaphone className="w-3.5 h-3.5 text-gold-600" />
                   <span>Texto de Envíos y Avisos</span>
