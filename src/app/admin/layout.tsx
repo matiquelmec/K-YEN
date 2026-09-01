@@ -16,7 +16,8 @@ import {
     ExternalLink,
     Sparkles,
     HeartHandshake,
-    Gift
+    Gift,
+    Sliders
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 
@@ -57,6 +58,7 @@ export default function AdminLayout({
         { name: 'Pedidos Boutique', href: '/admin/orders', icon: ShoppingBag },
         { name: 'Cupones & Cortesías', href: '/admin/coupons', icon: Tag },
         { name: 'Club Casa Aira', href: '/admin/subscribers', icon: Users },
+        { name: 'Ajustes & Redes', href: '/admin/settings', icon: Sliders },
     ];
 
     return (

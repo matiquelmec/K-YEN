@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -7,7 +8,7 @@ import {
   Facebook,
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
-import { APP_CONFIG } from '@/lib/config';
+import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
 
 const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -17,6 +18,28 @@ const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [settings, setSettings] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
+
+  useEffect(() => {
+    let isMounted = true;
+    async function loadSettings() {
+      try {
+        const res = await fetch('/api/settings', { next: { revalidate: 60 } } as any);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.settings && isMounted) {
+            setSettings(json.settings);
+          }
+        }
+      } catch (err) {
+        console.warn('Usando ajustes de tienda por defecto:', err);
+      }
+    }
+    loadSettings();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <footer className='relative py-20 sm:py-28 px-4 sm:px-6 bg-[#181716] text-[#FAF8F5] border-t border-stone-800'>
@@ -140,19 +163,21 @@ export default function Footer() {
             {/* Redes y Contacto */}
             <div className='pt-6 border-t border-stone-800/80 flex items-center justify-between'>
               <div className='flex items-center gap-4 text-xs text-stone-400'>
-                <a href={`mailto:${APP_CONFIG.contact.email}`} className='hover:text-white transition-colors'>
-                  {APP_CONFIG.contact.email}
+                <a href={`mailto:${settings.contact_email}`} className='hover:text-white transition-colors'>
+                  {settings.contact_email}
                 </a>
               </div>
               <div className='flex gap-3'>
                 {[
-                  { icon: Instagram, href: APP_CONFIG.social.instagram },
-                  { icon: Facebook, href: APP_CONFIG.social.facebook },
-                  { icon: TiktokIcon, href: APP_CONFIG.social.tiktok },
+                  { icon: Instagram, href: settings.instagram_url },
+                  { icon: Facebook, href: settings.facebook_url },
+                  { icon: TiktokIcon, href: settings.tiktok_url },
                 ].map((social, index) => (
                   <a
                     key={index}
                     href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className='w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors'
                   >
                     <social.icon className='w-3.5 h-3.5' />
