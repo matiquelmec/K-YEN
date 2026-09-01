@@ -73,4 +73,6 @@ export interface Order {
 }
 
 export * from './collections';
+export * from './manifesto';
+
 
