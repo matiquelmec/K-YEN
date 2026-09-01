@@ -96,13 +96,18 @@ export async function dbUpdateOrderPayment(id: string, paymentId: string, paymen
   }
 }
 
-export async function dbConfirmOrderPaymentAndDeductStock(paymentId: string, paymentStatus: string, orderStatus: string): Promise<boolean> {
+export async function dbConfirmOrderPaymentAndDeductStock(
+  orderIdentifier: string,
+  paymentStatus: string,
+  orderStatus: string,
+  mpTransactionId?: string
+): Promise<boolean> {
   const updated_at = new Date().toISOString();
   
-  // Buscar orden por payment_id (o external_reference)
+  // Buscar orden por payment_id, id o order_number (estándar JoyasJP)
   const result = await turso.execute({
-    sql: 'SELECT * FROM orders WHERE payment_id = ? OR id = ? LIMIT 1',
-    args: [paymentId, paymentId]
+    sql: 'SELECT * FROM orders WHERE payment_id = ? OR id = ? OR order_number = ? LIMIT 1',
+    args: [orderIdentifier, orderIdentifier, orderIdentifier]
   });
 
   if (result.rows.length === 0) return false;
@@ -111,20 +116,21 @@ export async function dbConfirmOrderPaymentAndDeductStock(paymentId: string, pay
   const shippingAddress: any = row.shipping_address ? JSON.parse(String(row.shipping_address)) : {};
   const currentStatus = String(row.status);
   const couponCode = row.coupon_code || shippingAddress.coupon_code;
+  const finalPaymentId = mpTransactionId || row.payment_id || orderIdentifier;
 
-  // Si ya fue marcada como 'paid', evitamos doble descuento de stock (idempotencia)
+  // Si ya fue marcada como 'paid', evitamos doble descuento de stock (idempotencia y anti double-spending)
   if (currentStatus === 'paid') {
     await turso.execute({
-      sql: 'UPDATE orders SET payment_status = ?, updated_at = ? WHERE id = ?',
-      args: [paymentStatus, updated_at, String(row.id)]
+      sql: 'UPDATE orders SET payment_status = ?, payment_id = ?, updated_at = ? WHERE id = ?',
+      args: [paymentStatus, finalPaymentId, updated_at, String(row.id)]
     });
     return true;
   }
 
   const statements: any[] = [
     {
-      sql: 'UPDATE orders SET payment_status = ?, status = ?, updated_at = ? WHERE id = ?',
-      args: [paymentStatus, orderStatus, updated_at, String(row.id)]
+      sql: 'UPDATE orders SET payment_status = ?, status = ?, payment_id = ?, updated_at = ? WHERE id = ?',
+      args: [paymentStatus, orderStatus, finalPaymentId, updated_at, String(row.id)]
     }
   ];
 

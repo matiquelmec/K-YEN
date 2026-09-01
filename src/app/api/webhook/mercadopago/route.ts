@@ -37,21 +37,23 @@ export async function POST(req: NextRequest) {
         transaction_amount: payment.transaction_amount
       });
 
-      if (externalReference) {
+      if (externalReference || paymentId) {
         const orderStatus = status === 'approved' ? 'paid' : status === 'rejected' || status === 'cancelled' ? 'cancelled' : 'pending';
         const paymentStatusStr = String(status || 'pending');
+        const searchRef = String(externalReference || paymentId);
         
         // Actualización atómica en Turso y descuento de stock
         const updated = await dbConfirmOrderPaymentAndDeductStock(
-          String(externalReference),
+          searchRef,
           paymentStatusStr,
-          orderStatus
+          orderStatus,
+          String(paymentId)
         );
 
         if (updated) {
-          console.log(`✅ Orden ${externalReference} actualizada a ${orderStatus} con stock descontado en Turso`);
+          console.log(`✅ Orden ${searchRef} actualizada a ${orderStatus} con stock descontado en Turso (MP ID: ${paymentId})`);
         } else {
-          console.warn(`⚠️ No se encontró la orden con external_reference: ${externalReference}`);
+          console.warn(`⚠️ No se encontró la orden con referencia: ${searchRef}`);
         }
       }
     }

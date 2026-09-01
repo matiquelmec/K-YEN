@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
         failure: `${siteUrl}/checkout/failure?order_id=${savedOrder.id}`,
         pending: `${siteUrl}/checkout/pending?order_id=${savedOrder.id}`,
       },
-      statement_descriptor: 'KÜYEN TIENDA',
+      statement_descriptor: 'CASA AIRA',
       external_reference: internalOrderId,
       notification_url: `${siteUrl}/api/webhook/mercadopago`,
       auto_return: 'approved',
