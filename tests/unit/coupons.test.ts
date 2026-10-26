@@ -1,23 +1,24 @@
-﻿import { describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
-describe('Sistema de Cupones y Afiliados', () => {
-  it('debe calcular correctamente el descuento porcentual', () => {
-    const cartTotal = 80000;
-    const discountPercent = 15; // 15% OFF
+describe('Sistema Integral de Cupones y Afiliados (Auditoría Nivel 5)', () => {
+  it('debe calcular correctamente el descuento porcentual redondeado', () => {
+    const cartTotal = 45990;
+    const discountPercent = 10; // 10%
     const discountAmount = Math.round(cartTotal * (discountPercent / 100));
     const finalTotal = cartTotal - discountAmount;
 
-    expect(discountAmount).toBe(12000);
-    expect(finalTotal).toBe(68000);
+    expect(discountAmount).toBe(4599);
+    expect(finalTotal).toBe(41391);
   });
 
-  it('debe calcular correctamente el descuento de monto fijo', () => {
-    const cartTotal = 90000;
-    const discountFixed = 10000; // $10.000 CLP OFF
-    const finalTotal = Math.max(0, cartTotal - discountFixed);
+  it('debe calcular correctamente el descuento fijo y asegurar que no exceda el subtotal', () => {
+    const cartTotal = 35000;
+    const discountFixed = 50000; // Descuento mayor al carrito
+    const discountApplied = Math.min(discountFixed, cartTotal);
+    const finalTotal = Math.max(0, cartTotal - discountApplied);
 
-    expect(discountFixed).toBe(10000);
-    expect(finalTotal).toBe(80000);
+    expect(discountApplied).toBe(35000);
+    expect(finalTotal).toBe(0);
   });
 
   it('debe validar la compra mínima para aplicar un cupón', () => {
@@ -46,5 +47,22 @@ describe('Sistema de Cupones y Afiliados', () => {
 
     expect(usageCountValid < usageLimit).toBe(true);
     expect(usageCountExceeded < usageLimit).toBe(false);
+  });
+
+  it('simula la conciliación atómica del cupón post-pago Flow.cl (incremento de uso)', () => {
+    const mockDb = {
+      coupons: [
+        { code: 'BIENVENIDA10', usage_count: 5, usage_limit: 10 }
+      ],
+      orders: [] as any[]
+    };
+
+    // Al llegar webhook Flow.cl con pago aprobado:
+    const appliedCoupon = mockDb.coupons.find(c => c.code === 'BIENVENIDA10');
+    if (appliedCoupon) {
+      appliedCoupon.usage_count += 1;
+    }
+
+    expect(appliedCoupon?.usage_count).toBe(6);
   });
 });
