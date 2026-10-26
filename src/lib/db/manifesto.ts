@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { DEFAULT_MANIFESTO, type ManifestoData, type PillarItem } from '@/types/manifesto';
+import { withTaggedCache, invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 export { DEFAULT_MANIFESTO, type ManifestoData, type PillarItem };
 
 let isManifestoTableInitialized = false;
@@ -73,50 +74,58 @@ export async function initManifestoTable(): Promise<void> {
 }
 
 /**
- * Obtiene la configuración actual del manifiesto y asesoría
+ * Obtiene la configuración actual del manifiesto y asesoría.
+ * Acelerado con caché híbrido y tag CACHE_TAGS.MANIFESTO.
  */
 export async function getManifestoSettings(): Promise<ManifestoData> {
-  try {
-    await initManifestoTable();
+  return await withTaggedCache(
+    'manifesto:main',
+    CACHE_TAGS.MANIFESTO,
+    async () => {
+      try {
+        await initManifestoTable();
 
-    const res = await turso.execute("SELECT * FROM manifesto_settings WHERE id = 'main' LIMIT 1");
+        const res = await turso.execute("SELECT * FROM manifesto_settings WHERE id = 'main' LIMIT 1");
 
-    if (res.rows.length === 0) {
-      return DEFAULT_MANIFESTO;
-    }
+        if (res.rows.length === 0) {
+          return DEFAULT_MANIFESTO;
+        }
 
-    const row = res.rows[0] as any;
-    let pillars: PillarItem[] = DEFAULT_MANIFESTO.pillars;
+        const row = res.rows[0] as any;
+        let pillars: PillarItem[] = DEFAULT_MANIFESTO.pillars;
 
-    try {
-      if (row.pillars_json) {
-        pillars = JSON.parse(String(row.pillars_json));
+        try {
+          if (row.pillars_json) {
+            pillars = JSON.parse(String(row.pillars_json));
+          }
+        } catch (parseErr) {
+          console.warn('Error parsing pillars_json, using default:', parseErr);
+        }
+
+        return {
+          badge: String(row.badge || DEFAULT_MANIFESTO.badge),
+          title_primary: String(row.title_primary || DEFAULT_MANIFESTO.title_primary),
+          title_highlight: String(row.title_highlight || DEFAULT_MANIFESTO.title_highlight),
+          description: String(row.description || DEFAULT_MANIFESTO.description),
+          pillars,
+          card_image: String(row.card_image || DEFAULT_MANIFESTO.card_image),
+          card_badge: String(row.card_badge || DEFAULT_MANIFESTO.card_badge),
+          card_subtitle: String(row.card_subtitle || DEFAULT_MANIFESTO.card_subtitle),
+          card_title: String(row.card_title || DEFAULT_MANIFESTO.card_title),
+          card_description: String(row.card_description || DEFAULT_MANIFESTO.card_description),
+          catalog_button_text: String(row.catalog_button_text || DEFAULT_MANIFESTO.catalog_button_text),
+          catalog_button_link: String(row.catalog_button_link || DEFAULT_MANIFESTO.catalog_button_link),
+          whatsapp_number: String(row.whatsapp_number || DEFAULT_MANIFESTO.whatsapp_number),
+          whatsapp_message: String(row.whatsapp_message || DEFAULT_MANIFESTO.whatsapp_message),
+          updated_at: row.updated_at ? String(row.updated_at) : undefined,
+        };
+      } catch (error) {
+        console.warn('Fallback a manifiesto por defecto debido a error en base de datos:', error);
+        return DEFAULT_MANIFESTO;
       }
-    } catch (parseErr) {
-      console.warn('Error parsing pillars_json, using default:', parseErr);
-    }
-
-    return {
-      badge: String(row.badge || DEFAULT_MANIFESTO.badge),
-      title_primary: String(row.title_primary || DEFAULT_MANIFESTO.title_primary),
-      title_highlight: String(row.title_highlight || DEFAULT_MANIFESTO.title_highlight),
-      description: String(row.description || DEFAULT_MANIFESTO.description),
-      pillars,
-      card_image: String(row.card_image || DEFAULT_MANIFESTO.card_image),
-      card_badge: String(row.card_badge || DEFAULT_MANIFESTO.card_badge),
-      card_subtitle: String(row.card_subtitle || DEFAULT_MANIFESTO.card_subtitle),
-      card_title: String(row.card_title || DEFAULT_MANIFESTO.card_title),
-      card_description: String(row.card_description || DEFAULT_MANIFESTO.card_description),
-      catalog_button_text: String(row.catalog_button_text || DEFAULT_MANIFESTO.catalog_button_text),
-      catalog_button_link: String(row.catalog_button_link || DEFAULT_MANIFESTO.catalog_button_link),
-      whatsapp_number: String(row.whatsapp_number || DEFAULT_MANIFESTO.whatsapp_number),
-      whatsapp_message: String(row.whatsapp_message || DEFAULT_MANIFESTO.whatsapp_message),
-      updated_at: row.updated_at ? String(row.updated_at) : undefined,
-    };
-  } catch (error) {
-    console.warn('Fallback a manifiesto por defecto debido a error en base de datos:', error);
-    return DEFAULT_MANIFESTO;
-  }
+    },
+    3600
+  );
 }
 
 /**
@@ -193,6 +202,9 @@ export async function updateManifestoSettings(data: Partial<ManifestoData>): Pro
       sql: `UPDATE manifesto_settings SET ${updates.join(', ')} WHERE id = ?`,
       args,
     });
+
+    // Invalidar quirúrgicamente el tag de manifesto y actualizar rutas
+    await invalidateCacheTag(CACHE_TAGS.MANIFESTO, ['/', '/api/manifesto', '/admin/manifesto']);
 
     return await getManifestoSettings();
   } catch (error) {

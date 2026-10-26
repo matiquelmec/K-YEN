@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { normalizeCategorySlug, CASA_AIRA_CATEGORIES } from '@/lib/product-utils';
+import { withTaggedCache, invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 
 export interface ProductRow {
   id: string;
@@ -234,71 +235,87 @@ export async function dbGetProducts(options: {
   sortBy?: string;
   limit?: number;
 } = {}): Promise<ProductRow[]> {
-  let query = `
-    SELECT 
-      p.*,
-      cat.slug as category,
-      (SELECT GROUP_CONCAT(DISTINCT s.name) FROM product_variants pv JOIN sizes s ON pv.size_id = s.id WHERE pv.product_id = p.id) as sizes_str,
-      (SELECT GROUP_CONCAT(DISTINCT col.name) FROM product_variants pv JOIN colors col ON pv.color_id = col.id WHERE pv.product_id = p.id) as colors_str,
-      (SELECT GROUP_CONCAT(DISTINCT pi.url) FROM product_images pi WHERE pi.product_id = p.id) as images_str
-    FROM products p
-    LEFT JOIN categories cat ON p.category_id = cat.id
-    WHERE p.is_active = 1
-  `;
-  const params: any[] = [];
+  const cacheKey = `products:list:${JSON.stringify(options)}`;
+  return await withTaggedCache(
+    cacheKey,
+    CACHE_TAGS.PRODUCTS,
+    async () => {
+      let query = `
+        SELECT 
+          p.*,
+          cat.slug as category,
+          (SELECT GROUP_CONCAT(DISTINCT s.name) FROM product_variants pv JOIN sizes s ON pv.size_id = s.id WHERE pv.product_id = p.id) as sizes_str,
+          (SELECT GROUP_CONCAT(DISTINCT col.name) FROM product_variants pv JOIN colors col ON pv.color_id = col.id WHERE pv.product_id = p.id) as colors_str,
+          (SELECT GROUP_CONCAT(DISTINCT pi.url) FROM product_images pi WHERE pi.product_id = p.id) as images_str
+        FROM products p
+        LEFT JOIN categories cat ON p.category_id = cat.id
+        WHERE p.is_active = 1
+      `;
+      const params: any[] = [];
 
-  if (options.category && options.category !== 'all') {
-    const normalized = normalizeCategorySlug(options.category);
-    const catConfig = CASA_AIRA_CATEGORIES.find(c => c.id === normalized);
-    const validSlugs = catConfig ? [catConfig.id, ...catConfig.aliases, options.category] : [options.category];
-    const uniqueSlugs = Array.from(new Set(validSlugs));
-    const placeholders = uniqueSlugs.map(() => '?').join(', ');
-    query += ` AND cat.slug IN (${placeholders})`;
-    params.push(...uniqueSlugs);
-  }
+      if (options.category && options.category !== 'all') {
+        const normalized = normalizeCategorySlug(options.category);
+        const catConfig = CASA_AIRA_CATEGORIES.find(c => c.id === normalized);
+        const validSlugs = catConfig ? [catConfig.id, ...catConfig.aliases, options.category] : [options.category];
+        const uniqueSlugs = Array.from(new Set(validSlugs));
+        const placeholders = uniqueSlugs.map(() => '?').join(', ');
+        query += ` AND cat.slug IN (${placeholders})`;
+        params.push(...uniqueSlugs);
+      }
 
-  if (options.search) {
-    query += ` AND (p.name LIKE ? OR p.description LIKE ?)`;
-    params.push(`%${options.search}%`, `%${options.search}%`);
-  }
+      if (options.search) {
+        query += ` AND (p.name LIKE ? OR p.description LIKE ?)`;
+        params.push(`%${options.search}%`, `%${options.search}%`);
+      }
 
-  if (options.sortBy) {
-    if (options.sortBy === 'price_asc') {
-      query += ` ORDER BY p.price ASC`;
-    } else if (options.sortBy === 'price_desc') {
-      query += ` ORDER BY p.price DESC`;
-    } else {
-      query += ` ORDER BY p.created_at DESC`;
-    }
-  } else {
-    query += ` ORDER BY p.created_at DESC`;
-  }
+      if (options.sortBy) {
+        if (options.sortBy === 'price_asc') {
+          query += ` ORDER BY p.price ASC`;
+        } else if (options.sortBy === 'price_desc') {
+          query += ` ORDER BY p.price DESC`;
+        } else {
+          query += ` ORDER BY p.created_at DESC`;
+        }
+      } else {
+        query += ` ORDER BY p.created_at DESC`;
+      }
 
-  if (options.limit !== undefined) {
-    query += ` LIMIT ?`;
-    params.push(options.limit);
-  }
+      if (options.limit !== undefined) {
+        query += ` LIMIT ?`;
+        params.push(options.limit);
+      }
 
-  const result = await turso.execute({ sql: query, args: params });
-  return (result.rows as any[]).map(mapRowToProduct);
+      const result = await turso.execute({ sql: query, args: params });
+      return (result.rows as any[]).map(mapRowToProduct);
+    },
+    3600
+  );
 }
 
 export async function dbGetProductById(idOrSlug: string): Promise<ProductRow | null> {
-  const query = `
-    SELECT 
-      p.*,
-      cat.slug as category,
-      (SELECT GROUP_CONCAT(DISTINCT s.name) FROM product_variants pv JOIN sizes s ON pv.size_id = s.id WHERE pv.product_id = p.id) as sizes_str,
-      (SELECT GROUP_CONCAT(DISTINCT col.name) FROM product_variants pv JOIN colors col ON pv.color_id = col.id WHERE pv.product_id = p.id) as colors_str,
-      (SELECT GROUP_CONCAT(DISTINCT pi.url) FROM product_images pi WHERE pi.product_id = p.id) as images_str
-    FROM products p
-    LEFT JOIN categories cat ON p.category_id = cat.id
-    WHERE p.id = ? OR p.slug = ?
-    LIMIT 1
-  `;
-  const result = await turso.execute({ sql: query, args: [idOrSlug, idOrSlug] });
-  if (result.rows.length === 0) return null;
-  return mapRowToProduct(result.rows[0]);
+  const cacheKey = `products:item:${idOrSlug}`;
+  return await withTaggedCache(
+    cacheKey,
+    CACHE_TAGS.PRODUCTS,
+    async () => {
+      const query = `
+        SELECT 
+          p.*,
+          cat.slug as category,
+          (SELECT GROUP_CONCAT(DISTINCT s.name) FROM product_variants pv JOIN sizes s ON pv.size_id = s.id WHERE pv.product_id = p.id) as sizes_str,
+          (SELECT GROUP_CONCAT(DISTINCT col.name) FROM product_variants pv JOIN colors col ON pv.color_id = col.id WHERE pv.product_id = p.id) as colors_str,
+          (SELECT GROUP_CONCAT(DISTINCT pi.url) FROM product_images pi WHERE pi.product_id = p.id) as images_str
+        FROM products p
+        LEFT JOIN categories cat ON p.category_id = cat.id
+        WHERE p.id = ? OR p.slug = ?
+        LIMIT 1
+      `;
+      const result = await turso.execute({ sql: query, args: [idOrSlug, idOrSlug] });
+      if (result.rows.length === 0) return null;
+      return mapRowToProduct(result.rows[0]);
+    },
+    3600
+  );
 }
 
 export async function dbCreateProduct(product: Partial<ProductRow>): Promise<ProductRow> {
@@ -364,6 +381,10 @@ export async function dbCreateProduct(product: Partial<ProductRow>): Promise<Pro
 
   const created = await dbGetProductById(id);
   if (!created) throw new Error('Failed to retrieve newly created product');
+
+  // Invalidar quirúrgicamente el tag de productos
+  await invalidateCacheTag(CACHE_TAGS.PRODUCTS, ['/', '/catalogo', '/api/products']);
+
   return created;
 }
 
@@ -447,6 +468,10 @@ export async function dbUpdateProduct(id: string, product: Partial<ProductRow>):
 
   const updated = await dbGetProductById(id);
   if (!updated) throw new Error('Failed to retrieve updated product');
+
+  // Invalidar quirúrgicamente el tag de productos
+  await invalidateCacheTag(CACHE_TAGS.PRODUCTS, ['/', '/catalogo', `/catalogo/${id}`, '/api/products']);
+
   return updated;
 }
 
@@ -464,4 +489,7 @@ export async function dbDeleteProduct(id: string): Promise<void> {
     sql: 'DELETE FROM products WHERE id = ?',
     args: [id]
   });
+
+  // Invalidar quirúrgicamente el tag de productos
+  await invalidateCacheTag(CACHE_TAGS.PRODUCTS, ['/', '/catalogo', '/api/products']);
 }

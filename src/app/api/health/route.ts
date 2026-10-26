@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { turso } from '@/lib/db/turso';
+import { memoryTagCache } from '@/lib/cache';
 
 export const dynamic = 'force-dynamic';
 
@@ -19,6 +20,7 @@ export async function GET() {
       )
         ? 'configured'
         : 'unconfigured',
+      cacheEngine: memoryTagCache.getMetrics(),
     };
 
     return NextResponse.json(

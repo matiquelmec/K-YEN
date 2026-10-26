@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
+import { withTaggedCache, invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 export { DEFAULT_STORE_SETTINGS, type StoreSettings };
 
 let isSettingsTableInitialized = false;
@@ -63,40 +64,49 @@ export async function initSettingsTable(): Promise<void> {
 }
 
 /**
- * Obtiene la configuración actual de la tienda, contacto y redes
+ * Obtiene la configuración actual de la tienda, contacto y redes.
+ * Acelerado con caché híbrido (L1 In-Memory + L2 Next.js Data Cache con CACHE_TAGS.SETTINGS).
  */
 export async function getStoreSettings(): Promise<StoreSettings> {
-  try {
-    await initSettingsTable();
+  return await withTaggedCache(
+    'settings:main',
+    CACHE_TAGS.SETTINGS,
+    async () => {
+      try {
+        await initSettingsTable();
 
-    const res = await turso.execute("SELECT * FROM store_settings WHERE id = 'main' LIMIT 1");
+        const res = await turso.execute("SELECT * FROM store_settings WHERE id = 'main' LIMIT 1");
 
-    if (res.rows.length === 0) {
-      return DEFAULT_STORE_SETTINGS;
-    }
+        if (res.rows.length === 0) {
+          return DEFAULT_STORE_SETTINGS;
+        }
 
-    const row = res.rows[0] as any;
+        const row = res.rows[0] as any;
 
-    return {
-      contact_email: String(row.contact_email || DEFAULT_STORE_SETTINGS.contact_email),
-      contact_phone: String(row.contact_phone || DEFAULT_STORE_SETTINGS.contact_phone),
-      contact_whatsapp: String(row.contact_whatsapp || DEFAULT_STORE_SETTINGS.contact_whatsapp),
-      instagram_url: String(row.instagram_url || DEFAULT_STORE_SETTINGS.instagram_url),
-      facebook_url: String(row.facebook_url || DEFAULT_STORE_SETTINGS.facebook_url),
-      tiktok_url: String(row.tiktok_url || DEFAULT_STORE_SETTINGS.tiktok_url),
-      pinterest_url: row.pinterest_url ? String(row.pinterest_url) : DEFAULT_STORE_SETTINGS.pinterest_url,
-      address: row.address ? String(row.address) : DEFAULT_STORE_SETTINGS.address,
-      announcement_text: row.announcement_text ? String(row.announcement_text) : DEFAULT_STORE_SETTINGS.announcement_text,
-      updated_at: row.updated_at ? String(row.updated_at) : undefined,
-    };
-  } catch (error) {
-    console.warn('Fallback a store_settings por defecto debido a error en base de datos:', error);
-    return DEFAULT_STORE_SETTINGS;
-  }
+        return {
+          contact_email: String(row.contact_email || DEFAULT_STORE_SETTINGS.contact_email),
+          contact_phone: String(row.contact_phone || DEFAULT_STORE_SETTINGS.contact_phone),
+          contact_whatsapp: String(row.contact_whatsapp || DEFAULT_STORE_SETTINGS.contact_whatsapp),
+          instagram_url: String(row.instagram_url || DEFAULT_STORE_SETTINGS.instagram_url),
+          facebook_url: String(row.facebook_url || DEFAULT_STORE_SETTINGS.facebook_url),
+          tiktok_url: String(row.tiktok_url || DEFAULT_STORE_SETTINGS.tiktok_url),
+          pinterest_url: row.pinterest_url ? String(row.pinterest_url) : DEFAULT_STORE_SETTINGS.pinterest_url,
+          address: row.address ? String(row.address) : DEFAULT_STORE_SETTINGS.address,
+          announcement_text: row.announcement_text ? String(row.announcement_text) : DEFAULT_STORE_SETTINGS.announcement_text,
+          updated_at: row.updated_at ? String(row.updated_at) : undefined,
+        };
+      } catch (error) {
+        console.warn('Fallback a store_settings por defecto debido a error en base de datos:', error);
+        return DEFAULT_STORE_SETTINGS;
+      }
+    },
+    3600 // 1 hora de TTL o hasta invalidación on-demand
+  );
 }
 
 /**
- * Actualiza la configuración de la tienda, contacto y redes
+ * Actualiza la configuración de la tienda, contacto y redes.
+ * Invalida quirúrgicamente el tag CACHE_TAGS.SETTINGS en 0ms.
  */
 export async function updateStoreSettings(data: Partial<StoreSettings>): Promise<StoreSettings> {
   try {
@@ -149,6 +159,9 @@ export async function updateStoreSettings(data: Partial<StoreSettings>): Promise
       sql: `UPDATE store_settings SET ${updates.join(', ')} WHERE id = ?`,
       args,
     });
+
+    // Invalidar quirúrgicamente el tag de settings y refrescar rutas
+    await invalidateCacheTag(CACHE_TAGS.SETTINGS, ['/', '/api/settings', '/admin/settings']);
 
     return await getStoreSettings();
   } catch (error) {

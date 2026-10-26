@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { DEFAULT_UNBOXING, type UnboxingData, type UnboxingFeature } from '@/types/unboxing';
+import { withTaggedCache, invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 export { DEFAULT_UNBOXING, type UnboxingData, type UnboxingFeature };
 
 let isUnboxingTableInitialized = false;
@@ -57,43 +58,51 @@ export async function initUnboxingTable(): Promise<void> {
 }
 
 /**
- * Obtiene la configuración actual de la experiencia de unboxing
+ * Obtiene la configuración actual de la experiencia de unboxing.
+ * Acelerado con caché híbrido y tag CACHE_TAGS.UNBOXING.
  */
 export async function getUnboxingSettings(): Promise<UnboxingData> {
-  try {
-    await initUnboxingTable();
+  return await withTaggedCache(
+    'unboxing:main',
+    CACHE_TAGS.UNBOXING,
+    async () => {
+      try {
+        await initUnboxingTable();
 
-    const res = await turso.execute("SELECT * FROM unboxing_settings WHERE id = 'main' LIMIT 1");
+        const res = await turso.execute("SELECT * FROM unboxing_settings WHERE id = 'main' LIMIT 1");
 
-    if (res.rows.length === 0) {
-      return DEFAULT_UNBOXING;
-    }
+        if (res.rows.length === 0) {
+          return DEFAULT_UNBOXING;
+        }
 
-    const row = res.rows[0] as any;
-    let features: UnboxingFeature[] = DEFAULT_UNBOXING.features;
+        const row = res.rows[0] as any;
+        let features: UnboxingFeature[] = DEFAULT_UNBOXING.features;
 
-    try {
-      if (row.features_json) {
-        features = JSON.parse(String(row.features_json));
+        try {
+          if (row.features_json) {
+            features = JSON.parse(String(row.features_json));
+          }
+        } catch (parseErr) {
+          console.warn('Error parsing features_json, using default:', parseErr);
+        }
+
+        return {
+          badge: String(row.badge || DEFAULT_UNBOXING.badge),
+          title_primary: String(row.title_primary || DEFAULT_UNBOXING.title_primary),
+          title_highlight: String(row.title_highlight || DEFAULT_UNBOXING.title_highlight),
+          description: String(row.description || DEFAULT_UNBOXING.description),
+          image: String(row.image || DEFAULT_UNBOXING.image),
+          image_badge: String(row.image_badge || DEFAULT_UNBOXING.image_badge),
+          features,
+          updated_at: row.updated_at ? String(row.updated_at) : undefined,
+        };
+      } catch (error) {
+        console.warn('Fallback a unboxing por defecto debido a error en base de datos:', error);
+        return DEFAULT_UNBOXING;
       }
-    } catch (parseErr) {
-      console.warn('Error parsing features_json, using default:', parseErr);
-    }
-
-    return {
-      badge: String(row.badge || DEFAULT_UNBOXING.badge),
-      title_primary: String(row.title_primary || DEFAULT_UNBOXING.title_primary),
-      title_highlight: String(row.title_highlight || DEFAULT_UNBOXING.title_highlight),
-      description: String(row.description || DEFAULT_UNBOXING.description),
-      image: String(row.image || DEFAULT_UNBOXING.image),
-      image_badge: String(row.image_badge || DEFAULT_UNBOXING.image_badge),
-      features,
-      updated_at: row.updated_at ? String(row.updated_at) : undefined,
-    };
-  } catch (error) {
-    console.warn('Fallback a unboxing por defecto debido a error en base de datos:', error);
-    return DEFAULT_UNBOXING;
-  }
+    },
+    3600
+  );
 }
 
 /**
@@ -142,6 +151,9 @@ export async function updateUnboxingSettings(data: Partial<UnboxingData>): Promi
       sql: `UPDATE unboxing_settings SET ${updates.join(', ')} WHERE id = ?`,
       args,
     });
+
+    // Invalidar quirúrgicamente el tag de unboxing y refrescar rutas
+    await invalidateCacheTag(CACHE_TAGS.UNBOXING, ['/', '/api/unboxing', '/admin/unboxing']);
 
     return await getUnboxingSettings();
   } catch (error) {

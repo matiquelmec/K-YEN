@@ -1,4 +1,5 @@
 import { turso } from './turso';
+import { invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 
 export interface OrderRow {
   id: string;
@@ -176,6 +177,16 @@ export async function dbConfirmOrderPaymentAndDeductStock(
   }
 
   await turso.batch(statements, 'write');
+
+  // Si la orden fue pagada y se descontó stock, purgar quirúrgicamente la caché de productos
+  if (orderStatus === 'paid') {
+    try {
+      await invalidateCacheTag(CACHE_TAGS.PRODUCTS, ['/', '/catalogo', '/api/products']);
+    } catch (cacheErr) {
+      console.warn('Advertencia invalidando caché de productos tras pago Flow:', cacheErr);
+    }
+  }
+
   return true;
 }
 

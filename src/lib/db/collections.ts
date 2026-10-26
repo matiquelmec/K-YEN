@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/types/collections';
+import { withTaggedCache, invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
 export { DEFAULT_COLLECTIONS, type CollectionItem };
 
 let isTableInitialized = false;
@@ -62,39 +63,47 @@ export async function initCollectionsTable(): Promise<void> {
 }
 
 /**
- * Obtiene todas las colecciones activas ordenadas por display_order
+ * Obtiene todas las colecciones activas ordenadas por display_order.
+ * Acelerado con caché híbrido y tag CACHE_TAGS.COLLECTIONS.
  */
 export async function getCollections(includeInactive = false): Promise<CollectionItem[]> {
-  try {
-    await initCollectionsTable();
+  return await withTaggedCache(
+    `collections:list:${includeInactive ? 'all' : 'active'}`,
+    CACHE_TAGS.COLLECTIONS,
+    async () => {
+      try {
+        await initCollectionsTable();
 
-    const sql = includeInactive
-      ? 'SELECT * FROM collections ORDER BY display_order ASC'
-      : 'SELECT * FROM collections WHERE is_active = 1 ORDER BY display_order ASC';
+        const sql = includeInactive
+          ? 'SELECT * FROM collections ORDER BY display_order ASC'
+          : 'SELECT * FROM collections WHERE is_active = 1 ORDER BY display_order ASC';
 
-    const res = await turso.execute(sql);
+        const res = await turso.execute(sql);
 
-    if (res.rows.length === 0) {
-      return DEFAULT_COLLECTIONS;
-    }
+        if (res.rows.length === 0) {
+          return DEFAULT_COLLECTIONS;
+        }
 
-    return res.rows.map((row: any) => ({
-      id: String(row.id),
-      number: String(row.number),
-      title: String(row.title),
-      subtitle: String(row.subtitle),
-      tag: String(row.tag),
-      description: String(row.description),
-      image: String(row.image),
-      category_id: String(row.category_id),
-      display_order: Number(row.display_order),
-      is_active: Boolean(row.is_active),
-      updated_at: row.updated_at ? String(row.updated_at) : undefined,
-    }));
-  } catch (error) {
-    console.warn('Fallback a colecciones por defecto debido a error en base de datos:', error);
-    return DEFAULT_COLLECTIONS;
-  }
+        return res.rows.map((row: any) => ({
+          id: String(row.id),
+          number: String(row.number),
+          title: String(row.title),
+          subtitle: String(row.subtitle),
+          tag: String(row.tag),
+          description: String(row.description),
+          image: String(row.image),
+          category_id: String(row.category_id),
+          display_order: Number(row.display_order),
+          is_active: Boolean(row.is_active),
+          updated_at: row.updated_at ? String(row.updated_at) : undefined,
+        }));
+      } catch (error) {
+        console.warn('Fallback a colecciones por defecto debido a error en base de datos:', error);
+        return DEFAULT_COLLECTIONS;
+      }
+    },
+    3600
+  );
 }
 
 /**
@@ -194,6 +203,9 @@ export async function updateCollection(
 
     const row = updatedRes.rows[0] as any;
     if (!row) return null;
+
+    // Invalidar quirúrgicamente el tag de colecciones y actualizar rutas públicas
+    await invalidateCacheTag(CACHE_TAGS.COLLECTIONS, ['/', '/catalogo', '/api/collections']);
 
     return {
       id: String(row.id),

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath, revalidateTag } from 'next/cache';
 import { verifyJWT } from '@/lib/auth';
+import { invalidateCacheTag, invalidateAllStoreCaches, CACHE_TAGS, CacheTag } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,24 +10,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
     }
 
-    const { path, tag } = await request.json().catch(() => ({}));
+    const { path, tag, purgeAll } = await request.json().catch(() => ({}));
 
-    if (path) {
-      revalidatePath(path);
-      return NextResponse.json({ revalidated: true, path });
+    if (purgeAll) {
+      await invalidateAllStoreCaches();
+      return NextResponse.json({
+        revalidated: true,
+        purgedAll: true,
+        message: 'Todos los cachés del servidor e imágenes han sido purgados exitosamente.',
+      });
     }
 
     if (tag) {
-      (revalidateTag as any)(tag);
-      return NextResponse.json({ revalidated: true, tag });
+      const validTags = Object.values(CACHE_TAGS);
+      if (validTags.includes(tag as CacheTag)) {
+        await invalidateCacheTag(tag as CacheTag, path ? [path] : ['/', '/catalogo']);
+        return NextResponse.json({ revalidated: true, tag, path });
+      }
     }
 
-    // Por defecto, revalidar las rutas críticas del e-commerce
-    revalidatePath('/', 'page');
-    revalidatePath('/catalogo', 'page');
-    revalidatePath('/catalogo/[id]', 'page');
+    // Por defecto, purgar todos los caches del e-commerce
+    await invalidateAllStoreCaches();
 
-    return NextResponse.json({ revalidated: true, message: 'Rutas de catálogo revalidadas con éxito' });
+    return NextResponse.json({ revalidated: true, message: 'Cachés del sistema purgados exitosamente' });
   } catch (error: any) {
     console.error('Error in /api/revalidate:', error);
     return NextResponse.json({ error: error.message || 'Error al revalidar' }, { status: 500 });
