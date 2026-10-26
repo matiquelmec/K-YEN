@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCollections } from '@/lib/db/collections';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 60; // Revalidate every 60 seconds
+export const revalidate = 0;
 
 export async function GET() {
   try {
@@ -11,7 +11,9 @@ export async function GET() {
       { collections },
       {
         headers: {
-          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+          'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          'CDN-Cache-Control': 'no-store',
+          'Vercel-CDN-Cache-Control': 'no-store',
         },
       }
     );

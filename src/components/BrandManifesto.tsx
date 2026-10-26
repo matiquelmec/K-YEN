@@ -15,7 +15,7 @@ export default function BrandManifesto() {
     let isMounted = true;
     async function loadManifesto() {
       try {
-        const res = await fetch('/api/manifesto', { next: { revalidate: 60 } } as any);
+        const res = await fetch('/api/manifesto', { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           if (json.manifesto && isMounted) {

@@ -14,7 +14,7 @@ export default function Categories() {
   useEffect(() => {
     async function loadDynamicCollections() {
       try {
-        const res = await fetch('/api/collections');
+        const res = await fetch('/api/collections', { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
           if (data.collections && data.collections.length > 0) {

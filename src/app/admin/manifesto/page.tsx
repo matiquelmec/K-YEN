@@ -34,7 +34,7 @@ export default function AdminManifestoPage() {
   const fetchManifesto = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/manifesto');
+      const res = await fetch('/api/admin/manifesto', { cache: 'no-store' });
       if (!res.ok) throw new Error('Error al cargar datos del manifiesto');
       const data = await res.json();
       if (data.manifesto) {

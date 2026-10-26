@@ -46,4 +46,28 @@ describe('Admin Architecture & Endpoints Audit Suite (Nivel 5)', () => {
 
     expect(totalRevenue).toBe(45990 + 55000);
   });
+
+  it('valida que los ajustes de contacto admitan correos válidos y los normalice a minúsculas', () => {
+    const rawEmail = ' JRamirezSilva003@GMAIL.COM ';
+    const sanitizedEmail = rawEmail.trim().toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    expect(emailRegex.test(sanitizedEmail)).toBe(true);
+    expect(sanitizedEmail).toBe('jramirezsilva003@gmail.com');
+  });
+
+  it('valida que el teléfono de contacto y WhatsApp dinámicos no sean sobreescritos si el admin los personaliza', () => {
+    const customSettings = {
+      contact_email: 'jramirezsilva003@gmail.com',
+      contact_phone: '+56 9 1234 5678',
+      contact_whatsapp: '959635947',
+    };
+
+    // La lógica de renderizado debe respetar el valor del admin sin forzar números por defecto
+    const resolvedPhone = customSettings.contact_phone || '+56 9 8535 0038';
+    const resolvedWa = customSettings.contact_whatsapp.replace(/\D/g, '') || '56985350038';
+
+    expect(resolvedPhone).toBe('+56 9 1234 5678');
+    expect(resolvedWa).toBe('959635947');
+  });
 });

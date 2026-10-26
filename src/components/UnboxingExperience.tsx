@@ -14,7 +14,7 @@ export default function UnboxingExperience() {
     let isMounted = true;
     async function loadUnboxing() {
       try {
-        const res = await fetch('/api/unboxing', { next: { revalidate: 60 } } as any);
+        const res = await fetch('/api/unboxing', { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           if (json.unboxing && isMounted) {

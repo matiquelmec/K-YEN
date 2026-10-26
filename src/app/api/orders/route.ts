@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { dbGetOrders, dbCreateOrder } from '@/lib/db/orders';
 import { verifyJWT } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: NextRequest) {
   try {
     // Authenticate admin

@@ -51,7 +51,7 @@ export default function AdminCollectionsPage() {
   const fetchCollections = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/collections');
+      const res = await fetch('/api/admin/collections', { cache: 'no-store' });
       if (!res.ok) throw new Error('Error al cargar colecciones');
       const data = await res.json();
       if (data.collections && data.collections.length > 0) {

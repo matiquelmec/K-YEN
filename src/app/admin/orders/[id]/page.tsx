@@ -13,7 +13,7 @@ export default function OrderDetailPage() {
 
     const fetchOrder = useCallback(async () => {
         try {
-            const res = await fetch(`/api/orders/${params.id}`);
+            const res = await fetch(`/api/orders/${params.id}`, { cache: 'no-store' });
             if (!res.ok) throw new Error('Error al cargar la orden');
             const data = await res.json();
             setOrder(data);

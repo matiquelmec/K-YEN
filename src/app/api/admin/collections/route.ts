@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getCollections, updateCollection, type CollectionItem } from '@/lib/db/collections';
 import { verifyJWT } from '@/lib/auth';
 
@@ -86,6 +87,14 @@ export async function PUT(request: NextRequest) {
         { error: 'No se encontró la colección para actualizar' },
         { status: 404 }
       );
+    }
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/api/collections');
+      revalidatePath('/admin/collections');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras actualizar colecciones:', revalErr);
     }
 
     return NextResponse.json({

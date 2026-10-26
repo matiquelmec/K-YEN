@@ -15,7 +15,7 @@ export const productService = {
         if (options.sortBy) queryParams.append('sortBy', options.sortBy);
         if (options.limit) queryParams.append('limit', String(options.limit));
 
-        const res = await fetch(`/api/products?${queryParams.toString()}`);
+        const res = await fetch(`/api/products?${queryParams.toString()}`, { cache: 'no-store' });
         if (!res.ok) {
             const data = await res.json();
             throw new Error(data.error || 'Error al obtener productos');
@@ -24,7 +24,7 @@ export const productService = {
     },
 
     async getProductById(id: string | number): Promise<Product | null> {
-        const res = await fetch(`/api/products/${id}`);
+        const res = await fetch(`/api/products/${id}`, { cache: 'no-store' });
         if (res.status === 404) return null;
         if (!res.ok) {
             const data = await res.json();

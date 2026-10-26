@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { dbGetProductById, dbUpdateProduct, dbDeleteProduct } from '@/lib/db/products';
 import { verifyJWT } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(
   request: NextRequest,
@@ -33,6 +37,16 @@ export async function PUT(
     const resolvedParams = await params;
     const body = await request.json();
     const updatedProduct = await dbUpdateProduct(resolvedParams.id, body);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/catalogo');
+      revalidatePath(`/catalogo/${resolvedParams.id}`);
+      revalidatePath('/api/products');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras actualizar producto:', revalErr);
+    }
+
     return NextResponse.json(updatedProduct);
   } catch (error: any) {
     console.error('Error in PUT /api/products/[id]:', error);
@@ -53,6 +67,15 @@ export async function DELETE(
 
     const resolvedParams = await params;
     await dbDeleteProduct(resolvedParams.id);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/catalogo');
+      revalidatePath('/api/products');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras eliminar producto:', revalErr);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error in DELETE /api/products/[id]:', error);

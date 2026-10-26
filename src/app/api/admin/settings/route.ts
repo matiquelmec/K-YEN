@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getStoreSettings, updateStoreSettings } from '@/lib/db/settings';
 import { verifyJWT } from '@/lib/auth';
 import type { StoreSettings } from '@/types/settings';
@@ -96,6 +97,14 @@ export async function PUT(request: NextRequest) {
     if (announcement_text !== undefined) updateData.announcement_text = String(announcement_text);
 
     const updated = await updateStoreSettings(updateData);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/api/settings');
+      revalidatePath('/admin/settings');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras actualizar settings:', revalErr);
+    }
 
     return NextResponse.json({
       success: true,

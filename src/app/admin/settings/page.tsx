@@ -36,7 +36,7 @@ export default function AdminSettingsPage() {
   const fetchSettings = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/settings');
+      const res = await fetch('/api/admin/settings', { cache: 'no-store' });
       if (!res.ok) throw new Error('Error al cargar configuración');
       const data = await res.json();
       if (data.settings) {

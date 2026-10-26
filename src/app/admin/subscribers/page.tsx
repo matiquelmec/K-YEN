@@ -14,7 +14,7 @@ export default function SubscribersPage() {
 
     const fetchSubscribers = async () => {
         try {
-            const res = await fetch('/api/subscribers');
+            const res = await fetch('/api/subscribers', { cache: 'no-store' });
             if (!res.ok) throw new Error('Error al cargar suscriptores');
             const data = await res.json();
             setSubscribers(data || []);

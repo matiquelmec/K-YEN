@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getManifestoSettings, updateManifestoSettings } from '@/lib/db/manifesto';
 import { verifyJWT } from '@/lib/auth';
 import type { ManifestoData } from '@/types/manifesto';
@@ -85,6 +86,14 @@ export async function PUT(request: NextRequest) {
     if (whatsapp_message !== undefined) updateData.whatsapp_message = String(whatsapp_message);
 
     const updated = await updateManifestoSettings(updateData);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/api/manifesto');
+      revalidatePath('/admin/manifesto');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras actualizar manifesto:', revalErr);
+    }
 
     return NextResponse.json({
       success: true,

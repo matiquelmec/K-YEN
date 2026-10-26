@@ -12,22 +12,16 @@ export default function SocialConcierge() {
     let isMounted = true;
     async function loadSettings() {
       try {
-        const res = await fetch('/api/settings', { next: { revalidate: 60 } } as any);
+        const res = await fetch('/api/settings', { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           if (json.settings && isMounted) {
-            const rawWa = String(json.settings.contact_whatsapp || '');
-            const officialWa =
-              !rawWa || rawWa === '56912345678' ? '56985350038' : rawWa.replace(/\D/g, '');
-            const officialPhone =
-              !json.settings.contact_phone || json.settings.contact_phone.includes('1234')
-                ? '+56 9 8535 0038'
-                : json.settings.contact_phone;
-
             setSettings({
               ...json.settings,
-              contact_whatsapp: officialWa,
-              contact_phone: officialPhone,
+              contact_email: json.settings.contact_email || DEFAULT_STORE_SETTINGS.contact_email,
+              contact_whatsapp: json.settings.contact_whatsapp || DEFAULT_STORE_SETTINGS.contact_whatsapp,
+              contact_phone: json.settings.contact_phone || DEFAULT_STORE_SETTINGS.contact_phone,
+              instagram_url: json.settings.instagram_url || DEFAULT_STORE_SETTINGS.instagram_url,
             });
           }
         }
@@ -51,7 +45,7 @@ export default function SocialConcierge() {
       id: 'whatsapp',
       badge: 'ATENCIÓN INMEDIATA • CONCIERGE',
       title: 'WhatsApp Boutique',
-      handle: '+56 9 8535 0038',
+      handle: settings.contact_phone || '+56 9 8535 0038',
       description:
         'Asesoría directa de calce, tabla de medidas reales (XS a 6XL), videos de caída de tela y seguimiento prioritario de tu envío en todo Chile.',
       cta: 'Conversar por WhatsApp',
@@ -96,7 +90,7 @@ export default function SocialConcierge() {
           </h2>
 
           <p className="text-stone-600 text-sm sm:text-base font-light leading-relaxed max-w-2xl mx-auto">
-            Conecta con nuestro atelier a través de nuestras redes oficiales o escríbenos directamente al WhatsApp Concierge <strong className="font-medium text-[#181716]">+56 9 8535 0038</strong> para asesoría personalizada de medidas.
+            Conecta con nuestro atelier a través de nuestras redes oficiales o escríbenos directamente al WhatsApp Concierge <strong className="font-medium text-[#181716]">{settings.contact_phone || '+56 9 8535 0038'}</strong> para asesoría personalizada de medidas.
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { getUnboxingSettings, updateUnboxingSettings } from '@/lib/db/unboxing';
 import { verifyJWT } from '@/lib/auth';
 import type { UnboxingData } from '@/types/unboxing';
@@ -63,6 +64,14 @@ export async function PUT(request: NextRequest) {
     if (features !== undefined) updateData.features = features;
 
     const updated = await updateUnboxingSettings(updateData);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/api/unboxing');
+      revalidatePath('/admin/unboxing');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras actualizar unboxing:', revalErr);
+    }
 
     return NextResponse.json({
       success: true,

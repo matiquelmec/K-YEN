@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { dbGetProducts, dbCreateProduct } from '@/lib/db/products';
 import { verifyJWT } from '@/lib/auth';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,6 +38,15 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const newProduct = await dbCreateProduct(body);
+
+    try {
+      revalidatePath('/', 'layout');
+      revalidatePath('/catalogo');
+      revalidatePath('/api/products');
+    } catch (revalErr) {
+      console.warn('Advertencia revalidando rutas tras crear producto:', revalErr);
+    }
+
     return NextResponse.json(newProduct);
   } catch (error: any) {
     console.error('Error in POST /api/products:', error);

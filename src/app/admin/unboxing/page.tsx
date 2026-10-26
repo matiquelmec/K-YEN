@@ -34,7 +34,7 @@ export default function AdminUnboxingPage() {
   const fetchUnboxing = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/unboxing');
+      const res = await fetch('/api/admin/unboxing', { cache: 'no-store' });
       if (!res.ok) throw new Error('Error al cargar datos de unboxing');
       const data = await res.json();
       if (data.unboxing) {

@@ -19,22 +19,16 @@ export default function Footer() {
     let isMounted = true;
     async function loadSettings() {
       try {
-        const res = await fetch('/api/settings', { next: { revalidate: 60 } } as any);
+        const res = await fetch('/api/settings', { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           if (json.settings && isMounted) {
-            const rawWa = String(json.settings.contact_whatsapp || '');
-            const officialWa =
-              !rawWa || rawWa === '56912345678' ? '56985350038' : rawWa.replace(/\D/g, '');
-            const officialPhone =
-              !json.settings.contact_phone || json.settings.contact_phone.includes('1234')
-                ? '+56 9 8535 0038'
-                : json.settings.contact_phone;
-
             setSettings({
               ...json.settings,
-              contact_whatsapp: officialWa,
-              contact_phone: officialPhone,
+              contact_email: json.settings.contact_email || DEFAULT_STORE_SETTINGS.contact_email,
+              contact_whatsapp: json.settings.contact_whatsapp || DEFAULT_STORE_SETTINGS.contact_whatsapp,
+              contact_phone: json.settings.contact_phone || DEFAULT_STORE_SETTINGS.contact_phone,
+              instagram_url: json.settings.instagram_url || DEFAULT_STORE_SETTINGS.instagram_url,
             });
           }
         }
@@ -197,7 +191,7 @@ export default function Footer() {
                   className='inline-flex items-center gap-2 text-[#E5D3A1] hover:text-white transition-colors py-1'
                 >
                   <MessageCircle className="w-3.5 h-3.5" />
-                  <span>+56 9 8535 0038</span>
+                  <span>{settings.contact_phone || '+56 9 8535 0038'}</span>
                 </a>
               </div>
               <div className='flex items-center gap-3'>
