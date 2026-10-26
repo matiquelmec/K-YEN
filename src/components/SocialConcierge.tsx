@@ -2,14 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Facebook, MessageCircle, ArrowUpRight, Sparkles } from 'lucide-react';
+import { Instagram, MessageCircle, ArrowUpRight, Sparkles } from 'lucide-react';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
-
-const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.17 1.72.3 2.58.46.01 1.37 0 2.75-.01 4.12-.99-.28-1.92-.76-2.73-1.43-.13-.1-.23-.23-.33-.36-.07 1.83-.03 3.67-.03 5.5 0 2.44-.8 4.96-2.58 6.64-1.74 1.7-4.32 2.37-6.66 1.88-2.51-.43-4.71-2.43-5.26-4.93-.72-2.95.83-6.17 3.68-7.1 1.08-.38 2.24-.41 3.34-.17v4.18c-.89-.35-1.92-.26-2.72.33-.86.58-1.25 1.7-1.02 2.71.21 1.07 1.22 1.86 2.31 1.82 1.13-.02 2.11-.93 2.17-2.06.07-2.86.02-5.72.03-8.58-.01-4.65-.01-9.3 0-13.95z" />
-  </svg>
-);
 
 export default function SocialConcierge() {
   const [settings, setSettings] = useState<StoreSettings>(DEFAULT_STORE_SETTINGS);
@@ -59,7 +53,7 @@ export default function SocialConcierge() {
       title: 'WhatsApp Boutique',
       handle: '+56 9 8535 0038',
       description:
-        'Asesoría directa de calce, tabla de medidas reales (XS a 6XL), videos de caída de tela y seguimiento de tu envío en Chile.',
+        'Asesoría directa de calce, tabla de medidas reales (XS a 6XL), videos de caída de tela y seguimiento prioritario de tu envío en todo Chile.',
       cta: 'Conversar por WhatsApp',
       href: whatsappUrl,
       icon: MessageCircle,
@@ -67,38 +61,14 @@ export default function SocialConcierge() {
     },
     {
       id: 'instagram',
-      badge: 'LOOKBOOK & REELS',
+      badge: 'LOOKBOOK & REELS OFICIAL',
       title: 'Instagram Editorial',
-      handle: '@casaaira_oficial',
+      handle: '@casa.airaa',
       description:
-        'Reels de movimiento real en luz natural, adelantos de colección y clientas reales en todo Chile.',
-      cta: 'Seguir en Instagram',
-      href: settings.instagram_url,
+        'Reels de movimiento real en luz natural, lanzamientos exclusivos de vestidos de fiesta y alta costura para clientas en todo Chile.',
+      cta: 'Seguir @casa.airaa en Instagram',
+      href: settings.instagram_url || 'https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D',
       icon: Instagram,
-      featured: false,
-    },
-    {
-      id: 'tiktok',
-      badge: 'BACKSTAGE & CALCE',
-      title: 'TikTok Atelier',
-      handle: '@casaaira_oficial',
-      description:
-        'Pruebas de vestidos en distintas siluetas, tips de estilismo para bodas y galas, y desempaque boutique.',
-      cta: 'Ver Videos en TikTok',
-      href: settings.tiktok_url,
-      icon: TiktokIcon,
-      featured: false,
-    },
-    {
-      id: 'facebook',
-      badge: 'COMUNIDAD & RESEÑAS',
-      title: 'Facebook Oficial',
-      handle: 'Casa Aira Boutique',
-      description:
-        'Catálogo sincronizado, reseñas verificadas de clientas y atención cercana para cada temporada.',
-      cta: 'Visitar Facebook',
-      href: settings.facebook_url,
-      icon: Facebook,
       featured: false,
     },
   ];
@@ -130,8 +100,8 @@ export default function SocialConcierge() {
           </p>
         </div>
 
-        {/* Grilla Couture Base 8 (4 columnas en Desktop, 2 en Tablet, 1 en Móvil) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Grilla Couture Base 8 (2 columnas en Desktop/Tablet, 1 en Móvil) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {channels.map((channel, index) => {
             const IconComponent = channel.icon;
             const isFeatured = channel.featured;

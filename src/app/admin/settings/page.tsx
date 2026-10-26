@@ -269,7 +269,7 @@ export default function AdminSettingsPage() {
               <div>
                 <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5 flex items-center gap-1.5">
                   <Instagram className="w-3.5 h-3.5 text-pink-600" />
-                  <span>Perfil de Instagram (URL completa) *</span>
+                  <span>Perfil de Instagram (Oficial) *</span>
                 </label>
                 <input
                   type="url"
@@ -278,21 +278,20 @@ export default function AdminSettingsPage() {
                   onChange={handleInputChange}
                   required
                   className="w-full bg-[#FAF8F5] border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:border-stone-900 outline-none"
-                  placeholder="https://instagram.com/casaaira_oficial"
+                  placeholder="https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D"
                 />
               </div>
 
               <div>
                 <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5 flex items-center gap-1.5">
                   <Facebook className="w-3.5 h-3.5 text-blue-600" />
-                  <span>Página de Facebook (URL completa) *</span>
+                  <span>Página de Facebook (Opcional / Inactivo)</span>
                 </label>
                 <input
                   type="url"
                   name="facebook_url"
                   value={formData.facebook_url}
                   onChange={handleInputChange}
-                  required
                   className="w-full bg-[#FAF8F5] border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:border-stone-900 outline-none"
                   placeholder="https://facebook.com/casaaira.oficial"
                 />
@@ -301,14 +300,13 @@ export default function AdminSettingsPage() {
               <div>
                 <label className="block text-[11px] uppercase tracking-wider font-semibold text-stone-700 mb-1.5 flex items-center gap-1.5">
                   <TiktokIcon className="w-3.5 h-3.5 text-stone-900" />
-                  <span>Cuenta de TikTok (URL completa) *</span>
+                  <span>Cuenta de TikTok (Opcional / Inactivo)</span>
                 </label>
                 <input
                   type="url"
                   name="tiktok_url"
                   value={formData.tiktok_url}
                   onChange={handleInputChange}
-                  required
                   className="w-full bg-[#FAF8F5] border border-stone-300 px-4 py-2.5 text-sm text-stone-900 focus:bg-white focus:border-stone-900 outline-none"
                   placeholder="https://tiktok.com/@casaaira_oficial"
                 />
@@ -531,33 +529,39 @@ export default function AdminSettingsPage() {
               </div>
 
               <div className="flex gap-2.5">
-                <a
-                  href={formData.instagram_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
-                  title="Instagram"
-                >
-                  <Instagram className="w-3.5 h-3.5" />
-                </a>
-                <a
-                  href={formData.facebook_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
-                  title="Facebook"
-                >
-                  <Facebook className="w-3.5 h-3.5" />
-                </a>
-                <a
-                  href={formData.tiktok_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
-                  title="TikTok"
-                >
-                  <TiktokIcon className="w-3.5 h-3.5" />
-                </a>
+                {formData.instagram_url && (
+                  <a
+                    href={formData.instagram_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
+                    title="Instagram"
+                  >
+                    <Instagram className="w-3.5 h-3.5" />
+                  </a>
+                )}
+                {formData.facebook_url && (
+                  <a
+                    href={formData.facebook_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
+                    title="Facebook"
+                  >
+                    <Facebook className="w-3.5 h-3.5" />
+                  </a>
+                )}
+                {formData.tiktok_url && (
+                  <a
+                    href={formData.tiktok_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors"
+                    title="TikTok"
+                  >
+                    <TiktokIcon className="w-3.5 h-3.5" />
+                  </a>
+                )}
               </div>
             </div>
 

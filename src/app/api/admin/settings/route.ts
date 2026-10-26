@@ -74,24 +74,24 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    if (instagram_url && !isValidSecureUrl(String(instagram_url))) {
+    if (instagram_url && String(instagram_url).trim() && !isValidSecureUrl(String(instagram_url).trim())) {
       return NextResponse.json({ error: 'La URL de Instagram debe ser válida (ej: https://...)' }, { status: 400 });
     }
-    if (facebook_url && !isValidSecureUrl(String(facebook_url))) {
+    if (facebook_url && String(facebook_url).trim() && !isValidSecureUrl(String(facebook_url).trim())) {
       return NextResponse.json({ error: 'La URL de Facebook debe ser válida (ej: https://...)' }, { status: 400 });
     }
-    if (tiktok_url && !isValidSecureUrl(String(tiktok_url))) {
+    if (tiktok_url && String(tiktok_url).trim() && !isValidSecureUrl(String(tiktok_url).trim())) {
       return NextResponse.json({ error: 'La URL de TikTok debe ser válida (ej: https://...)' }, { status: 400 });
     }
 
     const updateData: Partial<StoreSettings> = {};
-    if (contact_email !== undefined) updateData.contact_email = String(contact_email);
-    if (contact_phone !== undefined) updateData.contact_phone = String(contact_phone);
-    if (contact_whatsapp !== undefined) updateData.contact_whatsapp = String(contact_whatsapp);
-    if (instagram_url !== undefined) updateData.instagram_url = String(instagram_url);
-    if (facebook_url !== undefined) updateData.facebook_url = String(facebook_url);
-    if (tiktok_url !== undefined) updateData.tiktok_url = String(tiktok_url);
-    if (pinterest_url !== undefined) updateData.pinterest_url = String(pinterest_url);
+    if (contact_email !== undefined) updateData.contact_email = String(contact_email).trim();
+    if (contact_phone !== undefined) updateData.contact_phone = String(contact_phone).trim();
+    if (contact_whatsapp !== undefined) updateData.contact_whatsapp = String(contact_whatsapp).trim();
+    if (instagram_url !== undefined) updateData.instagram_url = String(instagram_url).trim();
+    if (facebook_url !== undefined) updateData.facebook_url = String(facebook_url).trim();
+    if (tiktok_url !== undefined) updateData.tiktok_url = String(tiktok_url).trim();
+    if (pinterest_url !== undefined) updateData.pinterest_url = String(pinterest_url).trim();
     if (address !== undefined) updateData.address = String(address);
     if (announcement_text !== undefined) updateData.announcement_text = String(announcement_text);
 

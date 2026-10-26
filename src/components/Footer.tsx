@@ -5,18 +5,11 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Instagram,
-  Facebook,
   MessageCircle,
   Mail,
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
-
-const TiktokIcon = (props: React.ComponentProps<'svg'>) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.02 1.59 4.23.86.17 1.72.3 2.58.46.01 1.37 0 2.75-.01 4.12-.99-.28-1.92-.76-2.73-1.43-.13-.1-.23-.23-.33-.36-.07 1.83-.03 3.67-.03 5.5 0 2.44-.8 4.96-2.58 6.64-1.74 1.7-4.32 2.37-6.66 1.88-2.51-.43-4.71-2.43-5.26-4.93-.72-2.95.83-6.17 3.68-7.1 1.08-.38 2.24-.41 3.34-.17v4.18c-.89-.35-1.92-.26-2.72.33-.86.58-1.25 1.7-1.02 2.71.21 1.07 1.22 1.86 2.31 1.82 1.13-.02 2.11-.93 2.17-2.06.07-2.86.02-5.72.03-8.58-.01-4.65-.01-9.3 0-13.95z"/>
-  </svg>
-);
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -209,10 +202,8 @@ export default function Footer() {
               </div>
               <div className='flex items-center gap-3'>
                 {[
-                  { icon: MessageCircle, href: whatsappUrl, label: 'WhatsApp Casa Aira' },
-                  { icon: Instagram, href: settings.instagram_url, label: 'Instagram Casa Aira' },
-                  { icon: Facebook, href: settings.facebook_url, label: 'Facebook Casa Aira' },
-                  { icon: TiktokIcon, href: settings.tiktok_url, label: 'TikTok Casa Aira' },
+                  { icon: MessageCircle, href: whatsappUrl, label: 'WhatsApp Concierge Casa Aira' },
+                  { icon: Instagram, href: settings.instagram_url || 'https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D', label: 'Instagram Editorial Casa Aira' },
                 ].map((social, index) => (
                   <a
                     key={index}

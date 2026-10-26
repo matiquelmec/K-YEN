@@ -2,11 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
 
 describe('Store Settings & Social Media Module Integrity Tests', () => {
-  it('contiene la estructura por defecto completa de Casa Aira con el WhatsApp oficial +56 9 8535 0038', () => {
+  it('contiene la estructura por defecto con Instagram oficial @casa.airaa y WhatsApp Concierge +56 9 8535 0038 activos', () => {
     expect(DEFAULT_STORE_SETTINGS.contact_email).toBeTruthy();
     expect(DEFAULT_STORE_SETTINGS.instagram_url).toBeTruthy();
-    expect(DEFAULT_STORE_SETTINGS.facebook_url).toBeTruthy();
-    expect(DEFAULT_STORE_SETTINGS.tiktok_url).toBeTruthy();
+    expect(DEFAULT_STORE_SETTINGS.instagram_url).toContain('casa.airaa');
     expect(DEFAULT_STORE_SETTINGS.contact_whatsapp).toBe('56985350038');
     expect(DEFAULT_STORE_SETTINGS.contact_phone).toBe('+56 9 8535 0038');
   });
@@ -16,10 +15,8 @@ describe('Store Settings & Social Media Module Integrity Tests', () => {
     expect(emailRegex.test(DEFAULT_STORE_SETTINGS.contact_email)).toBe(true);
   });
 
-  it('valida que las URLs sociales comiencen con protocolo HTTPS seguro', () => {
+  it('valida que la URL de Instagram oficial comience con protocolo HTTPS seguro', () => {
     expect(DEFAULT_STORE_SETTINGS.instagram_url.startsWith('https://')).toBe(true);
-    expect(DEFAULT_STORE_SETTINGS.facebook_url.startsWith('https://')).toBe(true);
-    expect(DEFAULT_STORE_SETTINGS.tiktok_url.startsWith('https://')).toBe(true);
   });
 });
 

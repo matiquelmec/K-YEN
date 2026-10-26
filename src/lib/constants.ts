@@ -4,9 +4,8 @@ export const SITE_CONFIG = {
   url: 'https://kuyenchile.cl',
   ogImage: '/og-image.png',
   links: {
-    instagram: 'https://instagram.com/casaairaboutique',
-    facebook: 'https://facebook.com/casaairaboutique',
-    whatsapp: 'https://wa.me/56912345678',
+    instagram: 'https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D',
+    whatsapp: 'https://wa.me/56985350038',
   },
 } as const;
 

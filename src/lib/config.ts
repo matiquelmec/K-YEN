@@ -54,10 +54,10 @@ export const APP_CONFIG = {
 
   // Social media
   social: {
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://instagram.com/casaaira_oficial',
-    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || 'https://facebook.com/casaaira.oficial',
-    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || 'https://tiktok.com/@casaaira_oficial',
-    pinterest: process.env.NEXT_PUBLIC_PINTEREST_URL || 'https://pinterest.com/casaaira_oficial',
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D',
+    facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || '',
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL || '',
+    pinterest: process.env.NEXT_PUBLIC_PINTEREST_URL || '',
   },
 
   // Cache and performance
