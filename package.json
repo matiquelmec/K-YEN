@@ -24,23 +24,25 @@
     "test:coverage": "vitest run --coverage",
     "optimize:brand": "node scripts/optimize-brand-assets.js",
     "postbuild": "next-sitemap",
-    "test:build": "npm run type-check && npm run lint && npm run test && npm run build"
+    "test:build": "npm run type-check && npm run lint && npm run test && npm run build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
     "autoprefixer": "^10.4.16",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.45.4",
     "framer-motion": "^11.2.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.445.0",
-    "mercadopago": "^3.2.0",
     "next": "^16.0.9",
     "postcss": "^8.4.32",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",
     "tailwind-merge": "^3.4.0",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^7.0.1",

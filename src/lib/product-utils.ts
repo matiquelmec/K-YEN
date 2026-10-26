@@ -103,3 +103,20 @@ export const AVAILABLE_SIZES = ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', 
 export const getColorClass = (color: string) => {
     return PRODUCT_COLORS[color] || 'bg-gray-400';
 };
+
+
+/**
+ * Inyecta transformaciones automáticas de formato (AVIF/WebP), compresión inteligente
+ * y redimensionamiento en URLs de Cloudinary CDN sin alterar URLs locales o de otros dominios.
+ */
+export const optimizeCloudinaryUrl = (url?: string | null, maxWidth: number = 900): string => {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (!trimmed.includes('res.cloudinary.com') || !trimmed.includes('/upload/')) {
+        return trimmed;
+    }
+    if (trimmed.includes('f_auto') || trimmed.includes('q_auto')) {
+        return trimmed;
+    }
+    return trimmed.replace('/upload/', `/upload/f_auto,q_auto:good,w_${maxWidth},c_limit/`);
+};

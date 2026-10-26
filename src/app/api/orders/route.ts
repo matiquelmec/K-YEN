@@ -20,6 +20,12 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // Authenticate admin (las órdenes de clientes se generan de forma atómica en /api/checkout)
+    const token = request.cookies.get('kuyen_admin_session')?.value;
+    if (!token || !(await verifyJWT(token))) {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
+    }
+
     const body = await request.json();
     const order = await dbCreateOrder(body);
     return NextResponse.json(order);

@@ -4,17 +4,14 @@
  */
 
 const getSecretKey = async () => {
-  const secret = process.env.JWT_SECRET;
+  const secret = process.env.JWT_SECRET || (process.env.NODE_ENV === 'test' ? 'test_jwt_secret_key_32_characters_long' : undefined);
   if (!secret) {
-    if (process.env.NODE_ENV === 'production') {
-      throw new Error('JWT_SECRET is not configured in environment variables');
-    }
+    throw new Error('JWT_SECRET is not configured in environment variables');
   }
-  const effectiveSecret = secret || 'kuyen_admin_dev_secret_only';
   const enc = new TextEncoder();
   return crypto.subtle.importKey(
     'raw',
-    enc.encode(effectiveSecret),
+    enc.encode(secret),
     { name: 'HMAC', hash: 'SHA-256' },
     false,
     ['sign', 'verify']

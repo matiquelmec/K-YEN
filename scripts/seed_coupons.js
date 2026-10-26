@@ -1,8 +1,8 @@
 ﻿const { createClient } = require('@libsql/client');
 
 const client = createClient({
-  url: 'libsql://kuyen-matiquelmec.aws-us-east-1.turso.io',
-  authToken: 'eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3ODQ0MDAyMDUsImlkIjoiMDE5Zjc2ODYtN2QwMS03YTQ5LWE3ZDItYjUyYWU2NDhmMjA3Iiwia2lkIjoibjBMa1BDaDBkNmRfR0Z1ZDQtSjFjMjBZZWlkLTVqSEN0T1VGcmk3YWVzUSIsInJpZCI6ImNhZWU5YjZkLWFlZjktNGM0OC05MWRmLWQ3Y2U2YzU4ZjgxMiJ9.uF4Fmj8F1L6Hk_S9FTKsZKsk7NBbNhV9tlLECvEK1LoepCSK2XlfZlWgAMkuUC0vpCXdiWE2AAudoH0AHi8zAw'
+  url: process.env.TURSO_CONNECTION_URL || process.env.TURSO_DATABASE_URL || "file:local.db",
+  authToken: process.env.TURSO_AUTH_TOKEN || ""
 });
 
 async function main() {

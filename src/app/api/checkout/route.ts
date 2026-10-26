@@ -1,12 +1,8 @@
-import { MercadoPagoConfig, Preference } from 'mercadopago';
 import { type NextRequest, NextResponse } from 'next/server';
 import { turso } from '@/lib/db/turso';
 import { dbCreateOrder } from '@/lib/db/orders';
 import { checkRateLimit } from '@/lib/rate-limit';
-
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN || '',
-});
+import { createFlowPayment } from '@/lib/flow';
 
 export async function POST(req: NextRequest) {
   try {
@@ -25,17 +21,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'El carrito está vacío' }, { status: 400 });
     }
 
-    if (!process.env.MP_ACCESS_TOKEN) {
-      return NextResponse.json({ error: 'Mercado Pago credentials not configured' }, { status: 500 });
+    if (!process.env.FLOW_API_KEY || !process.env.FLOW_SECRET_KEY) {
+      return NextResponse.json({ error: 'Credenciales de Flow no configuradas' }, { status: 500 });
     }
 
     // 2. Validate prices and stock server-side
     const productIds = items.map((item: any) => item.product?.id || item.id);
     const placeholders = productIds.map(() => '?').join(',');
-    
+
     const dbResult = await turso.execute({
       sql: `SELECT id, price, name, stock FROM products WHERE id IN (${placeholders})`,
-      args: productIds
+      args: productIds,
     });
 
     const dbProducts = dbResult.rows;
@@ -47,7 +43,7 @@ export async function POST(req: NextRequest) {
     let subtotalAmount = 0;
     const orderItems: any[] = [];
 
-    const validatedItems = items.map((item: any) => {
+    for (const item of items) {
       const prodId = item.product?.id || item.id;
       const dbProduct = dbProducts.find((p: any) => String(p.id) === String(prodId));
       if (!dbProduct) {
@@ -56,36 +52,52 @@ export async function POST(req: NextRequest) {
 
       const dbPrice = Number(dbProduct.price);
       const dbStock = Number(dbProduct.stock ?? 15);
+      const qty = Number(item.quantity || 1);
 
-      if (dbStock < item.quantity) {
+      if (dbStock < qty) {
         throw new Error(`Stock insuficiente para: ${dbProduct.name}. Disponibles: ${dbStock}`);
       }
 
-      const itemTotal = dbPrice * item.quantity;
+      const itemSize = item.selectedSize || 'Standard';
+      const itemColor = item.selectedColor || 'Standard';
+
+      // Validar stock específico de variante si existe en product_variants
+      if (itemSize !== 'Standard' || itemColor !== 'Standard') {
+        const variantRes = await turso.execute({
+          sql: `
+            SELECT pv.stock_quantity 
+            FROM product_variants pv
+            JOIN sizes s ON pv.size_id = s.id
+            JOIN colors c ON pv.color_id = c.id
+            WHERE pv.product_id = ? AND s.name = ? AND c.name = ?
+            LIMIT 1
+          `,
+          args: [String(dbProduct.id), itemSize, itemColor],
+        });
+
+        if (variantRes.rows.length > 0 && variantRes.rows[0]) {
+          const variantStock = Number(variantRes.rows[0].stock_quantity ?? 0);
+          if (variantStock < qty) {
+            throw new Error(`Stock insuficiente para ${dbProduct.name} (Talla: ${itemSize}, Color: ${itemColor}). Disponibles: ${variantStock}`);
+          }
+        }
+      }
+
+      const itemTotal = dbPrice * qty;
       subtotalAmount += itemTotal;
 
       orderItems.push({
         product_id: String(dbProduct.id),
         product_name: String(dbProduct.name),
         price: dbPrice,
-        quantity: item.quantity,
-        size: item.selectedSize || 'Standard',
-        color: item.selectedColor || 'Standard',
-        image: item.product?.images?.[0] || ''
+        quantity: qty,
+        size: itemSize,
+        color: itemColor,
+        image: item.product?.images?.[0] || '',
       });
+    }
 
-      return {
-        id: String(dbProduct.id),
-        title: String(dbProduct.name),
-        quantity: item.quantity,
-        unit_price: dbPrice,
-        currency_id: 'CLP',
-        picture_url: item.product?.images?.[0] || '',
-        description: `Talla: ${item.selectedSize || 'N/A'} / Color: ${item.selectedColor || 'N/A'}`,
-      };
-    });
-
-    // 3. Validar Cupón de Descuento en Base de Datos (Strict Server-Side)
+    // 3. Validar Cupón de Descuento en Base de Datos (Strict Server-Side con expiración y límite)
     let discountAmount = 0;
     let validCouponCode: string | null = null;
 
@@ -93,96 +105,85 @@ export async function POST(req: NextRequest) {
       const upperCode = String(couponCode).trim().toUpperCase();
       const couponRes = await turso.execute({
         sql: 'SELECT * FROM coupons WHERE code = ? AND is_active = 1 LIMIT 1',
-        args: [upperCode]
+        args: [upperCode],
       });
 
       if (couponRes.rows.length > 0) {
         const coupon = couponRes.rows[0] as any;
         const minCart = Number(coupon.min_cart_amount || 0);
 
-        if (subtotalAmount >= minCart) {
+        const isExpired = coupon.expires_at ? new Date(coupon.expires_at) < new Date() : false;
+        const isUsageExceeded =
+          coupon.usage_limit !== null && coupon.usage_limit !== undefined
+            ? Number(coupon.usage_count || 0) >= Number(coupon.usage_limit)
+            : false;
+
+        if (!isExpired && !isUsageExceeded && subtotalAmount >= minCart) {
           const discVal = Number(coupon.discount_value);
           if (coupon.discount_type === 'percentage') {
             discountAmount = Math.round(subtotalAmount * (discVal / 100));
           } else {
             discountAmount = discVal;
           }
-          discountAmount = Math.min(discountAmount, subtotalAmount); // No puede ser mayor al subtotal
+          discountAmount = Math.min(discountAmount, subtotalAmount);
           validCouponCode = upperCode;
         }
       }
     }
 
     const finalTotalAmount = Math.max(0, subtotalAmount - discountAmount);
-
-    // Si hay descuento, ajustar proporcionalmente los items para Mercado Pago
-    let mpItems = validatedItems;
-    if (discountAmount > 0) {
-      const discountRatio = (subtotalAmount - discountAmount) / subtotalAmount;
-      mpItems = validatedItems.map((it: any) => ({
-        ...it,
-        unit_price: Math.round(it.unit_price * discountRatio)
-      }));
-    }
-
-    const siteUrl = (process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin).replace(/\/$/, "");
+    const siteUrl = (process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin).replace(/\/$/, '');
     const internalOrderId = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    // 4. PERSISTIR LA ORDEN EN BASE DE DATOS ANTES DE REDIRIGIR (Atómico - Estándar JoyasJP)
+    // 4. PERSISTIR LA ORDEN EN BASE DE DATOS ANTES DE REDIRIGIR A FLOW (Atómico)
     const savedOrder = await dbCreateOrder({
       order_number: internalOrderId,
       status: 'pending',
       payment_status: 'pending',
-      payment_id: internalOrderId, // external_reference
+      payment_id: internalOrderId,
       total: finalTotalAmount,
       shipping_address: {
         ...(customerInfo || {}),
         coupon_code: validCouponCode,
-        discount_applied: discountAmount
+        discount_applied: discountAmount,
       },
-      items: orderItems
+      items: orderItems,
     });
 
-    const preferenceBody: any = {
-      items: mpItems,
-      back_urls: {
-        success: `${siteUrl}/checkout/success?order_id=${savedOrder.id}`,
-        failure: `${siteUrl}/checkout/failure?order_id=${savedOrder.id}`,
-        pending: `${siteUrl}/checkout/pending?order_id=${savedOrder.id}`,
+    // 5. Crear orden de pago en Flow.cl (Monto total exacto sin problemas de redondeo)
+    const payerEmail = customerInfo?.email || 'contacto@casaaira.cl';
+    const totalItemsCount = orderItems.reduce((acc, it) => acc + (it.quantity || 1), 0);
+    const subject = `Casa Aira Boutique: Pedido ${internalOrderId} (${totalItemsCount} prenda${totalItemsCount > 1 ? 's' : ''})`;
+
+    const flowPayment = await createFlowPayment({
+      commerceOrder: internalOrderId,
+      subject,
+      currency: 'CLP',
+      amount: finalTotalAmount,
+      email: payerEmail,
+      urlConfirmation: `${siteUrl}/api/webhook/flow`,
+      urlReturn: `${siteUrl}/api/flow/return`,
+      optional: {
+        dbOrderId: savedOrder.id,
+        customerName: `${customerInfo?.firstName || ''} ${customerInfo?.lastName || ''}`.trim(),
       },
-      statement_descriptor: 'CASA AIRA',
-      external_reference: internalOrderId,
-      notification_url: `${siteUrl}/api/webhook/mercadopago`,
-      auto_return: 'approved',
-    };
+    });
 
-    if (customerInfo) {
-      preferenceBody.payer = {
-        name: customerInfo.name,
-        email: customerInfo.email,
-        phone: {
-          number: customerInfo.phone,
-        },
-        address: {
-          street_name: customerInfo.address || '',
-          zip_code: '',
-          street_number: '',
-        },
-      };
-    }
-
-    const preference = await new Preference(client).create({
-      body: preferenceBody,
+    // Guardar el token de Flow en la orden para trazabilidad rápida
+    await turso.execute({
+      sql: 'UPDATE orders SET payment_id = ? WHERE id = ?',
+      args: [flowPayment.token, savedOrder.id],
     });
 
     return NextResponse.json({
-      checkoutUrl: preference.init_point,
-      orderId: preference.id,
+      checkoutUrl: flowPayment.redirectUrl,
+      orderId: flowPayment.token,
       paymentId: internalOrderId,
-      dbOrderId: savedOrder.id
+      dbOrderId: savedOrder.id,
+      flowOrder: flowPayment.flowOrder,
     });
   } catch (error: any) {
-    console.error('Checkout API error:', error);
+    console.error('Checkout API error (Flow):', error);
     return NextResponse.json(
       { error: `Error al procesar checkout: ${error.message || 'Desconocido'}` },
       { status: 500 }

@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import {
   Instagram,
   Facebook,
+  MessageCircle,
+  Mail,
 } from 'lucide-react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
@@ -28,7 +30,19 @@ export default function Footer() {
         if (res.ok) {
           const json = await res.json();
           if (json.settings && isMounted) {
-            setSettings(json.settings);
+            const rawWa = String(json.settings.contact_whatsapp || '');
+            const officialWa =
+              !rawWa || rawWa === '56912345678' ? '56985350038' : rawWa.replace(/\D/g, '');
+            const officialPhone =
+              !json.settings.contact_phone || json.settings.contact_phone.includes('1234')
+                ? '+56 9 8535 0038'
+                : json.settings.contact_phone;
+
+            setSettings({
+              ...json.settings,
+              contact_whatsapp: officialWa,
+              contact_phone: officialPhone,
+            });
           }
         }
       } catch (err) {
@@ -40,6 +54,11 @@ export default function Footer() {
       isMounted = false;
     };
   }, []);
+
+  const whatsappDigits = settings.contact_whatsapp.replace(/\D/g, '') || '56985350038';
+  const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
+    'Hola Casa Aira ✨ Quisiera recibir atención personalizada.'
+  )}`;
 
   return (
     <footer className='relative py-20 sm:py-28 px-4 sm:px-6 bg-[#181716] text-[#FAF8F5] border-t border-stone-800'>
@@ -61,10 +80,19 @@ export default function Footer() {
             <p className='text-stone-400 text-sm leading-relaxed font-light max-w-sm'>
               Celebrando la libertad, elegancia y autenticidad femenina. Vestidos seleccionados bajo rigurosos filtros de calidad y caída para abrazar todas las siluetas en Chile.
             </p>
-            <div className='pt-2'>
-              <span className='text-[10px] tracking-[0.3em] uppercase text-stone-500 block'>
+            <div className='pt-2 space-y-2'>
+              <span className='text-[10px] tracking-[0.3em] uppercase text-stone-400 block'>
                 BOUTIQUE • CHILE
               </span>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-xs text-[#E5D3A1] hover:text-white transition-colors py-1"
+              >
+                <MessageCircle className="w-3.5 h-3.5" />
+                <span>WhatsApp Concierge: +56 9 8535 0038</span>
+              </a>
             </div>
           </motion.div>
 
@@ -90,7 +118,7 @@ export default function Footer() {
                 <li key={index}>
                   <Link
                     href={item.href}
-                    className='text-stone-400 hover:text-white transition-colors duration-300'
+                    className='text-stone-400 hover:text-white transition-colors duration-300 inline-block py-1'
                   >
                     {item.label}
                   </Link>
@@ -120,7 +148,6 @@ export default function Footer() {
                 e.preventDefault();
                 const form = e.currentTarget;
                 const emailInput = form.elements.namedItem('email') as HTMLInputElement;
-                const email = emailInput.value;
                 const btn = form.querySelector('button');
                 if (!emailInput || !emailInput.value) return;
 
@@ -150,37 +177,52 @@ export default function Footer() {
                 autoComplete='email'
                 required
                 placeholder='Tu correo electrónico...'
-                className='flex-1 px-4 py-3 bg-stone-900/80 border border-stone-700 text-stone-100 text-xs tracking-wider placeholder-stone-500 focus:outline-none focus:border-calypso-400'
+                className='flex-1 min-h-[48px] px-4 py-3 bg-stone-900/80 border border-stone-700 text-stone-100 text-xs tracking-wider placeholder-stone-500 focus:outline-none focus:border-calypso-400'
               />
               <button
                 type='submit'
-                className='px-6 py-3 bg-[#FAF8F5] text-[#181716] hover:bg-calypso-600 hover:text-white tracking-[0.2em] text-[10px] uppercase font-semibold transition-all duration-300'
+                className='min-h-[48px] px-6 py-3 bg-[#FAF8F5] text-[#181716] hover:bg-calypso-600 hover:text-white tracking-[0.2em] text-[10px] uppercase font-semibold transition-all duration-300'
               >
                 Suscribirme
               </button>
             </form>
 
-            {/* Redes y Contacto */}
-            <div className='pt-6 border-t border-stone-800/80 flex items-center justify-between'>
-              <div className='flex items-center gap-4 text-xs text-stone-400'>
-                <a href={`mailto:${settings.contact_email}`} className='hover:text-white transition-colors'>
-                  {settings.contact_email}
+            {/* Redes y Contacto con Touch Targets >= 44px (44x44px w-11 h-11) */}
+            <div className='pt-6 border-t border-stone-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
+              <div className='flex flex-col gap-1.5 text-xs text-stone-300'>
+                <a
+                  href={`mailto:${settings.contact_email}`}
+                  className='inline-flex items-center gap-2 hover:text-white transition-colors py-1'
+                >
+                  <Mail className="w-3.5 h-3.5 text-stone-400" />
+                  <span>{settings.contact_email}</span>
+                </a>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className='inline-flex items-center gap-2 text-[#E5D3A1] hover:text-white transition-colors py-1'
+                >
+                  <MessageCircle className="w-3.5 h-3.5" />
+                  <span>+56 9 8535 0038</span>
                 </a>
               </div>
-              <div className='flex gap-3'>
+              <div className='flex items-center gap-3'>
                 {[
-                  { icon: Instagram, href: settings.instagram_url },
-                  { icon: Facebook, href: settings.facebook_url },
-                  { icon: TiktokIcon, href: settings.tiktok_url },
+                  { icon: MessageCircle, href: whatsappUrl, label: 'WhatsApp Casa Aira' },
+                  { icon: Instagram, href: settings.instagram_url, label: 'Instagram Casa Aira' },
+                  { icon: Facebook, href: settings.facebook_url, label: 'Facebook Casa Aira' },
+                  { icon: TiktokIcon, href: settings.tiktok_url, label: 'TikTok Casa Aira' },
                 ].map((social, index) => (
                   <a
                     key={index}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className='w-8 h-8 rounded-full border border-stone-700 flex items-center justify-center text-stone-400 hover:text-white hover:border-stone-500 transition-colors'
+                    aria-label={social.label}
+                    className='w-11 h-11 rounded-full border border-stone-700 flex items-center justify-center text-stone-300 hover:text-white hover:border-[#BFA15F] hover:bg-stone-800/70 transition-all duration-300'
                   >
-                    <social.icon className='w-3.5 h-3.5' />
+                    <social.icon className='w-4 h-4' />
                   </a>
                 ))}
               </div>
@@ -189,19 +231,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-500 text-xs font-light">
+        <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-stone-400 text-xs font-light">
           <p className="tracking-wide">
-            © {currentYear} <span className="font-serif font-medium text-stone-300">Casa Aira</span> Boutique. Todos los derechos reservados.
+            © {currentYear} <span className="font-serif font-medium text-stone-200">Casa Aira</span> Boutique. Todos los derechos reservados.
           </p>
 
           <div className='flex items-center gap-8'>
-            <Link href='/politicas?tab=privacidad' className='hover:text-white transition-colors'>
+            <Link href='/politicas?tab=privacidad' className='hover:text-white transition-colors py-1'>
               Privacidad
             </Link>
-            <Link href='/politicas?tab=terminos' className='hover:text-white transition-colors'>
+            <Link href='/politicas?tab=terminos' className='hover:text-white transition-colors py-1'>
               Términos
             </Link>
-            <Link href='/politicas?tab=devoluciones' className='hover:text-white transition-colors'>
+            <Link href='/politicas?tab=devoluciones' className='hover:text-white transition-colors py-1'>
               Cambios y Devoluciones
             </Link>
           </div>

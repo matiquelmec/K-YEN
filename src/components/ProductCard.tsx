@@ -6,7 +6,7 @@ import { useState, memo, useCallback } from 'react';
 import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCategoryName, getColorClass } from '@/lib/product-utils';
+import { getCategoryName, getColorClass, optimizeCloudinaryUrl } from '@/lib/product-utils';
 import ProductBadges from './product-card/ProductBadges';
 import ProductPrice from './product-card/ProductPrice';
 
@@ -56,7 +56,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             <Link href={`/catalogo/${product.slug || product.id}`}>
               {product.images && product.images[0] && !imgError ? (
                 <Image
-                  src={product.images[0]}
+                  src={optimizeCloudinaryUrl(product.images[0], 700)}
                   alt={product.name}
                   fill
                   unoptimized
@@ -175,7 +175,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           <Link href={`/catalogo/${product.slug || product.id}`}>
             {product.images && product.images[0] && !imgError ? (
               <Image
-                src={product.images[0]}
+                src={optimizeCloudinaryUrl(product.images[0], 700)}
                 alt={product.name}
                 fill
                 unoptimized

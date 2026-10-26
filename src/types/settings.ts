@@ -13,8 +13,8 @@ export interface StoreSettings {
 
 export const DEFAULT_STORE_SETTINGS: StoreSettings = {
   contact_email: 'contacto@kuyenchile.cl',
-  contact_phone: '+56 9 1234 5678',
-  contact_whatsapp: '56912345678',
+  contact_phone: '+56 9 8535 0038',
+  contact_whatsapp: '56985350038',
   instagram_url: 'https://instagram.com/casaaira_oficial',
   facebook_url: 'https://facebook.com/casaaira.oficial',
   tiktok_url: 'https://tiktok.com/@casaaira_oficial',

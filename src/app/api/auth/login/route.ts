@@ -25,10 +25,15 @@ export async function POST(request: NextRequest) {
             'admin@kuyenchile.cl'
         ];
 
-        // Validar estrictamente contra la variable de entorno de Vercel / .env.local
-        const expectedPassword = process.env.ADMIN_PASSWORD || 'admin_kuyen_2026';
+        // Validar estrictamente contra la variable de entorno
+        const expectedPassword = process.env.ADMIN_PASSWORD;
         const cleanEmail = String(email || '').toLowerCase().trim();
         const cleanPassword = String(password || '').trim();
+
+        if (!expectedPassword) {
+            console.error('ADMIN_PASSWORD no está configurado en las variables de entorno.');
+            return NextResponse.json({ error: 'Error de configuración de seguridad' }, { status: 500 });
+        }
 
         const isEmailValid = allowedEmails.includes(cleanEmail);
         const isPasswordValid = cleanPassword === expectedPassword;

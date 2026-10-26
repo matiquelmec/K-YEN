@@ -10,7 +10,7 @@ import { ShoppingBag, ArrowLeft, MessageCircle, ShieldCheck, Truck, RefreshCw, S
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
-import { getCategoryName, getColorClass } from '@/lib/product-utils';
+import { getCategoryName, getColorClass, optimizeCloudinaryUrl } from '@/lib/product-utils';
 import { APP_CONFIG } from '@/lib/config';
 
 export default function ProductDetailPage() {
@@ -103,7 +103,7 @@ export default function ProductDetailPage() {
                         <div className='relative aspect-[3/4] w-full overflow-hidden bg-stone-100 border border-stone-200/90 shadow-sm group'>
                             {product.images && (product.images[activeImageIndex] || product.images[0]) ? (
                                 <Image
-                                    src={product.images[activeImageIndex] || product.images[0] || ''}
+                                    src={optimizeCloudinaryUrl(product.images[activeImageIndex] || product.images[0] || '', 1100)}
                                     alt={product.name}
                                     fill
                                     unoptimized
@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
                                         }`}
                                     >
                                         <Image
-                                            src={img}
+                                            src={optimizeCloudinaryUrl(img, 240)}
                                             alt={`${product.name} vista ${idx + 1}`}
                                             fill
                                             unoptimized
@@ -305,7 +305,75 @@ export default function ProductDetailPage() {
                     </motion.div>
                 </div>
             </div>
-            <div className='mt-24'>
+            {/* JSON-LD Structured Data Schema.org/Product */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'Product',
+                        name: product.name,
+                        description: product.description || product.short_description || 'Vestido de selección exclusiva Casa Aira Boutique.',
+                        sku: product.sku || `CA-${product.id}`,
+                        image: (product.images || []).map(img => optimizeCloudinaryUrl(img, 1000)),
+                        brand: {
+                            '@type': 'Brand',
+                            name: 'Casa Aira Boutique',
+                        },
+                        offers: {
+                            '@type': 'Offer',
+                            priceCurrency: 'CLP',
+                            price: product.price,
+                            availability: (product.stock ?? 15) > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                            itemCondition: 'https://schema.org/NewCondition',
+                        },
+                    }).replace(/</g, '\\u003c'),
+                }}
+            />
+
+            {/* Sticky Mobile Couture Bar (Thumb-Zone Ergonomics >= 48px) */}
+            <div className='fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-[#FAF8F5]/95 backdrop-blur-md border-t border-stone-200/90 px-4 py-3 shadow-[0_-4px_20px_rgba(24,23,22,0.06)]'>
+                <div className='max-w-lg mx-auto flex items-center justify-between gap-3'>
+                    <div className='min-w-0'>
+                        <p className='text-[10px] uppercase tracking-[0.2em] text-stone-500 truncate'>
+                            {selectedSize && selectedColor ? `Talla ${selectedSize} • ${selectedColor}` : 'Elige talla y color'}
+                        </p>
+                        <p className='font-serif text-lg text-[#181716] font-normal leading-tight'>
+                            ${product.price.toLocaleString('es-CL')} <span className='text-[10px] font-sans text-stone-500'>CLP</span>
+                        </p>
+                    </div>
+                    <div className='flex items-center gap-2'>
+                        <a
+                            href={whatsappUrl}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            aria-label='Consultar por WhatsApp'
+                            className='min-w-[48px] min-h-[48px] flex items-center justify-center bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition-colors'
+                        >
+                            <MessageCircle className='w-5 h-5' />
+                        </a>
+                        <button
+                            onClick={() => {
+                                if (selectedSize && selectedColor) {
+                                    handleAddToCart();
+                                } else {
+                                    window.scrollTo({ top: 320, behavior: 'smooth' });
+                                }
+                            }}
+                            className={`min-h-[48px] px-5 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                                selectedSize && selectedColor
+                                    ? 'bg-[#181716] text-white active:scale-95'
+                                    : 'bg-calypso-700 text-white active:scale-95'
+                            }`}
+                        >
+                            <ShoppingBag className='w-4 h-4' />
+                            <span>{selectedSize && selectedColor ? 'Agregar' : 'Elegir Talla'}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className='mt-24 pb-20 lg:pb-0'>
                 <Footer />
             </div>
         </div>

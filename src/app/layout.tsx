@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Playfair_Display, Inter, Dancing_Script } from 'next/font/google';
 
 import { CartProvider } from '@/contexts/CartContext';
+import WhatsAppConciergeFloat from '@/components/ui/WhatsAppConciergeFloat';
 import './globals.css';
 
 const playfair = Playfair_Display({
@@ -95,42 +96,10 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${dancing.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-            * {
-              box-sizing: border-box;
-            }
-            
-            html {
-              height: 100%;
-              overflow-x: hidden;
-            }
-            
-            body { 
-              margin: 0; 
-              padding: 0; 
-              background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #831843) !important;
-              background-size: 400% 400% !important;
-              animation: gradientAnimation 20s ease infinite !important;
-              min-height: 100vh;
-              height: 100%;
-              overflow-x: hidden;
-            }
-            
-            @keyframes gradientAnimation {
-              0% { background-position: 0% 50%; }
-              50% { background-position: 100% 50%; }
-              100% { background-position: 0% 50%; }
-            }
-          `,
-          }}
-        />
-      </head>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning className="bg-[#FAF8F5] text-[#181716] antialiased min-h-screen">
         <CartProvider>
           {children}
+          <WhatsAppConciergeFloat />
         </CartProvider>
       </body>
     </html>

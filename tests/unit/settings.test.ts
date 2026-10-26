@@ -2,12 +2,13 @@ import { describe, it, expect } from 'vitest';
 import { DEFAULT_STORE_SETTINGS, type StoreSettings } from '@/types/settings';
 
 describe('Store Settings & Social Media Module Integrity Tests', () => {
-  it('contiene la estructura por defecto completa de Casa Aira', () => {
+  it('contiene la estructura por defecto completa de Casa Aira con el WhatsApp oficial +56 9 8535 0038', () => {
     expect(DEFAULT_STORE_SETTINGS.contact_email).toBeTruthy();
     expect(DEFAULT_STORE_SETTINGS.instagram_url).toBeTruthy();
     expect(DEFAULT_STORE_SETTINGS.facebook_url).toBeTruthy();
     expect(DEFAULT_STORE_SETTINGS.tiktok_url).toBeTruthy();
-    expect(DEFAULT_STORE_SETTINGS.contact_whatsapp).toBeTruthy();
+    expect(DEFAULT_STORE_SETTINGS.contact_whatsapp).toBe('56985350038');
+    expect(DEFAULT_STORE_SETTINGS.contact_phone).toBe('+56 9 8535 0038');
   });
 
   it('valida que el correo por defecto tenga formato de email válido', () => {
@@ -53,8 +54,8 @@ describe('Store Settings Security & Validation Logic', () => {
   it('sanitiza números de WhatsApp eliminando espacios, guiones y caracteres no numéricos', () => {
     const sanitizePhone = (raw: string) => raw.replace(/\D/g, '');
 
-    expect(sanitizePhone('+56 9 1234 5678')).toBe('56912345678');
-    expect(sanitizePhone('56-9-8765-4321')).toBe('56987654321');
-    expect(sanitizePhone('  56911223344  ')).toBe('56911223344');
+    expect(sanitizePhone('+56 9 8535 0038')).toBe('56985350038');
+    expect(sanitizePhone('56-9-8535-0038')).toBe('56985350038');
+    expect(sanitizePhone('  56985350038  ')).toBe('56985350038');
   });
 });

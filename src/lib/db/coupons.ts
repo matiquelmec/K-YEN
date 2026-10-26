@@ -15,24 +15,32 @@ export interface CouponRow {
   total_sales?: number;
 }
 
+let isCouponsTableInitialized = false;
+
 /**
- * Asegurar que la tabla coupons exista en Turso DB
+ * Asegurar que la tabla coupons exista en Turso DB de forma idempotente (solo si no está inicializada)
  */
 export async function ensureCouponsTable(): Promise<void> {
-  await turso.execute(`
-    CREATE TABLE IF NOT EXISTS coupons (
-      code TEXT PRIMARY KEY,
-      discount_type TEXT NOT NULL DEFAULT 'percentage',
-      discount_value REAL NOT NULL,
-      min_cart_amount REAL DEFAULT 0,
-      usage_limit INTEGER,
-      usage_count INTEGER DEFAULT 0,
-      expires_at TEXT,
-      is_active INTEGER DEFAULT 1,
-      affiliate_name TEXT,
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP
-    );
-  `);
+  if (isCouponsTableInitialized) return;
+  try {
+    await turso.execute(`
+      CREATE TABLE IF NOT EXISTS coupons (
+        code TEXT PRIMARY KEY,
+        discount_type TEXT NOT NULL DEFAULT 'percentage',
+        discount_value REAL NOT NULL,
+        min_cart_amount REAL DEFAULT 0,
+        usage_limit INTEGER,
+        usage_count INTEGER DEFAULT 0,
+        expires_at TEXT,
+        is_active INTEGER DEFAULT 1,
+        affiliate_name TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    isCouponsTableInitialized = true;
+  } catch (error) {
+    console.error('Error ensuring coupons table:', error);
+  }
 }
 
 export async function dbGetCoupons(): Promise<CouponRow[]> {

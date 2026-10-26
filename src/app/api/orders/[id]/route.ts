@@ -8,19 +8,40 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Authenticate admin
-    const token = request.cookies.get('kuyen_admin_session')?.value;
-    if (!token || !(await verifyJWT(token))) {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
-    }
-
     const resolvedParams = await params;
     const order = await dbGetOrderById(resolvedParams.id);
     if (!order) {
       return NextResponse.json({ error: 'Orden no encontrada' }, { status: 404 });
     }
 
-    return NextResponse.json(order);
+    // Si es administrador autenticado, retornar orden completa
+    const token = request.cookies.get('kuyen_admin_session')?.value;
+    const isAdmin = token ? await verifyJWT(token) : false;
+
+    if (isAdmin) {
+      return NextResponse.json(order);
+    }
+
+    // Para la vista pública de confirmación de clienta (checkout/success),
+    // sanitizar y retornar solo datos pertinentes de la confirmación
+    const sanitizedOrder = {
+      id: order.id,
+      order_number: order.order_number,
+      status: order.status,
+      payment_status: order.payment_status,
+      total: order.total,
+      created_at: order.created_at,
+      items: (order.items || []).map((item: any) => ({
+        product_name: item.product_name || item.name || '',
+        quantity: item.quantity || 1,
+        price: item.price || 0,
+        size: item.size || 'Standard',
+        color: item.color || 'Standard',
+        image: item.image || ''
+      }))
+    };
+
+    return NextResponse.json(sanitizedOrder);
   } catch (error: any) {
     console.error('Error in GET /api/orders/[id]:', error);
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });

@@ -54,6 +54,6 @@ export const DEFAULT_MANIFESTO: ManifestoData = {
     'Queremos que compres con total tranquilidad. Escríbenos por WhatsApp y te ayudamos a revisar medidas, telas y disponibilidad para que aciertes a la primera.',
   catalog_button_text: 'Ver Catálogo',
   catalog_button_link: '/catalogo',
-  whatsapp_number: '56912345678',
+  whatsapp_number: '56985350038',
   whatsapp_message: 'Hola Casa Aira, me gustaría asesoría con la talla de un vestido',
 };

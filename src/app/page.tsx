@@ -6,6 +6,7 @@ import BrandManifesto from '@/components/BrandManifesto';
 import Categories from '@/components/Categories';
 import ProductCarousel from '@/components/ProductCarousel';
 import UnboxingExperience from '@/components/UnboxingExperience';
+import SocialConcierge from '@/components/SocialConcierge';
 import Footer from '@/components/Footer';
 
 export default function Home() {
@@ -27,6 +28,9 @@ export default function Home() {
 
       {/* Experiencia de Empaque y Bolsas Boutique (Unboxing) */}
       <UnboxingExperience />
+
+      {/* Comunidad Editorial & WhatsApp Concierge Directo (+56 9 8535 0038) */}
+      <SocialConcierge />
 
       {/* Pie de Página Editorial */}
       <Footer />

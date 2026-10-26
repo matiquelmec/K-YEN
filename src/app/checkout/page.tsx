@@ -171,7 +171,7 @@ export default function CheckoutPage() {
                             disabled={isSubmitting}
                             className="w-full btn-couture-primary py-4 mt-8 justify-center disabled:opacity-50"
                         >
-                            {isSubmitting ? 'Procesando con Mercado Pago...' : 'Confirmar Pedido & Ir al Pago Seguro'}
+                            {isSubmitting ? 'Conectando con Flow.cl...' : 'Confirmar Pedido & Ir al Pago Seguro'}
                         </button>
                     </div>
 
@@ -300,7 +300,7 @@ export default function CheckoutPage() {
 
                             <div className="mt-6 pt-4 border-t border-stone-100 flex items-center justify-center gap-2 text-stone-400 text-xs font-light">
                                 <CreditCard className="w-4 h-4 stroke-[1.5]" />
-                                <span>Pasarela segura procesada por Mercado Pago</span>
+                                <span>Pasarela segura Flow (Webpay Plus, Tarjetas, MACH, Khipu)</span>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,12 @@ export default function BrandManifesto() {
         if (res.ok) {
           const json = await res.json();
           if (json.manifesto && isMounted) {
-            setData(json.manifesto);
+            const rawWa = String(json.manifesto.whatsapp_number || '').replace(/\D/g, '');
+            const officialWa = !rawWa || rawWa === '56912345678' ? '56985350038' : rawWa;
+            setData({
+              ...json.manifesto,
+              whatsapp_number: officialWa,
+            });
           }
         }
       } catch (err) {
@@ -109,7 +114,7 @@ export default function BrandManifesto() {
 
               {/* Contenido de la tarjeta */}
               <div className="p-8">
-                <span className="text-[10px] tracking-[0.3em] uppercase text-stone-400 font-medium block mb-2">
+                <span className="text-[10px] tracking-[0.3em] uppercase text-stone-500 font-medium block mb-2">
                   {data.card_subtitle}
                 </span>
 
@@ -127,7 +132,7 @@ export default function BrandManifesto() {
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     href={data.catalog_button_link || '/catalogo'}
-                    className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#181716] text-white text-[11px] tracking-[0.2em] uppercase font-semibold hover:bg-calypso-700 transition-colors"
+                    className="min-h-[48px] inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#181716] text-white text-[11px] tracking-[0.2em] uppercase font-semibold hover:bg-calypso-700 transition-colors"
                   >
                     <span>{data.catalog_button_text}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -137,7 +142,7 @@ export default function BrandManifesto() {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-stone-100 text-stone-800 text-[11px] tracking-[0.2em] uppercase font-semibold hover:bg-stone-200 transition-colors"
+                    className="min-h-[48px] inline-flex items-center justify-center gap-2 px-4 py-3 bg-stone-100 text-stone-800 text-[11px] tracking-[0.2em] uppercase font-semibold hover:bg-stone-200 transition-colors"
                   >
                     <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
                     <span>WhatsApp</span>
