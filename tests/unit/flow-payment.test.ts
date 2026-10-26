@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { signFlowParams } from '@/lib/flow';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { signFlowParams, getFlowConfig } from '@/lib/flow';
 import { optimizeCloudinaryUrl } from '@/lib/product-utils';
 
 describe('Flow.cl Payment Gateway Integration Tests', () => {
@@ -87,5 +87,48 @@ describe('Flow.cl Payment Gateway Integration Tests', () => {
 
     // Rutas locales o externas no-Cloudinary deben permanecer intactas
     expect(optimizeCloudinaryUrl('/brand/logo.png', 600)).toBe('/brand/logo.png');
+  });
+
+  describe('Configuración dinámica del entorno Flow', () => {
+    const originalEnv = { ...process.env };
+
+    beforeEach(() => {
+      delete process.env.FLOW_API_KEY;
+      delete process.env.FLOW_SECRET_KEY;
+      delete process.env.FLOW_ENV;
+      delete process.env.FLOW_API_URL;
+      (process.env as Record<string, string | undefined>).NODE_ENV = 'test';
+    });
+
+    afterEach(() => {
+      process.env = { ...originalEnv };
+    });
+
+    it('debe usar endpoint de Producción cuando FLOW_ENV=production', () => {
+      process.env.FLOW_API_KEY = 'PROD_KEY';
+      process.env.FLOW_SECRET_KEY = 'PROD_SEC';
+      process.env.FLOW_ENV = 'production';
+
+      const config = getFlowConfig();
+      expect(config.apiUrl).toBe('https://www.flow.cl/api');
+      expect(config.apiKey).toBe('PROD_KEY');
+      expect(config.secretKey).toBe('PROD_SEC');
+    });
+
+    it('debe usar endpoint de Sandbox por defecto si FLOW_ENV=sandbox o no está definido', () => {
+      process.env.FLOW_API_KEY = 'SANDBOX_KEY';
+      process.env.FLOW_SECRET_KEY = 'SANDBOX_SEC';
+      process.env.FLOW_ENV = 'sandbox';
+
+      const config = getFlowConfig();
+      expect(config.apiUrl).toBe('https://sandbox.flow.cl/api');
+    });
+
+    it('debe priorizar FLOW_API_URL si se define explícitamente', () => {
+      process.env.FLOW_API_URL = 'https://custom-flow.proxy.internal/api/';
+
+      const config = getFlowConfig();
+      expect(config.apiUrl).toBe('https://custom-flow.proxy.internal/api');
+    });
   });
 });

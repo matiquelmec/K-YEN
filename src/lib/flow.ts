@@ -60,13 +60,16 @@ export function signFlowParams(params: Record<string, any>, secretKey: string): 
 }
 
 /**
- * Obtiene la configuración base de Flow desde variables de entorno
+ * Obtiene la configuración base de Flow desde variables de entorno.
+ * Soporta FLOW_API_URL explícita, o inferencia según FLOW_ENV / NODE_ENV.
  */
 export function getFlowConfig() {
-  const apiKey = process.env.FLOW_API_KEY || '';
-  const secretKey = process.env.FLOW_SECRET_KEY || '';
-  // Default a sandbox si no está explícito en production
-  const apiUrl = (process.env.FLOW_API_URL || 'https://sandbox.flow.cl/api').replace(/\/$/, '');
+  const apiKey = (process.env.FLOW_API_KEY || '').trim();
+  const secretKey = (process.env.FLOW_SECRET_KEY || '').trim();
+  
+  const isProduction = process.env.FLOW_ENV === 'production' || process.env.NODE_ENV === 'production';
+  const defaultApiUrl = isProduction ? 'https://www.flow.cl/api' : 'https://sandbox.flow.cl/api';
+  const apiUrl = (process.env.FLOW_API_URL || defaultApiUrl).trim().replace(/\/$/, '');
 
   return { apiKey, secretKey, apiUrl };
 }
