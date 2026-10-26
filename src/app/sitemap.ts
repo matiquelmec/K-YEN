@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { dbGetProducts } from '@/lib/db/products';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://kuyenchile.cl';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://casaaira.cl';
 
   // Base routes
   const routes = [
@@ -14,7 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString(),
     changeFrequency: 'daily' as const,
-    priority: route === '' ? 1.0 : 0.8,
+    priority: route === '' ? 1.0 : (route === '/catalogo' ? 0.9 : 0.6),
   }));
 
   // Dynamic routes for catalog products
@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/catalogo/${product.slug || product.id}`,
       lastModified: product.updated_at || new Date().toISOString(),
       changeFrequency: 'weekly' as const,
-      priority: 0.7,
+      priority: 0.8,
     }));
 
     return [...routes, ...productRoutes];

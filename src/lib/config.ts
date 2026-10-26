@@ -5,11 +5,9 @@ export const APP_CONFIG = {
 
   // URLs and endpoints
   urls: {
-    base: process.env.NEXT_PUBLIC_APP_URL || 'https://kuyenchile.cl',
-    api: process.env.NEXT_PUBLIC_API_URL || 'https://kuyenchile.cl/api',
+    base: process.env.NEXT_PUBLIC_APP_URL || 'https://casaaira.cl',
+    api: process.env.NEXT_PUBLIC_API_URL || 'https://casaaira.cl/api',
   },
-
-  // Database / Turso settings are loaded in src/lib/db/turso.ts
 
   // Performance settings
   performance: {
@@ -34,7 +32,7 @@ export const APP_CONFIG = {
     titleTemplate: '%s | Casa Aira',
     defaultDescription:
       'Descubre vestidos únicos diseñados para celebrar tu libertad y elegancia. Diseños fluidos, paletas de calipso, dorado y rosa pastel que abrazan todas las tallas.',
-    siteUrl: 'https://kuyenchile.cl',
+    siteUrl: 'https://casaaira.cl',
     twitterHandle: '@casa_aira',
   },
 
@@ -46,10 +44,10 @@ export const APP_CONFIG = {
 
   // Contact
   contact: {
-    email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@kuyenchile.cl',
-    phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || '+56 9 1234 5678',
-    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+56912345678',
-    support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@kuyenchile.cl',
+    email: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@casaaira.cl',
+    phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || '+56 9 8535 0038',
+    whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '+56985350038',
+    support: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'contacto@casaaira.cl',
   },
 
   // Social media

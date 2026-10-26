@@ -1,61 +1,41 @@
+// Constantes de la aplicación Casa Aira Boutique
+
 export const SITE_CONFIG = {
   name: 'Casa Aira',
-  description: 'Elegancia, frescura y libertad en vestidos de selección exclusiva',
-  url: 'https://kuyenchile.cl',
-  ogImage: '/og-image.png',
+  description: 'Vestidos de fiesta y ocasiones especiales seleccionados para todas las tallas (XS a 6XL)',
+  url: 'https://casaaira.cl',
+  ogImage: 'https://casaaira.cl/brand/manifesto-editorial.webp',
   links: {
     instagram: 'https://www.instagram.com/casa.airaa?mdxt=MW11bHQ5dHpvZDl2NA%3D%3D',
-    whatsapp: 'https://wa.me/56985350038',
+    whatsapp: 'https://api.whatsapp.com/send?phone=56985350038',
   },
-} as const;
+};
 
-export const PRODUCT_CATEGORIES = [
-  { id: 'veraniego', name: 'Brisa & Calipso', slug: 'veraniego', tag: 'Verano & Playa' },
-  { id: 'gotico', name: 'Solsticio Dorado', slug: 'gotico', tag: 'Fiesta & Gala' },
-  { id: 'primaveral', name: 'Rosa de Alba', slug: 'primaveral', tag: 'Romance & Cóctel' },
-] as const;
+export const NAVIGATION_ITEMS = [
+  { name: 'Catálogo', href: '/catalogo' },
+  { name: 'Brisa & Calipso', href: '/catalogo?category=veraniego' },
+  { name: 'Solsticio Dorado', href: '/catalogo?category=gotico' },
+  { name: 'Rosa de Alba', href: '/catalogo?category=primaveral' },
+  { name: 'Nuestra Historia', href: '/#historia' },
+];
 
-export const PRODUCT_SIZES = [
-  { id: 'xs', name: 'XS', measurements: { bust: 80, waist: 60, hips: 86 } },
-  { id: 's', name: 'S', measurements: { bust: 84, waist: 64, hips: 90 } },
-  { id: 'm', name: 'M', measurements: { bust: 88, waist: 68, hips: 94 } },
-  { id: 'l', name: 'L', measurements: { bust: 92, waist: 72, hips: 98 } },
-  { id: 'xl', name: 'XL', measurements: { bust: 96, waist: 76, hips: 102 } },
-  { id: 'xxl', name: 'XXL', measurements: { bust: 100, waist: 80, hips: 106 } },
-  { id: '3xl', name: '3XL', measurements: { bust: 104, waist: 84, hips: 110 } },
-] as const;
+export const CATEGORIES = [
+  { id: 'veraniego', name: 'Brisa & Calipso', description: 'Frescura, movimiento y ligereza en tonos turquesa y esmeralda' },
+  { id: 'gotico', name: 'Solsticio Dorado', description: 'Gala, sobriedad y acentos dorados para noches inolvidables' },
+  { id: 'primaveral', name: 'Rosa de Alba', description: 'Romanticismo floral, suavidad y celebración primaveral' },
+];
 
-export const PRODUCT_COLORS = [
-  { id: 'negro', name: 'Negro', hex: '#000000' },
-  { id: 'blanco', name: 'Blanco', hex: '#FFFFFF' },
-  { id: 'azul-noche', name: 'Azul Noche', hex: '#0F172A' },
-  { id: 'rosa-luna', name: 'Rosa Luna', hex: '#F8BBD9' },
-  { id: 'verde-terra', name: 'Verde Terra', hex: '#16A34A' },
-  { id: 'dorado-mystic', name: 'Dorado Místico', hex: '#F59E0B' },
-] as const;
+export const SIZES = [
+  'XS', 'S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL', '6XL'
+];
 
-export const ANIMATION_VARIANTS = {
-  fadeIn: {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-  },
-  slideIn: {
-    initial: { opacity: 0, x: -100 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 100 },
-  },
-  scaleIn: {
-    initial: { opacity: 0, scale: 0.8 },
-    animate: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.8 },
-  },
-} as const;
-
-export const BREAKPOINTS = {
-  mobile: 640,
-  tablet: 768,
-  laptop: 1024,
-  desktop: 1280,
-  xl: 1536,
-} as const;
+export const COLORS = [
+  { name: 'Calipso', hex: '#1D707F', class: 'bg-[#1D707F]' },
+  { name: 'Oro', hex: '#BFA15F', class: 'bg-[#BFA15F]' },
+  { name: 'Rosa', hex: '#F8BBD9', class: 'bg-[#F8BBD9]' },
+  { name: 'Negro', hex: '#181716', class: 'bg-[#181716]' },
+  { name: 'Blanco', hex: '#FAF8F5', class: 'bg-[#FAF8F5]' },
+  { name: 'Rojo', hex: '#B2583C', class: 'bg-[#B2583C]' },
+  { name: 'Azul', hex: '#03839B', class: 'bg-[#03839B]' },
+  { name: 'Verde', hex: '#16A34A', class: 'bg-[#16A34A]' },
+];

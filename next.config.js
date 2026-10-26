@@ -35,6 +35,34 @@ const nextConfig = {
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
+
+  // Redirecciones SEO permanentes 301 desde dominio anterior hacia casaaira.cl
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'kuyenchile.cl',
+          },
+        ],
+        destination: 'https://casaaira.cl/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.kuyenchile.cl',
+          },
+        ],
+        destination: 'https://casaaira.cl/:path*',
+        permanent: true,
+      },
+    ];
+  },
   
   // Security headers & CSP (Estándar JoyasJP)
   async headers() {
@@ -45,7 +73,7 @@ const nextConfig = {
           {
             key: 'Content-Security-Policy',
             value: [
-              "default-src 'self' https://*.vercel.app",
+              "default-src 'self' https://*.vercel.app https://casaaira.cl https://*.casaaira.cl",
               "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.flow.cl https://www.flow.cl https://sandbox.flow.cl https://*.vercel.app https://vercel.live",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.vercel.app https://vercel.live",
               "img-src 'self' data: blob: https: res.cloudinary.com images.unsplash.com https://*.flow.cl https://www.flow.cl https://*.vercel.app",
