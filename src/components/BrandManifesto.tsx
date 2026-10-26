@@ -37,7 +37,7 @@ export default function BrandManifesto() {
     };
   }, []);
 
-  const whatsappUrl = `https://wa.me/${data.whatsapp_number.replace(/\D/g, '')}?text=${encodeURIComponent(
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${data.whatsapp_number.replace(/\D/g, '')}&text=${encodeURIComponent(
     data.whatsapp_message
   )}`;
 

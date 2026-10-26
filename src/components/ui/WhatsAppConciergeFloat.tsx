@@ -31,8 +31,8 @@ export default function WhatsAppConciergeFloat() {
     };
   }, []);
 
-  const href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    'Hola Casa Aira ✨ Quisiera asesoría sobre un vestido del catálogo.'
+  const href = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent(
+    'Hola Casa Aira, quisiera asesoría sobre un vestido del catálogo.'
   )}`;
 
   return (

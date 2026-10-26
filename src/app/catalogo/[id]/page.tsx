@@ -71,7 +71,7 @@ export default function ProductDetailPage() {
     const whatsappQueryText = encodeURIComponent(
         `Hola Casa Aira Boutique, me encantó el vestido "${product.name}"${selectedSize ? ` en talla ${selectedSize}` : ''}${selectedColor ? ` color ${selectedColor}` : ''}. ¿Me podrían dar más detalles sobre disponibilidad y calce?`
     );
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappQueryText}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${whatsappQueryText}`;
 
     return (
         <div className='min-h-screen bg-[#FAF8F5] text-[#181716]'>

@@ -43,8 +43,8 @@ export default function Footer() {
   }, []);
 
   const whatsappDigits = settings.contact_whatsapp.replace(/\D/g, '') || '56985350038';
-  const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
-    'Hola Casa Aira ✨ Quisiera recibir atención personalizada.'
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappDigits}&text=${encodeURIComponent(
+    'Hola Casa Aira, quisiera recibir atención personalizada.'
   )}`;
 
   return (

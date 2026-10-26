@@ -65,7 +65,7 @@ function SuccessContent() {
         (order?.total ? `Total Pagado: $${order.total.toLocaleString('es-CL')} CLP\n` : '') +
         `Quedo atenta al despacho y código de seguimiento de Starken/Chilexpress. ¡Muchas gracias!`
     );
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${whatsappMessage}`;
 
     return (
         <div className="max-w-lg w-full bg-white border border-stone-200 p-8 sm:p-10 shadow-sm space-y-6 mt-16 my-8 text-center text-[#181716]">

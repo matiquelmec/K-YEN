@@ -8,7 +8,7 @@ import { APP_CONFIG } from '@/lib/config';
 
 export default function CheckoutPendingPage() {
     const whatsappNumber = (APP_CONFIG.contact.whatsapp || '+56912345678').replace(/[^0-9]/g, '');
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hola%20Casa%20Aira,%20mi%20pago%20qued%C3%B3%20en%20estado%20pendiente.%20%C2%BFMe%20podr%C3%ADan%20confirmar%20si%20se%20recibi%C3%B3?`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent('Hola Casa Aira, mi pago quedó en estado pendiente. ¿Me podrían confirmar si se recibió?')}`;
 
     return (
         <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-4 text-center text-[#181716]">

@@ -36,8 +36,8 @@ export default function SocialConcierge() {
   }, []);
 
   const whatsappDigits = settings.contact_whatsapp.replace(/\D/g, '') || '56985350038';
-  const whatsappUrl = `https://wa.me/${whatsappDigits}?text=${encodeURIComponent(
-    'Hola Casa Aira ✨ Me gustaría recibir asesoría personalizada sobre tallas y modelos disponibles.'
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappDigits}&text=${encodeURIComponent(
+    'Hola Casa Aira, me gustaría recibir asesoría personalizada sobre tallas y modelos disponibles.'
   )}`;
 
   const channels = [

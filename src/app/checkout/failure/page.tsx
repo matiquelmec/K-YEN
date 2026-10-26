@@ -8,7 +8,7 @@ import { APP_CONFIG } from '@/lib/config';
 
 export default function CheckoutFailurePage() {
     const whatsappNumber = (APP_CONFIG.contact.whatsapp || '+56912345678').replace(/[^0-9]/g, '');
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=Hola%20Casa%20Aira,%20tuve%20un%20problema%20al%20intentar%20pagar%20mi%20pedido%20en%20la%20p%C3%A1gina.%20%C2%BFMe%20podr%C3%ADan%20ayudar?`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${encodeURIComponent('Hola Casa Aira, tuve un problema al intentar pagar mi pedido en la página. ¿Me podrían ayudar?')}`;
 
     return (
         <div className="min-h-screen bg-[#FAF8F5] flex flex-col items-center justify-center p-4 text-center text-[#181716]">
