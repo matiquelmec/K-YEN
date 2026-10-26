@@ -329,6 +329,7 @@ export async function dbCreateProduct(product: Partial<ProductRow>): Promise<Pro
   const original_price = product.original_price || null;
   const featured = product.featured ? 1 : 0;
   const is_active = 1;
+  const stock = Number(product.stock !== undefined && product.stock !== null ? product.stock : 15);
   const rating = 5.0;
   const reviews_count = 0;
   const created_at = new Date().toISOString();
@@ -337,10 +338,10 @@ export async function dbCreateProduct(product: Partial<ProductRow>): Promise<Pro
   await turso.execute({
     sql: `
       INSERT INTO products (
-        id, sku, name, slug, description, short_description, category_id, price, original_price, featured, is_active, rating, reviews_count, created_at, updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        id, sku, name, slug, description, short_description, category_id, price, original_price, featured, is_active, stock, rating, reviews_count, created_at, updated_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
-    args: [id, sku, name, slug, description, short_description, categoryId, price, original_price, featured, is_active, rating, reviews_count, created_at, updated_at]
+    args: [id, sku, name, slug, description, short_description, categoryId, price, original_price, featured, is_active, stock, rating, reviews_count, created_at, updated_at]
   });
 
   // 1. Guardar variantes de tallas y colores
@@ -378,6 +379,7 @@ export async function dbUpdateProduct(id: string, product: Partial<ProductRow>):
   const original_price = product.original_price !== undefined ? product.original_price : existing.original_price;
   const featured = product.featured !== undefined ? (product.featured ? 1 : 0) : (existing.featured ? 1 : 0);
   const is_active = product.is_active !== undefined ? (product.is_active ? 1 : 0) : (existing.is_active ? 1 : 0);
+  const stock = product.stock !== undefined && product.stock !== null ? Number(product.stock) : Number(existing.stock ?? 15);
   const updated_at = new Date().toISOString();
 
   let categoryId = '';
@@ -396,19 +398,19 @@ export async function dbUpdateProduct(id: string, product: Partial<ProductRow>):
     await turso.execute({
       sql: `
         UPDATE products SET 
-          name = ?, slug = ?, description = ?, short_description = ?, category_id = ?, price = ?, original_price = ?, featured = ?, is_active = ?, updated_at = ?
+          name = ?, slug = ?, description = ?, short_description = ?, category_id = ?, price = ?, original_price = ?, featured = ?, is_active = ?, stock = ?, updated_at = ?
         WHERE id = ?
       `,
-      args: [name, slug, description, short_description, categoryId, price, original_price, featured, is_active, updated_at, id]
+      args: [name, slug, description, short_description, categoryId, price, original_price, featured, is_active, stock, updated_at, id]
     });
   } else {
     await turso.execute({
       sql: `
         UPDATE products SET 
-          name = ?, slug = ?, description = ?, short_description = ?, price = ?, original_price = ?, featured = ?, is_active = ?, updated_at = ?
+          name = ?, slug = ?, description = ?, short_description = ?, price = ?, original_price = ?, featured = ?, is_active = ?, stock = ?, updated_at = ?
         WHERE id = ?
       `,
-      args: [name, slug, description, short_description, price, original_price, featured, is_active, updated_at, id]
+      args: [name, slug, description, short_description, price, original_price, featured, is_active, stock, updated_at, id]
     });
   }
 
