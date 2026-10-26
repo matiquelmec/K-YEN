@@ -176,22 +176,13 @@ export default function Footer() {
 
             {/* Redes y Contacto con Touch Targets >= 44px (44x44px w-11 h-11) */}
             <div className='pt-6 border-t border-stone-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
-              <div className='flex flex-col gap-1.5 text-xs text-stone-300'>
+              <div className='flex items-center text-xs text-stone-300'>
                 <a
                   href={`mailto:${settings.contact_email}`}
                   className='inline-flex items-center gap-2 hover:text-white transition-colors py-1'
                 >
                   <Mail className="w-3.5 h-3.5 text-stone-400" />
                   <span>{settings.contact_email}</span>
-                </a>
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className='inline-flex items-center gap-2 text-[#E5D3A1] hover:text-white transition-colors py-1'
-                >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  <span>{settings.contact_phone || '+56 9 8535 0038'}</span>
                 </a>
               </div>
               <div className='flex items-center gap-3'>
