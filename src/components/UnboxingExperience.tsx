@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { Package, Sparkles, ShieldCheck, HeartHandshake } from 'lucide-react';
 import { DEFAULT_UNBOXING, type UnboxingData } from '@/types/unboxing';
+import { optimizeCloudinaryUrl } from '@/lib/product-utils';
 
 export default function UnboxingExperience() {
   const [data, setData] = useState<UnboxingData>(DEFAULT_UNBOXING);
@@ -73,7 +74,7 @@ export default function UnboxingExperience() {
           >
             <div className="relative aspect-[4/3] sm:aspect-[16/11] w-full overflow-hidden bg-stone-100 border border-stone-200 shadow-sm group">
               <Image
-                src={data.image || '/brand/unboxing-packaging.webp'}
+                src={optimizeCloudinaryUrl(data.image || '/brand/unboxing-packaging.webp', 1000)}
                 alt="Experiencia de empaque y packaging de lujo Casa Aira"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

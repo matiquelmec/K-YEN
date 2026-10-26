@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { DEFAULT_COLLECTIONS, type CollectionItem } from '@/types/collections';
+import { optimizeCloudinaryUrl } from '@/lib/product-utils';
 
 export default function Categories() {
   const [chapters, setChapters] = useState<CollectionItem[]>(DEFAULT_COLLECTIONS);
@@ -70,7 +71,7 @@ export default function Categories() {
                     {/* Cover de Colección */}
                     <div className='relative aspect-[4/3] w-full overflow-hidden bg-stone-100'>
                       <Image
-                        src={chapter.image}
+                        src={optimizeCloudinaryUrl(chapter.image, 800)}
                         alt={chapter.title}
                         fill
                         sizes='(max-width: 768px) 100vw, 33vw'

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { DEFAULT_MANIFESTO, type ManifestoData } from '@/types/manifesto';
+import { optimizeCloudinaryUrl } from '@/lib/product-utils';
 
 export default function BrandManifesto() {
   const [data, setData] = useState<ManifestoData>(DEFAULT_MANIFESTO);
@@ -101,7 +102,7 @@ export default function BrandManifesto() {
               {/* Fotografía 3:4 */}
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100">
                 <Image
-                  src={data.card_image || '/brand/manifesto-editorial.webp'}
+                  src={optimizeCloudinaryUrl(data.card_image || '/brand/manifesto-editorial.webp', 800)}
                   alt="Selección de vestidos Casa Aira"
                   fill
                   sizes="(max-width: 1024px) 100vw, 40vw"
