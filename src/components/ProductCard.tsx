@@ -10,7 +10,6 @@ import { getCategoryName, getColorClass, optimizeCloudinaryUrl } from '@/lib/pro
 import ProductBadges from './product-card/ProductBadges';
 import ProductPrice from './product-card/ProductPrice';
 
-
 import { Product } from '@/types';
 
 interface ProductCardProps {
@@ -40,7 +39,6 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
   const hasLargeSizes = sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
 
-  // Helper to ensure boolean | undefined is treated as boolean | undefined explicitly for the component props
   const isNew = product.is_new ? true : undefined;
   const isSale = product.is_sale ? true : undefined;
   const originalPrice = product.original_price ?? undefined;
@@ -79,9 +77,9 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           </div>
 
           {/* Content */}
-          <div className='flex-1 p-8 flex flex-col justify-between'>
+          <div className='flex-1 p-6 sm:p-8 flex flex-col justify-between'>
             <div>
-              <div className='flex justify-between items-start mb-3'>
+              <div className='flex justify-between items-start gap-4 mb-3'>
                 <div className='flex-1'>
                   <span className='text-[9px] font-semibold uppercase tracking-[0.25em] text-calypso-700 block mb-2'>
                     {getCategoryName(product.category)}
@@ -89,14 +87,14 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
 
                   <Link href={`/catalogo/${product.slug || product.id}`}>
                     <h3
-                      className='font-serif text-2xl text-[#181716] hover:text-calypso-700 transition-colors mb-2 font-normal'
+                      className='font-serif text-xl sm:text-2xl text-[#181716] hover:text-calypso-700 transition-colors mb-2 font-normal'
                       style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     >
                       {product.name}
                     </h3>
                   </Link>
 
-                  <p className='text-stone-600 text-sm mb-6 font-light line-clamp-2'>
+                  <p className='text-stone-600 text-xs sm:text-sm mb-6 font-light line-clamp-2'>
                     {product.description}
                   </p>
                 </div>
@@ -115,7 +113,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                       <button
                         key={size}
                         onClick={() => setSelectedSize(size)}
-                        className={`px-3 py-1 text-[11px] font-light border transition-all ${
+                        className={`min-w-[44px] min-h-[44px] px-3 py-1 text-[11px] font-medium border transition-all ${
                           selectedSize === size
                             ? 'bg-[#181716] text-white border-[#181716]'
                             : 'border-stone-200 text-stone-700 bg-white hover:border-stone-400'
@@ -136,11 +134,18 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
                       <button
                         key={colorIndex}
                         onClick={() => setSelectedColor(color)}
-                        className={`w-5 h-5 rounded-full border ${
-                          selectedColor === color ? 'ring-1 ring-stone-900 ring-offset-2' : 'border-stone-300'
-                        } ${getColorClass(color)} transition-all`}
+                        aria-label={`Color ${color}`}
+                        className={`min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full border ${
+                          selectedColor === color ? 'border-stone-900 bg-stone-50' : 'border-transparent'
+                        }`}
                         title={color}
-                      />
+                      >
+                        <span
+                          className={`w-6 h-6 rounded-full border ${
+                            selectedColor === color ? 'ring-2 ring-calypso-700 ring-offset-2 border-stone-900' : 'border-stone-300'
+                          } ${getColorClass(color)} transition-all`}
+                        />
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -151,7 +156,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             <div className='flex gap-3 pt-6 border-t border-stone-100'>
               <button
                 onClick={handleAddToCart}
-                className='btn-couture-primary flex-1'
+                className='btn-couture-primary flex-1 min-h-[48px]'
               >
                 <ShoppingBag className='w-3.5 h-3.5 mr-2 stroke-[1.5]' />
                 Añadir al Bolso
@@ -196,19 +201,19 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
           />
 
           {/* Minimal Category Tag */}
-          <div className='absolute top-4 right-4'>
-            <span className='px-2.5 py-1 text-[9px] font-semibold tracking-[0.2em] uppercase bg-white/90 text-stone-800 backdrop-blur-sm border border-stone-200/60'>
+          <div className='absolute top-3 right-3 sm:top-4 sm:right-4'>
+            <span className='px-2 sm:px-2.5 py-0.5 sm:py-1 text-[8px] sm:text-[9px] font-semibold tracking-[0.2em] uppercase bg-white/90 text-stone-800 backdrop-blur-sm border border-stone-200/60'>
               {getCategoryName(product.category)}
             </span>
           </div>
         </div>
 
         {/* Product Info */}
-        <div className='p-6 flex-1 flex flex-col justify-between bg-white'>
+        <div className='p-3.5 sm:p-6 flex-1 flex flex-col justify-between bg-white'>
           <div>
             <Link href={`/catalogo/${product.slug || product.id}`}>
               <h3
-                className='font-serif text-lg text-[#181716] group-hover:text-calypso-700 transition-colors mb-1.5 line-clamp-1 font-normal'
+                className='font-serif text-base sm:text-lg text-[#181716] group-hover:text-calypso-700 transition-colors mb-1.5 line-clamp-1 font-normal'
                 style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                 title={product.name}
               >
@@ -216,31 +221,31 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               </h3>
             </Link>
 
-            <p className='text-stone-500 text-xs mb-4 line-clamp-2 font-light leading-relaxed'>
+            <p className='text-stone-500 text-[11px] sm:text-xs mb-3 sm:mb-4 line-clamp-2 font-light leading-relaxed'>
               {product.description}
             </p>
           </div>
 
           <div>
             {/* Size Options */}
-            <div className='flex flex-wrap gap-1 mb-3'>
+            <div className='flex flex-wrap gap-1 mb-2.5 sm:mb-3'>
               {sizes.slice(0, 5).map(size => (
                 <span
                   key={size}
-                  className='px-1.5 py-0.5 text-[10px] font-light border border-stone-200 text-stone-600'
+                  className='px-1.5 py-0.5 text-[9px] sm:text-[10px] font-light border border-stone-200 text-stone-600'
                 >
                   {size}
                 </span>
               ))}
               {sizes.length > 5 && (
-                <span className='px-1.5 py-0.5 text-[10px] text-stone-400 font-light'>
+                <span className='px-1.5 py-0.5 text-[9px] sm:text-[10px] text-stone-400 font-light'>
                   +{sizes.length - 5}
                 </span>
               )}
             </div>
 
             {/* Colors */}
-            <div className='flex gap-1.5 mb-4'>
+            <div className='flex gap-1.5 mb-3 sm:mb-4'>
               {colors.slice(0, 5).map((color, colorIndex) => (
                 <div
                   key={colorIndex}
@@ -251,14 +256,15 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             </div>
 
             {/* Price and Add to Cart */}
-            <div className='flex items-center justify-between pt-4 border-t border-stone-100'>
-              <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left" />
+            <div className='flex items-center justify-between pt-3 sm:pt-4 border-t border-stone-100'>
+              <ProductPrice price={product.price} originalPrice={originalPrice} className="text-left [&>div]:items-start" />
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   handleAddToCart();
                 }}
-                className='p-2.5 text-stone-700 hover:text-calypso-700 hover:bg-stone-50 transition-colors'
+                aria-label={`Añadir ${product.name} al bolso`}
+                className='min-w-[44px] min-h-[44px] flex items-center justify-center border border-stone-200 text-[#181716] hover:bg-[#181716] hover:text-white hover:border-[#181716] transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-calypso-700'
                 title='Añadir al bolso'
               >
                 <ShoppingBag className='w-4 h-4 stroke-[1.5]' />

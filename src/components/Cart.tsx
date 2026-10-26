@@ -60,7 +60,8 @@ export default function Cart() {
                 </div>
                 <button
                   onClick={() => setCartOpen(false)}
-                  className="p-2 text-stone-500 hover:text-stone-900 transition-colors"
+                  aria-label="Cerrar bolsa de compras"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center text-stone-500 hover:text-stone-900 transition-colors"
                 >
                   <X className="w-5 h-5 stroke-[1.5]" />
                 </button>
@@ -218,12 +219,13 @@ export default function Cart() {
     <>
       <button
         onClick={() => setCartOpen(true)}
-        className="relative p-2.5 rounded-full bg-stone-100/80 hover:bg-calypso-50 text-stone-700 hover:text-calypso-600 transition-colors group"
+        aria-label="Abrir bolsa de compras"
+        className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-stone-100/80 hover:bg-calypso-50 text-stone-700 hover:text-calypso-700 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-calypso-700"
         title="Abrir bolsa de compras"
       >
         <ShoppingBag className="w-5 h-5 group-hover:scale-105 transition-transform" />
         {itemCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-5 h-5 bg-calypso-500 text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-md animate-bounce">
+          <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-calypso-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-md">
             {itemCount}
           </span>
         )}

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { ShoppingBag, ArrowLeft, MessageCircle, ShieldCheck, Truck, RefreshCw, Sparkles } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, MessageCircle, ShieldCheck, Truck, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useCart } from '@/hooks/useCart';
@@ -58,7 +58,7 @@ export default function ProductDetailPage() {
                     </p>
                     <Link
                         href='/catalogo'
-                        className='inline-flex items-center gap-2 px-6 py-3 bg-[#181716] text-white text-xs uppercase tracking-widest font-semibold hover:bg-calypso-700 transition-colors'
+                        className='min-h-[48px] inline-flex items-center gap-2 px-6 py-3 bg-[#181716] text-white text-xs uppercase tracking-widest font-semibold hover:bg-calypso-700 transition-colors'
                     >
                         <ArrowLeft className='w-4 h-4' /> Volver al Catálogo
                     </Link>
@@ -67,7 +67,7 @@ export default function ProductDetailPage() {
         );
     }
 
-    const whatsappNumber = (APP_CONFIG.contact.whatsapp || '+56912345678').replace(/[^0-9]/g, '');
+    const whatsappNumber = (APP_CONFIG.contact.whatsapp || '+56985350038').replace(/[^0-9]/g, '');
     const whatsappQueryText = encodeURIComponent(
         `Hola Casa Aira Boutique, me encantó el vestido "${product.name}"${selectedSize ? ` en talla ${selectedSize}` : ''}${selectedColor ? ` color ${selectedColor}` : ''}. ¿Me podrían dar más detalles sobre disponibilidad y calce?`
     );
@@ -76,13 +76,13 @@ export default function ProductDetailPage() {
     return (
         <div className='min-h-screen bg-[#FAF8F5] text-[#181716]'>
             <Header />
-            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-32'>
+            <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-28 sm:pt-32'>
 
                 {/* Breadcrumb / Back */}
                 <div className='mb-8 flex items-center justify-between'>
                     <Link
                         href='/catalogo'
-                        className='text-stone-600 hover:text-[#181716] flex items-center gap-2 text-xs uppercase tracking-widest font-medium transition-colors'
+                        className='min-h-[44px] text-stone-600 hover:text-[#181716] inline-flex items-center gap-2 text-xs uppercase tracking-widest font-medium transition-colors'
                     >
                         <ArrowLeft className='w-3.5 h-3.5' /> Volver a la Colección
                     </Link>
@@ -91,7 +91,7 @@ export default function ProductDetailPage() {
                     </span>
                 </div>
 
-                <div className='grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start'>
+                <div className='grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start'>
                     
                     {/* Gallery Section (Left - 6 Cols) */}
                     <motion.div
@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.7, delay: 0.15 }}
-                        className='lg:col-span-6 bg-white border border-stone-200/90 p-8 sm:p-10 shadow-sm'
+                        className='lg:col-span-6 bg-white border border-stone-200/90 p-6 sm:p-10 shadow-sm'
                     >
                         {/* Categoría / Colección */}
                         <div className='mb-3'>
@@ -174,7 +174,7 @@ export default function ProductDetailPage() {
 
                         {/* Título */}
                         <h1
-                            className='font-serif text-3xl sm:text-4xl text-[#181716] font-normal leading-tight mb-4'
+                            className='font-serif text-2xl sm:text-4xl text-[#181716] font-normal leading-tight mb-4'
                             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                         >
                             {product.name}
@@ -182,7 +182,10 @@ export default function ProductDetailPage() {
 
                         {/* Precio */}
                         <div className='flex items-baseline gap-4 mb-6 pb-6 border-b border-stone-200'>
-                            <span className='text-3xl font-serif text-[#181716] font-normal'>
+                            <span
+                                className='text-2xl sm:text-3xl font-serif text-[#181716] font-normal'
+                                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                            >
                                 ${product.price.toLocaleString('es-CL')} <span className='text-xs font-sans tracking-widest text-stone-500 uppercase'>CLP</span>
                             </span>
                             {product.original_price && product.original_price > product.price && (
@@ -198,7 +201,7 @@ export default function ProductDetailPage() {
                         </p>
 
                         {/* Selectores */}
-                        <div className='space-y-6 mb-8'>
+                        <div className='space-y-6 mb-8' id='product-selectors'>
                             {/* Tallas */}
                             <div>
                                 <div className='flex justify-between items-center mb-2.5'>
@@ -212,7 +215,7 @@ export default function ProductDetailPage() {
                                         <button
                                             key={size}
                                             onClick={() => setSelectedSize(size)}
-                                            className={`min-w-[46px] h-11 px-3 border text-xs uppercase tracking-wider font-medium transition-all ${
+                                            className={`min-w-[48px] min-h-[48px] px-3.5 border text-xs uppercase tracking-wider font-medium transition-all ${
                                                 selectedSize === size
                                                     ? 'bg-[#181716] text-white border-[#181716] shadow-sm'
                                                     : 'bg-white text-stone-700 border-stone-200 hover:border-stone-400 hover:bg-stone-50'
@@ -231,18 +234,27 @@ export default function ProductDetailPage() {
                                         Tono: <span className='text-calypso-700'>{selectedColor || 'Elige un color'}</span>
                                     </label>
                                 </div>
-                                <div className='flex flex-wrap gap-3'>
+                                <div className='flex flex-wrap gap-2.5'>
                                     {product.colors && product.colors.map(color => (
                                         <button
                                             key={color}
                                             onClick={() => setSelectedColor(color)}
-                                            className={`w-9 h-9 rounded-full border transition-all ${
+                                            aria-label={`Seleccionar tono ${color}`}
+                                            className={`min-w-[44px] min-h-[44px] rounded-full border flex items-center justify-center transition-all ${
                                                 selectedColor === color
-                                                    ? 'ring-2 ring-calypso-700 ring-offset-2 border-stone-800 scale-105'
-                                                    : 'border-stone-300 hover:scale-105'
-                                            } ${getColorClass(color)} shadow-sm`}
+                                                    ? 'border-calypso-700 bg-stone-50 shadow-sm'
+                                                    : 'border-transparent hover:bg-stone-50/80'
+                                            }`}
                                             title={color}
-                                        />
+                                        >
+                                            <span
+                                                className={`w-8 h-8 rounded-full border transition-all ${
+                                                    selectedColor === color
+                                                        ? 'ring-2 ring-calypso-700 ring-offset-2 border-stone-800 scale-105'
+                                                        : 'border-stone-300 hover:scale-105'
+                                                } ${getColorClass(color)} shadow-sm`}
+                                            />
+                                        </button>
                                     ))}
                                 </div>
                             </div>
@@ -253,7 +265,7 @@ export default function ProductDetailPage() {
                             <button
                                 onClick={handleAddToCart}
                                 disabled={!selectedSize || !selectedColor}
-                                className={`w-full py-4 uppercase tracking-[0.25em] text-xs font-semibold flex items-center justify-center gap-3 transition-all ${
+                                className={`w-full min-h-[52px] py-4 uppercase tracking-[0.25em] text-xs font-semibold flex items-center justify-center gap-3 transition-all ${
                                     selectedSize && selectedColor
                                         ? 'bg-[#181716] text-white hover:bg-calypso-700 cursor-pointer shadow-md'
                                         : 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
@@ -268,7 +280,7 @@ export default function ProductDetailPage() {
                                 href={whatsappUrl}
                                 target='_blank'
                                 rel='noopener noreferrer'
-                                className='w-full py-3.5 bg-emerald-50 border border-emerald-200/80 hover:bg-emerald-100/70 text-emerald-900 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2.5 transition-colors'
+                                className='w-full min-h-[48px] py-3.5 bg-emerald-50 border border-emerald-200/80 hover:bg-emerald-100/70 text-emerald-900 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2.5 transition-colors'
                             >
                                 <MessageCircle className='w-4 h-4 text-emerald-600' />
                                 <span>¿Dudas con la talla? Asesoría por WhatsApp</span>
@@ -338,7 +350,10 @@ export default function ProductDetailPage() {
                         <p className='text-[10px] uppercase tracking-[0.2em] text-stone-500 truncate'>
                             {selectedSize && selectedColor ? `Talla ${selectedSize} • ${selectedColor}` : 'Elige talla y color'}
                         </p>
-                        <p className='font-serif text-lg text-[#181716] font-normal leading-tight'>
+                        <p
+                            className='font-serif text-lg text-[#181716] font-normal leading-tight'
+                            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                        >
                             ${product.price.toLocaleString('es-CL')} <span className='text-[10px] font-sans text-stone-500'>CLP</span>
                         </p>
                     </div>
@@ -357,7 +372,12 @@ export default function ProductDetailPage() {
                                 if (selectedSize && selectedColor) {
                                     handleAddToCart();
                                 } else {
-                                    window.scrollTo({ top: 320, behavior: 'smooth' });
+                                    const el = document.getElementById('product-selectors');
+                                    if (el) {
+                                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                    } else {
+                                        window.scrollTo({ top: 320, behavior: 'smooth' });
+                                    }
                                 }
                             }}
                             className={`min-h-[48px] px-5 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 transition-all ${
@@ -379,4 +399,3 @@ export default function ProductDetailPage() {
         </div>
     );
 }
-
