@@ -1,0 +1,12 @@
+CASA AIRA · PAQUETE DE IDENTIDAD DE MARCA v1.0
+
+01_logos/        4 configuraciones (horizontal, vertical, isotipo, wordmark) x 3 variantes (color, blanco, negro)
+                 en SVG, PNG (3840 px, transparente), PDF vectorial, EPS y JPG (fondo blanco, solo color)
+02_digital/      favicon, iconos de app, avatares, portada, imagen OG y plantillas de redes
+03_impresion/    PDF vectoriales CMYK de los logos, tarjeta de presentacion (sangrado 3 mm) y hoja membretada A4
+04_tokens/       tokens.json (W3C DTCG) y tokens.css (con modo oscuro)
+05_guia/         Guia_de_Identidad_Casa_Aira.pdf
+fuentes/         Jost e Inter (SIL Open Font License 1.1)
+
+Nomenclatura: casa-aira_[configuracion]_[variante]_[espacio].[formato]
+Nota: valores CMYK son de referencia; Pantone y archivo .ai quedan pendientes (ver guia, pagina 10).

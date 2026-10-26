@@ -20,121 +20,87 @@ export default function CasaAiraLogo({
 }: CasaAiraLogoProps) {
   const isLight = theme === 'light';
 
-  const titleSizes = {
-    sm: 'text-sm tracking-[0.28em]',
-    md: 'text-lg tracking-[0.32em]',
-    lg: 'text-2xl tracking-[0.35em]',
-    xl: 'text-3xl sm:text-4xl tracking-[0.4em]',
-    '2xl': 'text-4xl sm:text-6xl tracking-[0.45em]',
+  // Dimensiones vectoriales exactas para cada configuración
+  const dimensions = {
+    // Configuración Horizontal (viewBox: 0 0 2678 902 -> aspect 2.97)
+    full: {
+      sm: { width: 140, height: 47, class: 'w-[130px] sm:w-[140px] h-auto' },
+      md: { width: 180, height: 60, class: 'w-[160px] sm:w-[180px] h-auto' },
+      lg: { width: 240, height: 81, class: 'w-[200px] sm:w-[240px] h-auto' },
+      xl: { width: 320, height: 108, class: 'w-[260px] sm:w-[320px] h-auto' },
+      '2xl': { width: 420, height: 141, class: 'w-[320px] sm:w-[420px] h-auto' },
+    },
+    // Isotipo Circular Oficial (viewBox: 0 0 902 902 -> aspect 1.0)
+    icon: {
+      sm: { width: 36, height: 36, class: 'w-8 h-8 sm:w-9 sm:h-9' },
+      md: { width: 48, height: 48, class: 'w-10 h-10 sm:w-12 sm:h-12' },
+      lg: { width: 64, height: 64, class: 'w-14 h-14 sm:w-16 sm:h-16' },
+      xl: { width: 96, height: 96, class: 'w-20 h-20 sm:w-24 sm:h-24' },
+      '2xl': { width: 144, height: 144, class: 'w-28 h-28 sm:w-36 sm:h-36' },
+    },
+    // Wordmark Tipográfico Editorial (viewBox: 0 0 1546 902 -> aspect 1.71)
+    text: {
+      sm: { width: 100, height: 58, class: 'w-[90px] sm:w-[100px] h-auto' },
+      md: { width: 130, height: 76, class: 'w-[110px] sm:w-[130px] h-auto' },
+      lg: { width: 170, height: 99, class: 'w-[140px] sm:w-[170px] h-auto' },
+      xl: { width: 220, height: 128, class: 'w-[180px] sm:w-[220px] h-auto' },
+      '2xl': { width: 280, height: 163, class: 'w-[230px] sm:w-[280px] h-auto' },
+    },
   };
 
-  const subtitleSizes = {
-    sm: 'text-[8px] tracking-[0.35em]',
-    md: 'text-[9px] tracking-[0.35em]',
-    lg: 'text-[10px] tracking-[0.4em]',
-    xl: 'text-xs tracking-[0.45em]',
-    '2xl': 'text-sm tracking-[0.5em]',
+  // Selección del asset SVG canónico del paquete oficial
+  const getAssetPath = () => {
+    if (variant === 'icon') {
+      return isLight ? '/brand/casa-aira_isotipo_color.svg' : '/brand/casa-aira_isotipo_blanco.svg';
+    }
+    if (variant === 'text') {
+      return isLight ? '/brand/casa-aira_wordmark_color.svg' : '/brand/casa-aira_wordmark_blanco.svg';
+    }
+    // Full horizontal
+    return isLight ? '/brand/casa-aira_horizontal_color.svg' : '/brand/casa-aira_horizontal_blanco.svg';
   };
 
-  const iconSizes = {
-    sm: 'w-8 h-8',
-    md: 'w-10 h-10 sm:w-12 sm:h-12',
-    lg: 'w-14 h-14 sm:w-16 sm:h-16',
-    xl: 'w-20 h-20 sm:w-24 sm:h-24',
-    '2xl': 'w-28 h-28 sm:w-36 sm:h-36',
-  };
+  const currentDim = dimensions[variant][size];
+  const src = getAssetPath();
 
-  const pixelDimensions = {
-    sm: 36,
-    md: 48,
-    lg: 64,
-    xl: 96,
-    '2xl': 144,
-  };
+  const alt =
+    variant === 'icon'
+      ? 'Isotipo Oficial Casa Aira'
+      : variant === 'text'
+      ? 'Casa Aira Tipografía'
+      : 'Casa Aira Boutique';
 
-  // Isotipo Oficial Casa Aira
-  const IconComponent = () => (
-    <div className={`relative flex items-center justify-center ${iconSizes[size]} ${className}`}>
-      {animated ? (
-        <motion.div
-          className="relative w-full h-full flex items-center justify-center"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ scale: 1.06 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        >
-          <Image
-            src="/brand/casa-aira-isotipo.webp"
-            alt="Isotipo Casa Aira"
-            width={pixelDimensions[size]}
-            height={pixelDimensions[size]}
-            className="w-full h-full object-contain"
-            priority
-          />
-        </motion.div>
-      ) : (
-        <div className="relative w-full h-full flex items-center justify-center">
-          <Image
-            src="/brand/casa-aira-isotipo.webp"
-            alt="Isotipo Casa Aira"
-            width={pixelDimensions[size]}
-            height={pixelDimensions[size]}
-            className="w-full h-full object-contain"
-          />
-        </div>
-      )}
-    </div>
-  );
-
-  const TextComponent = () => (
-    <div className="flex flex-col items-center select-none text-center">
-      <span
-        className={`font-serif font-normal uppercase ${titleSizes[size]} leading-none ${
-          isLight ? 'text-[#181716]' : 'text-[#FAF8F5]'
-        }`}
-        style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-      >
-        CASA AIRA
-      </span>
-      <span
-        className={`font-sans font-light uppercase ${subtitleSizes[size]} ${
-          isLight ? 'text-stone-500' : 'text-stone-400'
-        } mt-1.5 leading-none`}
-      >
-        BOUTIQUE • CHILE
-      </span>
-    </div>
-  );
-
-  if (variant === 'icon') {
-    return <IconComponent />;
-  }
-
-  if (variant === 'text') {
-    return <TextComponent />;
+  if (!animated) {
+    return (
+      <div className={`relative inline-flex items-center justify-center ${currentDim.class} ${className}`}>
+        <Image
+          src={src}
+          alt={alt}
+          width={currentDim.width}
+          height={currentDim.height}
+          className="w-full h-full object-contain"
+          priority
+        />
+      </div>
+    );
   }
 
   return (
-    <div className={`flex items-center gap-3.5 select-none ${className}`}>
-      <IconComponent />
-      <div className="flex flex-col text-left">
-        <span
-          className={`font-serif font-normal uppercase ${titleSizes[size]} leading-tight ${
-            isLight ? 'text-[#181716]' : 'text-[#FAF8F5]'
-          }`}
-          style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-        >
-          CASA AIRA
-        </span>
-        <span
-          className={`font-sans font-light uppercase ${subtitleSizes[size]} ${
-            isLight ? 'text-stone-500' : 'text-stone-400'
-          } mt-0.5 leading-none`}
-        >
-          BOUTIQUE
-        </span>
-      </div>
-    </div>
+    <motion.div
+      className={`relative inline-flex items-center justify-center ${currentDim.class} ${className}`}
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        width={currentDim.width}
+        height={currentDim.height}
+        className="w-full h-full object-contain"
+        priority
+      />
+    </motion.div>
   );
 }
-

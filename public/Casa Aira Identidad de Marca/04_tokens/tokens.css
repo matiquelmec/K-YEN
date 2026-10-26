@@ -1,0 +1,14 @@
+:root{
+  --ca-turquesa-500:#28B3C6; --ca-petroleo-500:#03839B; --ca-petroleo-700:#017B91; --ca-arena-300:#F3E1AB;
+  --ca-abismo-900:#0A4757; --ca-espuma-50:#F2FAFB; --ca-coral-600:#B2583C;
+  --color-primary:var(--ca-petroleo-700); --color-secondary:var(--ca-turquesa-500); --color-highlight:var(--ca-arena-300);
+  --color-text:var(--ca-abismo-900); --color-link:var(--ca-petroleo-700);
+  --color-surface:#fff; --color-surface-subtle:var(--ca-espuma-50); --color-cta:var(--ca-coral-600); --color-cta-text:#fff;
+  --font-heading:"Jost",system-ui,sans-serif; --font-body:"Inter",system-ui,sans-serif;
+  --radius-sm:6px; --radius-md:12px; --space-4:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --color-text:#E8F6F8; --color-link:#6FD3E0; --color-surface:var(--ca-abismo-900); --color-surface-subtle:#0E5668; --color-primary:#6FD3E0;
+}}
+:root[data-theme="dark"]{--color-text:#E8F6F8; --color-link:#6FD3E0; --color-surface:var(--ca-abismo-900); --color-surface-subtle:#0E5668; --color-primary:#6FD3E0;}
+:focus-visible{outline:3px solid var(--color-link); outline-offset:2px}

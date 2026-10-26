@@ -1,40 +1,47 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 import CasaAiraLogo from '@/components/ui/CasaAiraLogo';
 
-describe('CasaAiraLogo Component', () => {
-  it('renderiza la variante completa con el nombre CASA AIRA y descriptor BOUTIQUE', () => {
-    render(<CasaAiraLogo variant="full" size="md" theme="light" />);
-    
-    expect(screen.getByText('CASA AIRA')).toBeDefined();
-    expect(screen.getByText('BOUTIQUE')).toBeDefined();
-  });
-
-  it('renderiza la variante icon con accesibilidad y presencia de imagen del isotipo', () => {
-    const { container } = render(<CasaAiraLogo variant="icon" size="lg" theme="light" />);
-    
+describe('CasaAiraLogo Component (Official Vector Identity 2026)', () => {
+  it('renderiza la variante completa horizontal oficial con SVG canónico', () => {
+    const { container } = render(<CasaAiraLogo variant="full" size="md" theme="light" />);
     const img = container.querySelector('img');
+
     expect(img).not.toBeNull();
-    expect(img?.getAttribute('alt')).toBe('Isotipo Casa Aira');
+    expect(img?.getAttribute('src')).toContain('casa-aira_horizontal_color.svg');
+    expect(img?.getAttribute('alt')).toBe('Casa Aira Boutique');
   });
 
-  it('renderiza la variante text con tipografía editorial Playfair', () => {
-    render(<CasaAiraLogo variant="text" size="lg" theme="dark" />);
-    
-    expect(screen.getByText('CASA AIRA')).toBeDefined();
+  it('renderiza la variante icon con el isotipo SVG oficial', () => {
+    const { container } = render(<CasaAiraLogo variant="icon" size="lg" theme="light" />);
+    const img = container.querySelector('img');
+
+    expect(img).not.toBeNull();
+    expect(img?.getAttribute('src')).toContain('casa-aira_isotipo_color.svg');
+    expect(img?.getAttribute('alt')).toBe('Isotipo Oficial Casa Aira');
   });
 
-  it('aplica correctamente las clases de color para tema dark', () => {
-    render(<CasaAiraLogo variant="full" theme="dark" />);
-    
-    expect(screen.getByText('CASA AIRA').className).toContain('text-[#FAF8F5]');
-    expect(screen.getByText('BOUTIQUE').className).toContain('text-stone-400');
+  it('renderiza la variante text con el wordmark SVG oficial', () => {
+    const { container } = render(<CasaAiraLogo variant="text" size="lg" theme="dark" />);
+    const img = container.querySelector('img');
+
+    expect(img).not.toBeNull();
+    expect(img?.getAttribute('src')).toContain('casa-aira_wordmark_blanco.svg');
+    expect(img?.getAttribute('alt')).toBe('Casa Aira Tipografía');
   });
 
-  it('aplica correctamente las clases de color para tema light', () => {
-    render(<CasaAiraLogo variant="full" theme="light" />);
-    
-    expect(screen.getByText('CASA AIRA').className).toContain('text-[#181716]');
+  it('aplica correctamente el asset SVG blanco para tema dark', () => {
+    const { container } = render(<CasaAiraLogo variant="full" theme="dark" />);
+    const img = container.querySelector('img');
+
+    expect(img?.getAttribute('src')).toContain('casa-aira_horizontal_blanco.svg');
+  });
+
+  it('aplica correctamente el asset SVG color para tema light', () => {
+    const { container } = render(<CasaAiraLogo variant="full" theme="light" />);
+    const img = container.querySelector('img');
+
+    expect(img?.getAttribute('src')).toContain('casa-aira_horizontal_color.svg');
   });
 });
