@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Menu, X, Search } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Cart from './Cart';
@@ -11,7 +11,21 @@ import CasaAiraLogo from './ui/CasaAiraLogo';
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [announcement, setAnnouncement] = useState<string>('');
   const router = useRouter();
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/settings', { cache: 'no-store' })
+      .then(res => res.ok ? res.json() : null)
+      .then(json => {
+        if (isMounted && json?.settings?.announcement_text) {
+          setAnnouncement(json.settings.announcement_text);
+        }
+      })
+      .catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
 
   const navigation = [
     { name: 'Catálogo', href: '/catalogo' },
@@ -23,6 +37,14 @@ export default function Header() {
 
   return (
     <header className='fixed top-0 left-0 right-0 z-40 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200/70 transition-all duration-300'>
+      {/* Barra de Anuncios Editorial Dinámica desde el Admin */}
+      {announcement && (
+        <div className='bg-[#181716] text-[#FAF8F5] py-2 px-4 text-center border-b border-stone-800 transition-all'>
+          <p className='text-[10px] sm:text-[11px] uppercase tracking-[0.25em] font-medium text-stone-200'>
+            {announcement}
+          </p>
+        </div>
+      )}
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
         <div className='flex items-center justify-between h-20'>
           {/* Logo con Zona de Respeto 1X */}
