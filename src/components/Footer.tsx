@@ -78,7 +78,7 @@ export default function Footer() {
                 className="inline-flex items-center gap-2 text-xs text-[#E5D3A1] hover:text-white transition-colors py-1"
               >
                 <MessageCircle className="w-3.5 h-3.5" />
-                <span>WhatsApp Concierge: +56 9 8535 0038</span>
+                <span>WhatsApp Concierge: {settings.contact_phone || settings.contact_whatsapp || '+56 9 8535 0038'}</span>
               </a>
             </div>
           </motion.div>

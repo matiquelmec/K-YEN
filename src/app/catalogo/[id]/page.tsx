@@ -67,7 +67,24 @@ export default function ProductDetailPage() {
         );
     }
 
-    const whatsappNumber = (APP_CONFIG.contact.whatsapp || '+56985350038').replace(/[^0-9]/g, '');
+    const [whatsappNumber, setWhatsappNumber] = useState(
+        (APP_CONFIG.contact.whatsapp || '+56985350038').replace(/[^0-9]/g, '')
+    );
+
+    useState(() => {
+        let isMounted = true;
+        fetch('/api/settings', { cache: 'no-store' })
+            .then(res => res.ok ? res.json() : null)
+            .then(json => {
+                if (isMounted && json?.settings?.contact_whatsapp) {
+                    const raw = String(json.settings.contact_whatsapp).replace(/\D/g, '');
+                    if (raw) setWhatsappNumber(raw);
+                }
+            })
+            .catch(() => {});
+        return () => { isMounted = false; };
+    });
+
     const whatsappQueryText = encodeURIComponent(
         `Hola Casa Aira Boutique, me encantó el vestido "${product.name}"${selectedSize ? ` en talla ${selectedSize}` : ''}${selectedColor ? ` color ${selectedColor}` : ''}. ¿Me podrían dar más detalles sobre disponibilidad y calce?`
     );
