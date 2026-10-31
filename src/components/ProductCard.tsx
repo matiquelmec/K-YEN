@@ -38,6 +38,7 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
   }, [product, selectedSize, selectedColor, addItem]);
 
   const hasLargeSizes = sizes.some(size => ['4XL', '5XL', '6XL'].includes(size));
+  const isOutOfStock = Number(product.stock ?? 15) <= 0;
 
   const isNew = product.is_new ? true : undefined;
   const isSale = product.is_sale ? true : undefined;
@@ -156,10 +157,15 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
             <div className='flex gap-3 pt-6 border-t border-stone-100'>
               <button
                 onClick={handleAddToCart}
-                className='btn-couture-primary flex-1 min-h-[48px]'
+                disabled={isOutOfStock}
+                className={`flex-1 min-h-[48px] uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                  isOutOfStock
+                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
+                    : 'btn-couture-primary'
+                }`}
               >
-                <ShoppingBag className='w-3.5 h-3.5 mr-2 stroke-[1.5]' />
-                Añadir al Bolso
+                <ShoppingBag className='w-3.5 h-3.5 mr-1 stroke-[1.5]' />
+                {isOutOfStock ? 'Agotado' : 'Añadir al Bolso'}
               </button>
             </div>
           </div>
@@ -261,11 +267,16 @@ function ProductCard({ product, viewMode = 'grid' }: ProductCardProps) {
               <button
                 onClick={(e) => {
                   e.preventDefault();
-                  handleAddToCart();
+                  if (!isOutOfStock) handleAddToCart();
                 }}
-                aria-label={`Añadir ${product.name} al bolso`}
-                className='min-w-[44px] min-h-[44px] flex items-center justify-center border border-stone-200 text-[#181716] hover:bg-[#181716] hover:text-white hover:border-[#181716] transition-all duration-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-calypso-700'
-                title='Añadir al bolso'
+                disabled={isOutOfStock}
+                aria-label={isOutOfStock ? `${product.name} agotado` : `Añadir ${product.name} al bolso`}
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center border transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-calypso-700 ${
+                  isOutOfStock
+                    ? 'bg-stone-100 border-stone-200 text-stone-300 cursor-not-allowed'
+                    : 'border-stone-200 text-[#181716] hover:bg-[#181716] hover:text-white hover:border-[#181716] active:scale-95'
+                }`}
+                title={isOutOfStock ? 'Producto Agotado' : 'Añadir al bolso'}
               >
                 <ShoppingBag className='w-4 h-4 stroke-[1.5]' />
               </button>

@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { turso } from '@/lib/db/turso';
 import { verifyJWT } from '@/lib/auth';
+import { safeJsonParse } from '@/lib/utils/json';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -25,7 +26,7 @@ export async function GET(request: NextRequest) {
       status: row.status,
       payment_status: row.payment_status,
       total: Number(row.total),
-      shipping_address: row.shipping_address ? JSON.parse(row.shipping_address) : {},
+      shipping_address: safeJsonParse(row.shipping_address, {}),
       created_at: row.created_at
     }));
 

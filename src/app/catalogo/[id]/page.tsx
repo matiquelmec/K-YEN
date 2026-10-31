@@ -279,18 +279,28 @@ export default function ProductDetailPage() {
 
                         {/* Botones de Acción */}
                         <div className='space-y-3 pt-2'>
-                            <button
-                                onClick={handleAddToCart}
-                                disabled={!selectedSize || !selectedColor}
-                                className={`w-full min-h-[52px] py-4 uppercase tracking-[0.25em] text-xs font-semibold flex items-center justify-center gap-3 transition-all ${
-                                    selectedSize && selectedColor
-                                        ? 'bg-[#181716] text-white hover:bg-calypso-700 cursor-pointer shadow-md'
-                                        : 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
-                                }`}
-                            >
-                                <ShoppingBag className='w-4 h-4' />
-                                {selectedSize && selectedColor ? 'Agregar a mi Bolsa' : 'Selecciona Talla y Color'}
-                            </button>
+                            {Number(product.stock ?? 15) <= 0 ? (
+                                <button
+                                    disabled
+                                    className='w-full min-h-[52px] py-4 uppercase tracking-[0.25em] text-xs font-semibold flex items-center justify-center gap-3 bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
+                                >
+                                    <ShoppingBag className='w-4 h-4' />
+                                    <span>Prenda Agotada</span>
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={handleAddToCart}
+                                    disabled={!selectedSize || !selectedColor}
+                                    className={`w-full min-h-[52px] py-4 uppercase tracking-[0.25em] text-xs font-semibold flex items-center justify-center gap-3 transition-all ${
+                                        selectedSize && selectedColor
+                                            ? 'bg-[#181716] text-white hover:bg-calypso-700 cursor-pointer shadow-md'
+                                            : 'bg-stone-200 text-stone-400 cursor-not-allowed border border-stone-200'
+                                    }`}
+                                >
+                                    <ShoppingBag className='w-4 h-4' />
+                                    {selectedSize && selectedColor ? 'Agregar a mi Bolsa' : 'Selecciona Talla y Color'}
+                                </button>
+                            )}
 
                             {/* Asesoría por WhatsApp */}
                             <a
@@ -384,28 +394,38 @@ export default function ProductDetailPage() {
                         >
                             <MessageCircle className='w-5 h-5' />
                         </a>
-                        <button
-                            onClick={() => {
-                                if (selectedSize && selectedColor) {
-                                    handleAddToCart();
-                                } else {
-                                    const el = document.getElementById('product-selectors');
-                                    if (el) {
-                                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        {Number(product.stock ?? 15) <= 0 ? (
+                            <button
+                                disabled
+                                className='min-h-[48px] px-5 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 bg-stone-300 text-stone-500 cursor-not-allowed'
+                            >
+                                <ShoppingBag className='w-4 h-4' />
+                                <span>Agotado</span>
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => {
+                                    if (selectedSize && selectedColor) {
+                                        handleAddToCart();
                                     } else {
-                                        window.scrollTo({ top: 320, behavior: 'smooth' });
+                                        const el = document.getElementById('product-selectors');
+                                        if (el) {
+                                            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        } else {
+                                            window.scrollTo({ top: 320, behavior: 'smooth' });
+                                        }
                                     }
-                                }
-                            }}
-                            className={`min-h-[48px] px-5 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 transition-all ${
-                                selectedSize && selectedColor
-                                    ? 'bg-[#181716] text-white active:scale-95'
-                                    : 'bg-calypso-700 text-white active:scale-95'
-                            }`}
-                        >
-                            <ShoppingBag className='w-4 h-4' />
-                            <span>{selectedSize && selectedColor ? 'Agregar' : 'Elegir Talla'}</span>
-                        </button>
+                                }}
+                                className={`min-h-[48px] px-5 uppercase tracking-[0.2em] text-[11px] font-semibold flex items-center justify-center gap-2 transition-all ${
+                                    selectedSize && selectedColor
+                                        ? 'bg-[#181716] text-white active:scale-95'
+                                        : 'bg-calypso-700 text-white active:scale-95'
+                                }`}
+                            >
+                                <ShoppingBag className='w-4 h-4' />
+                                <span>{selectedSize && selectedColor ? 'Agregar' : 'Elegir Talla'}</span>
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { turso } from './turso';
 import { invalidateCacheTag, CACHE_TAGS } from '@/lib/cache';
+import { safeJsonParse } from '@/lib/utils/json';
 
 export interface OrderRow {
   id: string;
@@ -29,8 +30,8 @@ export async function dbGetOrders(): Promise<OrderRow[]> {
     payment_status: String(row.payment_status),
     payment_id: row.payment_id ? String(row.payment_id) : null,
     total: Number(row.total),
-    shipping_address: row.shipping_address ? JSON.parse(String(row.shipping_address)) : {},
-    items: row.items ? JSON.parse(String(row.items)) : [],
+    shipping_address: safeJsonParse(row.shipping_address, {}),
+    items: safeJsonParse(row.items, []),
     created_at: String(row.created_at),
     updated_at: String(row.updated_at)
   }));
@@ -50,8 +51,8 @@ export async function dbGetOrderById(id: string): Promise<OrderRow | null> {
     payment_status: String(row.payment_status),
     payment_id: row.payment_id ? String(row.payment_id) : null,
     total: Number(row.total),
-    shipping_address: row.shipping_address ? JSON.parse(String(row.shipping_address)) : {},
-    items: row.items ? JSON.parse(String(row.items)) : [],
+    shipping_address: safeJsonParse(row.shipping_address, {}),
+    items: safeJsonParse(row.items, []),
     created_at: String(row.created_at),
     updated_at: String(row.updated_at)
   };
@@ -113,8 +114,8 @@ export async function dbConfirmOrderPaymentAndDeductStock(
 
   if (result.rows.length === 0) return false;
   const row = result.rows[0] as any;
-  const items: any[] = row.items ? JSON.parse(String(row.items)) : [];
-  const shippingAddress: any = row.shipping_address ? JSON.parse(String(row.shipping_address)) : {};
+  const items: any[] = safeJsonParse(row.items, []);
+  const shippingAddress: any = safeJsonParse(row.shipping_address, {});
   const currentStatus = String(row.status);
   const couponCode = row.coupon_code || shippingAddress.coupon_code;
   const finalPaymentId = mpTransactionId || row.payment_id || orderIdentifier;
